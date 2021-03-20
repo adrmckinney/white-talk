@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { login } from '../api'
 import Errors from './Errors'
 
@@ -73,9 +73,9 @@ const Login = ({ setAuth }) => {
 
           <div className='flex items-center justify-between'>
             <div className='text-sm'>
-              <a href='#' className='font-medium text-indigo-600 hover:text-indigo-500'>
+              <Link to='#' className='font-medium text-indigo-600 hover:text-indigo-500'>
                 Forgot your password?
-              </a>
+              </Link>
             </div>
           </div>
 

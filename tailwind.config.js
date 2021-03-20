@@ -31,7 +31,10 @@ module.exports = {
       fuchsia: colors.fuchsia,
       pink: colors.pink,
       white: colors.white,
-      black: colors.black
+      black: colors.black,
+      mellowApricot: '#FEB86C',
+      mediumPurple: '#9867F7',
+      kobi: '#DB9AC3'
     },
     extend: {}
   },
