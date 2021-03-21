@@ -13,7 +13,7 @@ const NavBtns = () => {
         Sessions
       </Link>
 
-      <Link to='#' className='text-white hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
+      <Link to='/connect' className='text-white hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
         Connect
       </Link>
 

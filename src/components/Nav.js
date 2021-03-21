@@ -4,17 +4,16 @@ import { Transition } from '@headlessui/react'
 import NavBtns from './NavBtns'
 import MobileNavBtns from './MobileNavBtns'
 import MobileNavMenu from './MobileNavMenu'
+
 // import Search from './Search'
 
 const Nav = ({ setToken, username, setUsername, isLoggedIn, showModal, setShowModal }) => {
   const [showMenu, setShowMenu] = useState(false)
   const dropdownRef = useRef(null)
   // const history = useHistory('')
-  console.log('dropdownRef', dropdownRef)
 
   useEffect(() => {
     const pageClickEvent = (e) => {
-      console.log('e', e.target)
       if (dropdownRef.current !== null && !dropdownRef.current.contains(e.target)) {
         setShowMenu(!showMenu)
       }

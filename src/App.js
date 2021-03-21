@@ -10,6 +10,7 @@ import Nav from './components/Nav'
 import BookStudy from './components/BookStudy'
 import Sessions from './components/Sessions'
 import LoginModal from './components/LoginModal'
+import Connect from './components/Connect'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -36,12 +37,9 @@ function App () {
           <Header />
         </div>
         <Switch>
-          <Route path='/register'>
+          <Route path='/registeradmin'>
             <Register />
           </Route>
-          {/* <Route path='/login'>
-            <Login setAuth={setAuth} />
-          </Route> */}
           <Route path='/login'>
             <LoginModal setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} />
           </Route>
@@ -55,6 +53,9 @@ function App () {
               </Route>
               <Route path='/sessions'>
                 <Sessions />
+              </Route>
+              <Route path='/connect'>
+                <Connect />
               </Route>
               <Route path='/'>
                 <Home />

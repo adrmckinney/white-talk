@@ -9,6 +9,8 @@ const Header = () => {
       return 'Book Study'
     } else if (path.pathname === '/sessions') {
       return 'Sessions'
+    } else if (path.pathname === '/connect') {
+      return 'Connect'
     }
   }
 
