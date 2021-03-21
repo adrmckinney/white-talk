@@ -6,8 +6,9 @@ import MobileNavBtns from './MobileNavBtns'
 import MobileNavMenu from './MobileNavMenu'
 // import Search from './Search'
 
-const Nav = ({ setToken, username, setUsername, isLoggedIn }) => {
+const Nav = ({ setToken, username, setUsername, isLoggedIn, showModal, setShowModal }) => {
   const [showMenu, setShowMenu] = useState(false)
+  // const history = useHistory('')
 
   return (
     <nav className='bg-lilac border-b border-indigo-300 border-opacity-25 lg:border-none'>
@@ -93,7 +94,7 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn }) => {
                             setToken(null)
                             setUsername('')
                             setShowMenu(false)
-                            console.log('btn clicked')
+                            // history.push('/')
                           }}
                         >
                           Sign out
@@ -103,7 +104,10 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn }) => {
                         <Link
                           to='/login'
                           className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'
-                          onClick={() => setShowMenu(false)}
+                          onClick={() => {
+                            setShowMenu(false)
+                            setShowModal(true)
+                          }}
                         >
                           Sign in
                         </Link>)}
