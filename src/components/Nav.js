@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import NavBtns from './NavBtns'
@@ -8,7 +8,24 @@ import MobileNavMenu from './MobileNavMenu'
 
 const Nav = ({ setToken, username, setUsername, isLoggedIn, showModal, setShowModal }) => {
   const [showMenu, setShowMenu] = useState(false)
+  const dropdownRef = useRef(null)
   // const history = useHistory('')
+  console.log('dropdownRef', dropdownRef)
+
+  useEffect(() => {
+    const pageClickEvent = (e) => {
+      console.log('e', e.target)
+      if (dropdownRef.current !== null && !dropdownRef.current.contains(e.target)) {
+        setShowMenu(!showMenu)
+      }
+    }
+    if (showMenu) {
+      window.addEventListener('click', pageClickEvent)
+    }
+    return () => {
+      window.removeEventListener('click', pageClickEvent)
+    }
+  }, [showMenu])
 
   return (
     <nav className='bg-lilac border-b border-indigo-300 border-opacity-25 lg:border-none'>
@@ -76,7 +93,13 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn, showModal, setShowMo
                   leaveFrom='transform opacity-100 scale-100'
                   leaveTo='transform opacity-0 scale-95'
                 >
-                  <div className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10' role='menu' aria-orientation='vertical' aria-labelledby='user-menu'>
+                  <div
+                    className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10'
+                    role='menu'
+                    aria-orientation='vertical'
+                    aria-labelledby='user-menu'
+                    ref={dropdownRef}
+                  >
                     <Link to='#' className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'>
                       Your Profile
                     </Link>
