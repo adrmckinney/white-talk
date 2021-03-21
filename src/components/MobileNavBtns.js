@@ -9,7 +9,7 @@ const MobileNavBtns = () => {
         Home
       </Link>
 
-      <Link to='#' className='text-white hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
+      <Link to='/sessions' className='text-white hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
         Sessions
       </Link>
 

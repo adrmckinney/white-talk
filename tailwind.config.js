@@ -5,7 +5,6 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
-      // Build your palette here
       transparent: 'transparent',
       current: 'currentColor',
       blueGray: colors.blueGray,
@@ -34,7 +33,9 @@ module.exports = {
       black: colors.black,
       mellowApricot: '#FEB86C',
       mediumPurple: '#9867F7',
-      kobi: '#DB9AC3'
+      kobi: '#DB9AC3',
+      ming: '#28666E',
+      lilac: '#7C5585'
     },
     extend: {}
   },

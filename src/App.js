@@ -8,6 +8,7 @@ import Home from './Home'
 import Header from './components/Header'
 import Nav from './components/Nav'
 import BookStudy from './components/BookStudy'
+import Sessions from './components/Sessions'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -27,7 +28,7 @@ function App () {
     <Router>
       <div className='min-h-screen bg-blueGray-50'>
 
-        <div className='bg-mediumPurple pb-32'>
+        <div className='bg-lilac pb-32'>
           <Nav setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} />
           <Header />
         </div>
@@ -45,6 +46,9 @@ function App () {
             <Switch>
               <Route path='/book-study'>
                 <BookStudy />
+              </Route>
+              <Route path='/sessions'>
+                <Sessions />
               </Route>
               <Route path='/'>
                 <Home />

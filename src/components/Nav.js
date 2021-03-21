@@ -10,7 +10,7 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn }) => {
   const [showMenu, setShowMenu] = useState(false)
 
   return (
-    <nav className='bg-mediumPurple border-b border-indigo-300 border-opacity-25 lg:border-none'>
+    <nav className='bg-lilac border-b border-indigo-300 border-opacity-25 lg:border-none'>
       <div className='max-w-7xl mx-auto px-2 sm:px-4 lg:px-8'>
         <div className='relative h-16 flex items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25'>
           <div className='px-2 flex items-center lg:px-0'>
@@ -52,13 +52,16 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn }) => {
                 <div>
                   <button
                     type='button'
-                    className='bg-mediumPurple rounded-full flex text-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white'
+                    className='bg-lilac rounded-full flex text-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white'
                     id='user-menu'
                     aria-expanded='false'
                     aria-haspopup='true'
                     onClick={() => setShowMenu(showMenu => !showMenu)}
                   >
-                    username
+                    {isLoggedIn
+                      ? 'Profile'
+                      : 'admin login'}
+
                   </button>
                 </div>
 

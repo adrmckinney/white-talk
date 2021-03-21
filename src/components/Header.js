@@ -4,9 +4,11 @@ const Header = () => {
 
   const renderLocation = () => {
     if (path.pathname === '/') {
-      return 'Welcome'
+      return 'Welcome to Racial Equity white Talk'
     } else if (path.pathname === '/book-study') {
       return 'Book Study'
+    } else if (path.pathname === '/sessions') {
+      return 'Sessions'
     }
   }
 
