@@ -4,7 +4,12 @@ const Header = () => {
 
   const renderLocation = () => {
     if (path.pathname === '/') {
-      return 'Welcome to Racial Equity white Talk'
+      return (
+        <div className='flex'>
+          <p>Welcome to&nbsp;</p>
+          <p className='text-5xl'>Racial Equity white Talk</p>
+        </div>
+      )
     } else if (path.pathname === '/book-study') {
       return 'Book Study'
     } else if (path.pathname === '/sessions') {
