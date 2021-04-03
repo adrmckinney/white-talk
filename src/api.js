@@ -1,11 +1,15 @@
 import axios from 'axios'
 
-const url = axios.create({
+const deployedUrl = axios.create({
   baseURL: 'https://white-talk-api.herokuapp.com/'
 })
 
+const localUrl = axios.create({
+  baseURL: 'http://127.0.0.1:8000/'
+})
+
 export const register = (username, password) => {
-  return url
+  return deployedUrl
     .post('api/auth/users/', {
       username,
       password
@@ -34,7 +38,7 @@ export const register = (username, password) => {
 }
 
 export const login = (username, password) => {
-  return url
+  return deployedUrl
     .post('api/auth/token/login/', {
       username,
       password
@@ -49,4 +53,10 @@ export const login = (username, password) => {
       }
       throw new Error('Something went wrong.')
     })
+}
+
+export const sessionRegister = (regData) => {
+  return localUrl
+    .post('api/sessions/', regData)
+    .then(res => res.data)
 }

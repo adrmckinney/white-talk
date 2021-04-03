@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { login } from '../api'
 import Errors from './Errors'
 
-const LoginModal = ({ showModal, setShowModal, setAuth }) => {
+const LoginModal = ({ showLoginModal, setShowLoginModal, setAuth }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState('')
@@ -16,7 +16,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth }) => {
       .then(data => {
         if (data && data.auth_token) {
           setAuth(username, data.auth_token)
-          setShowModal(false)
+          setShowLoginModal(false)
           history.push('/')
         }
       })
@@ -31,7 +31,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth }) => {
 
         {/* Background overlay, show/hide based on modal state. */}
         <Transition
-          show={showModal}
+          show={showLoginModal}
           enter='ease-out duration-300'
           enterFrom='opacity-0'
           enterTo='opacity-100'
@@ -48,7 +48,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth }) => {
 
         {/* Modal panel, show/hide based on modal state. */}
         <Transition
-          show={showModal}
+          show={showLoginModal}
           enter='ease-out duration-300'
           enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           enterTo='opacity-100 translate-y-0 sm:scale-100'
@@ -113,7 +113,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth }) => {
                   className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                   onClick={() => {
                     history.goBack()
-                    setShowModal(false)
+                    setShowLoginModal(false)
                   }}
                 >
                   Cancel

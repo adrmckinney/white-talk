@@ -7,7 +7,7 @@ import MobileNavMenu from './MobileNavMenu'
 
 // import Search from './Search'
 
-const Nav = ({ setToken, username, setUsername, isLoggedIn, showModal, setShowModal }) => {
+const Nav = ({ setToken, username, setUsername, isLoggedIn, showLoginModal, setShowLoginModal }) => {
   const [showMenu, setShowMenu] = useState(false)
   const dropdownRef = useRef(null)
   // const history = useHistory('')
@@ -25,6 +25,16 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn, showModal, setShowMo
       window.removeEventListener('click', pageClickEvent)
     }
   }, [showMenu])
+
+  const renderName = () => {
+    if (username === 'adrmckinney') {
+      return 'Dan'
+    } else if (username === 'admin') {
+      return 'Rachael'
+    } else {
+      return username
+    }
+  }
 
   return (
     <nav className='bg-lilac border-b border-indigo-300 border-opacity-25 lg:border-none'>
@@ -76,7 +86,7 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn, showModal, setShowMo
                     onClick={() => setShowMenu(showMenu => !showMenu)}
                   >
                     {isLoggedIn
-                      ? 'Profile'
+                      ? `Hello ${renderName()}`
                       : 'admin login'}
 
                   </button>
@@ -128,7 +138,7 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn, showModal, setShowMo
                           className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            setShowModal(true)
+                            setShowLoginModal(true)
                           }}
                         >
                           Sign in
