@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import NavBtns from './NavBtns'
 import MobileNavBtns from './MobileNavBtns'
@@ -7,10 +7,10 @@ import MobileNavMenu from './MobileNavMenu'
 
 // import Search from './Search'
 
-const Nav = ({ setToken, username, setUsername, isLoggedIn, showLoginModal, setShowLoginModal }) => {
+const Nav = ({ token, setToken, username, setUsername, isLoggedIn, showLoginModal, setShowLoginModal, setShowCreateSessionModal }) => {
   const [showMenu, setShowMenu] = useState(false)
   const dropdownRef = useRef(null)
-  // const history = useHistory('')
+  const history = useHistory('')
 
   useEffect(() => {
     const pageClickEvent = (e) => {
@@ -109,9 +109,18 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn, showLoginModal, setS
                     aria-labelledby='user-menu'
                     ref={dropdownRef}
                   >
-                    <Link to='#' className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'>
-                      Your Profile
-                    </Link>
+                    {token &&
+                      <Link
+                        to='/create-session'
+                        className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                        role='menuitem'
+                        onClick={() => {
+                          setShowMenu(false)
+                          setShowCreateSessionModal(true)
+                        }}
+                      >
+                        Create New Session
+                      </Link>}
 
                     <Link to='#' className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'>
                       Settings
@@ -126,7 +135,7 @@ const Nav = ({ setToken, username, setUsername, isLoggedIn, showLoginModal, setS
                             setToken(null)
                             setUsername('')
                             setShowMenu(false)
-                            // history.push('/')
+                            history.push('/')
                           }}
                         >
                           Sign out

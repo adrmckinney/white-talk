@@ -12,6 +12,7 @@ import Sessions from './components/Sessions'
 import LoginModal from './components/LoginModal'
 import Connect from './components/Connect'
 import SessionRegister from './components/sessionForms/SessionRegister'
+import CreateSession from './components/CreateSession'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -22,6 +23,7 @@ function App () {
   const isLoggedIn = (username && token)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showSessionRegModal, setShowSessionRegModal] = useState(false)
+  const [showCreateSessionModal, setShowCreateSessionModal] = useState(false)
   const [showRegSuccessfulAlert, setShowRegSuccessfulAlert] = useState(false)
 
   function setAuth (username, token) {
@@ -33,7 +35,7 @@ function App () {
       <div className='min-h-screen bg-blueGray-50'>
 
         <div className='bg-lilac pb-32'>
-          <Nav setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} />
+          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} setShowCreateSessionModal={setShowCreateSessionModal} />
           <Header />
         </div>
         <Switch>
@@ -51,13 +53,16 @@ function App () {
                 <BookStudy />
               </Route>
               <Route path='/sessions'>
-                <Sessions showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showSessionRegModal={showSessionRegModal} setShowSessionRegModal={setShowSessionRegModal} />
+                <Sessions token={token} isLoggedIn={isLoggedIn} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showSessionRegModal={showSessionRegModal} setShowSessionRegModal={setShowSessionRegModal} />
               </Route>
               <Route path='/connect'>
                 <Connect />
               </Route>
               <Route path='/session-register'>
                 <SessionRegister setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showSessionRegModal={showSessionRegModal} setShowSessionRegModal={setShowSessionRegModal} />
+              </Route>
+              <Route path='/create-session'>
+                <CreateSession token={token} showCreateSessionModal={showCreateSessionModal} setShowCreateSessionModal={setShowCreateSessionModal} />
               </Route>
               <Route path='/'>
                 <Home />

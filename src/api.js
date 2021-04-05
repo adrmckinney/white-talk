@@ -9,7 +9,7 @@ const localUrl = axios.create({
 })
 
 export const register = (username, password) => {
-  return deployedUrl
+  return localUrl
     .post('api/auth/users/', {
       username,
       password
@@ -38,7 +38,7 @@ export const register = (username, password) => {
 }
 
 export const login = (username, password) => {
-  return deployedUrl
+  return localUrl
     .post('api/auth/token/login/', {
       username,
       password
@@ -54,9 +54,41 @@ export const login = (username, password) => {
       throw new Error('Something went wrong.')
     })
 }
+// ***************************
+// *** All things SESSIONS ***
+// ***************************
 
 export const sessionRegister = (regData) => {
   return localUrl
-    .post('api/sessions/', regData)
+    .post('api/session-register/', regData)
+    .then(res => res.data)
+}
+
+export const listSessions = () => {
+  return localUrl
+    .get('api/sessions/')
+    .then(res => res.data)
+}
+
+export const createSession = (token, sessionData) => {
+  console.log('token in api', token)
+  return localUrl
+    .post('api/create-session/', sessionData,
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}
+
+export const deleteSession = (token, pk) => {
+  return localUrl
+    .delete(`api/delete-session/${pk}`,
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
     .then(res => res.data)
 }
