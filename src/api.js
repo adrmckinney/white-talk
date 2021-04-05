@@ -92,3 +92,14 @@ export const deleteSession = (token, pk) => {
       })
     .then(res => res.data)
 }
+
+export const updateSession = (token, pk) => {
+  return localUrl
+    .delete(`api/update-session/${pk}`,
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}
