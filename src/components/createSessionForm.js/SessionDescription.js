@@ -1,5 +1,5 @@
 
-const SessionDescription = ({ description, setDescription }) => {
+const SessionDescription = ({ description, setDescription, handleFilterSession, filterInput }) => {
   return (
     <>
       <label
@@ -14,8 +14,9 @@ const SessionDescription = ({ description, setDescription }) => {
           name='description'
           id='description'
           rows='3'
-          value={description}
-          onChange={e => setDescription(e.target.value)}
+          value={filterInput.description}
+        //   onChange={e => setDescription(e.target.value)}
+          onChange={(e) => handleFilterSession(e)}
         />
       </div>
     </>

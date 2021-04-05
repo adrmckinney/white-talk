@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { createSession } from '../api'
@@ -8,6 +8,17 @@ import SessionStartDate from './createSessionForm.js/SessionStartDate'
 import SessionStatus from './createSessionForm.js/SessionStatus'
 
 const CreateSession = ({ token, showCreateSessionModal, setShowCreateSessionModal }) => {
+  const [filterInput, setFilterInput] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      title: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+      session_status: false
+    }
+  )
+
   const [title, setTitle] = useState('')
   const [startDate, setStartDate] = useState('')
   const [time, setTime] = useState('')
@@ -23,6 +34,13 @@ const CreateSession = ({ token, showCreateSessionModal, setShowCreateSessionModa
     session_status: statusOpen
   }
 
+  const handleFilterSession = (event) => {
+    console.log('event', event)
+    const { name, value } = event.target
+    setFilterInput({ [name]: value })
+  }
+
+  console.log('filterInput', filterInput)
   console.log('startDate', startDate)
 
   const handleSubmit = (e) => {
@@ -76,19 +94,19 @@ const CreateSession = ({ token, showCreateSessionModal, setShowCreateSessionModa
                     </h3>
                   </div>
                   <div>
-                    <SessionTitle title={title} setTitle={setTitle} />
+                    <SessionTitle title={title} setTitle={setTitle} handleFilterSession={handleFilterSession} filterInput={filterInput} />
                   </div>
                   <div>
-                    <SessionStartDate startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} time={time} setTime={setTime} />
+                    <SessionStartDate startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} time={time} setTime={setTime} handleFilterSession={handleFilterSession} filterInput={filterInput} />
                   </div>
                   {/* <div>
                     <Email email={email} setEmail={setEmail} />
                   </div> */}
                   <div>
-                    <SessionDescription description={description} setDescription={setDescription} />
+                    <SessionDescription description={description} setDescription={setDescription} handleFilterSession={handleFilterSession} filterInput={filterInput} />
                   </div>
                   <div className='mt-4'>
-                    <SessionStatus statusOpen={statusOpen} setStatusOpen={setStatusOpen} />
+                    <SessionStatus statusOpen={statusOpen} setStatusOpen={setStatusOpen} handleFilterSession={handleFilterSession} filterInput={filterInput} />
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
