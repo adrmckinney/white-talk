@@ -1,7 +1,7 @@
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-const SessionStartDate = ({ startDate, setStartDate, endDate, setEndDate, time, setTime, handleFilterSession, filterInput }) => {
+const SessionStartDate = ({ time, setTime, handleFilterSession, filterInput }) => {
   return (
     <>
       <div className='flex space-x-2'>
@@ -13,12 +13,11 @@ const SessionStartDate = ({ startDate, setStartDate, endDate, setEndDate, time, 
             Start Date
           </label>
           <DatePicker
-            selected={startDate}
+            selected={filterInput.start_date}
             id='startDate'
             isClearable
             placeholderText='Select a Start Date'
-            onChange={date => setStartDate(date)}
-            // onChange={(e) => handleFilterSession(e)}
+            onChange={e => handleFilterSession('start_date', e)}
           />
         </div>
         <div>
@@ -29,12 +28,12 @@ const SessionStartDate = ({ startDate, setStartDate, endDate, setEndDate, time, 
             End Date
           </label>
           <DatePicker
-            selected={filterInput.endDate}
+            selected={filterInput.end_date}
             id='endDate'
             isClearable
             placeholderText='Select an End Date'
             // onChange={date => setEndDate(date)}
-            onChange={(e) => handleFilterSession(e)}
+            onChange={e => handleFilterSession('end_date', e)}
           />
         </div>
       </div>

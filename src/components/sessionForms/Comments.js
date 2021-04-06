@@ -1,5 +1,5 @@
 
-const Comments = ({ comment, setComment }) => {
+const Comments = ({ filterInput, handleSessionRegFilter }) => {
   return (
     <>
       <label
@@ -14,8 +14,8 @@ const Comments = ({ comment, setComment }) => {
           name='comment'
           id='comment'
           rows='3'
-          value={comment}
-          onChange={e => setComment(e.target.value)}
+          value={filterInput.comment}
+          onChange={e => handleSessionRegFilter('comment', e.target.value)}
         />
       </div>
     </>

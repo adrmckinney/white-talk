@@ -1,7 +1,7 @@
 import { Transition } from '@headlessui/react'
 import { useState, useEffect, useRef } from 'react'
 
-const Pronouns = ({ pronouns, setPronouns }) => {
+const Pronouns = ({ filterInput, handleSessionRegFilter }) => {
   const [showPronouns, setShowPronouns] = useState(false)
   const dropdownRef = useRef(null)
 
@@ -39,7 +39,7 @@ const Pronouns = ({ pronouns, setPronouns }) => {
           onClick={() => setShowPronouns(!showPronouns)}
         >
           <span className='block truncate text-center text-sm sm:text-md'>
-            {pronouns || '–– Select Pronouns ––'}
+            {filterInput.pronouns || '–– Select Pronouns ––'}
 
           </span>
           <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
@@ -70,7 +70,7 @@ const Pronouns = ({ pronouns, setPronouns }) => {
                   value={PRONOUNS}
                   className='hover:text-white hover:bg-indigo-600 text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9'
                   onClick={() => {
-                    setPronouns(pronoun)
+                    handleSessionRegFilter('pronouns', pronoun)
                     setShowPronouns(false)
                   }}
                 >

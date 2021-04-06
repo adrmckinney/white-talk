@@ -1,5 +1,5 @@
 
-const SessionTitle = ({ title, setTitle, handleFilterSession, filterInput }) => {
+const SessionTitle = ({ handleFilterSession, filterInput }) => {
   return (
     <>
       <label
@@ -15,7 +15,7 @@ const SessionTitle = ({ title, setTitle, handleFilterSession, filterInput }) => 
         id='title'
         value={filterInput.title}
         // onChange={e => setTitle(e.target.value)}
-        onChange={(e) => handleFilterSession(e)}
+        onChange={(e) => handleFilterSession('title', e.target.value)}
       />
     </>
   )

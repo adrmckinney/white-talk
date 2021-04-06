@@ -7,7 +7,7 @@ import MobileNavMenu from './MobileNavMenu'
 
 // import Search from './Search'
 
-const Nav = ({ token, setToken, username, setUsername, isLoggedIn, showLoginModal, setShowLoginModal, setShowCreateSessionModal }) => {
+const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal }) => {
   const [showMenu, setShowMenu] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
@@ -110,22 +110,40 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, showLoginModa
                     ref={dropdownRef}
                   >
                     {token &&
-                      <Link
-                        to='/create-session'
-                        className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
-                        role='menuitem'
-                        onClick={() => {
-                          setShowMenu(false)
-                          setShowCreateSessionModal(true)
-                        }}
-                      >
-                        Create New Session
-                      </Link>}
+                      <>
+                        <Link
+                          to='/create-session'
+                          className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                          role='menuitem'
+                          onClick={() => {
+                            setShowMenu(false)
+                            setShowCreateSessionModal(true)
+                          }}
+                        >
+                          Create New Session
+                        </Link>
 
-                    <Link to='#' className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'>
-                      Settings
-                    </Link>
+                        <Link
+                          to='/registeradmin'
+                          className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                          role='menuitem'
+                          onClick={() => {
+                            setShowMenu(false)
+                            setShowRegistrationModal(true)
+                          }}
+                        >
+                          Register New Admin
+                        </Link>
 
+                        <Link
+                          to='/registeradmin'
+                          className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                          role='menuitem'
+                          onClick={() => setIsEditing(true)}
+                        >
+                          Update User Settings
+                        </Link>
+                      </>}
                     {isLoggedIn
                       ? (
                         <Link

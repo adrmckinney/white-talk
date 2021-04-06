@@ -58,6 +58,17 @@ export const login = (username, password) => {
 // *** All things SESSIONS ***
 // ***************************
 
+export const getUser = (token) => {
+  return localUrl
+    .get('api/my-login/',
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}
+
 export const sessionRegister = (regData) => {
   return localUrl
     .post('api/session-register/', regData)

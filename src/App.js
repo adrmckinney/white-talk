@@ -21,7 +21,9 @@ function App () {
   const [username, setUsername] = useUsername(null)
   const [token, setToken] = useToken(null)
   const isLoggedIn = (username && token)
+  const [isEditing, setIsEditing] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false)
   const [showSessionRegModal, setShowSessionRegModal] = useState(false)
   const [showCreateSessionModal, setShowCreateSessionModal] = useState(false)
   const [showRegSuccessfulAlert, setShowRegSuccessfulAlert] = useState(false)
@@ -35,12 +37,12 @@ function App () {
       <div className='min-h-screen bg-blueGray-50'>
 
         <div className='bg-lilac pb-32'>
-          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} setShowCreateSessionModal={setShowCreateSessionModal} />
+          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setIsEditing={setIsEditing} showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} setShowCreateSessionModal={setShowCreateSessionModal} setShowRegistrationModal={setShowRegistrationModal} />
           <Header />
         </div>
         <Switch>
           <Route path='/registeradmin'>
-            <Register />
+            <Register token={token} isEditing={isEditing} showRegistrationModal={showRegistrationModal} setShowRegistrationModal={setShowRegistrationModal} />
           </Route>
           <Route path='/login'>
             <LoginModal setAuth={setAuth} showLoginModal={showLoginModal} setShowLoginModal={setShowLoginModal} />

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { sessionRegister } from '../../api'
@@ -8,21 +8,27 @@ import Name from './Name'
 import Pronouns from './Pronouns'
 
 const SessionRegister = ({ setShowRegSuccessfulAlert, showSessionRegModal, setShowSessionRegModal }) => {
-  const [name, setName] = useState('')
-  const [pronouns, setPronouns] = useState('')
-  const [email, setEmail] = useState('')
-  const [comment, setComment] = useState('')
   const history = useHistory()
-  const pendingRegistration = {
-    name,
-    pronouns,
-    email,
-    comment
+  const [filterInput, setFilterInput] = useReducer(
+    (name, value) => ({ ...name, ...value }),
+    {
+      first_name: '',
+      last_name: '',
+      pronouns: '',
+      email: '',
+      comment: ''
+    }
+  )
+
+  const handleSessionRegFilter = (name, value) => {
+    setFilterInput({ [name]: value })
   }
+
+  console.log('filterInput', filterInput)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    sessionRegister(pendingRegistration)
+    sessionRegister(filterInput)
       .then(data => {
         console.log('data', data)
         setShowSessionRegModal(false)
@@ -72,21 +78,21 @@ const SessionRegister = ({ setShowRegSuccessfulAlert, showSessionRegModal, setSh
                     </h3>
                   </div>
                   <div>
-                    <Name name={name} setName={setName} />
+                    <Name filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} />
                   </div>
                   <div>
-                    <Pronouns pronouns={pronouns} setPronouns={setPronouns} />
+                    <Pronouns filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} />
                   </div>
                   <div>
-                    <Email email={email} setEmail={setEmail} />
+                    <Email filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} />
                   </div>
                   <div>
-                    <Comments comment={comment} setComment={setComment} />
+                    <Comments filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} />
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
                   <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                    Login
+                    Register
                   </button>
                   <button
                     type='button'
