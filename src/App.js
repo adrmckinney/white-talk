@@ -30,6 +30,7 @@ function App () {
   const [showRegSuccessfulAlert, setShowRegSuccessfulAlert] = useState(false)
   const [sessions, setSessions] = useState([])
   const [sessionToRegister, setSessionToRegister] = useState(null)
+  const [dropdownSelectorMode, setDropdownSelectorMode] = useState('')
 
   function setAuth (username, token) {
     setUsername(username)
@@ -71,7 +72,7 @@ function App () {
                 <CreateSession token={token} showCreateSessionModal={showCreateSessionModal} setShowCreateSessionModal={setShowCreateSessionModal} />
               </Route>
               <Route path='/view-session-registrants'>
-                <ViewSessionRegistrants token={token} showCreateSessionModal={showCreateSessionModal} setShowCreateSessionModal={setShowCreateSessionModal} />
+                <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} showCreateSessionModal={showCreateSessionModal} setShowCreateSessionModal={setShowCreateSessionModal} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} />
               </Route>
               <Route path='/'>
                 <Home />

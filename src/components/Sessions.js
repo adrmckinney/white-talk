@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Moment from 'react-moment'
 import { listSessions, deleteSession } from '../api'
@@ -9,7 +9,7 @@ const Sessions = ({ token, isLoggedIn, showRegSuccessfulAlert, setShowRegSuccess
   useEffect(() => {
     listSessions()
       .then(data => setSessions(data))
-  }, [])
+  }, [setSessions])
 
   const handleDelete = (pk) => {
     deleteSession(token, pk)
@@ -44,18 +44,22 @@ const Sessions = ({ token, isLoggedIn, showRegSuccessfulAlert, setShowRegSuccess
             Upcoming Sessions
           </h3>
           {sessions.map(session => (
-            <div key={`session-${session.pk}`} className='flex space-x-1'>
-              <div>
-                {session.title}
-              </div>
-              <div className='flex space-x-1'>
+            <div key={`session-${session.pk}`} className='flex justify-evenly'>
+              <span className='flex space-x-2'>
                 <div>
-                  <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
+                  {session.title}
                 </div>
-                <div> - </div>
-                <div>
-                  <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
+                <div className='flex space-x-1'>
+                  <div>
+                    <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
+                  </div>
+                  <div> - </div>
+                  <div>
+                    <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
+                  </div>
                 </div>
+              </span>
+              <span className='flex space-x-2'>
                 {session.session_status &&
                   <div>
                     <Link
@@ -67,7 +71,7 @@ const Sessions = ({ token, isLoggedIn, showRegSuccessfulAlert, setShowRegSuccess
                       }}
                     >
                       <button
-                        className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                        className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lilac text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                       >Sign up
                       </button>
                     </Link>
@@ -75,12 +79,12 @@ const Sessions = ({ token, isLoggedIn, showRegSuccessfulAlert, setShowRegSuccess
                 {isLoggedIn &&
                   <div>
                     <button
-                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lilac text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                       onClick={() => handleDelete(session.pk)}
                     >Delete
                     </button>
                   </div>}
-              </div>
+              </span>
             </div>
           ))}
         </div>

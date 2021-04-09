@@ -1,7 +1,7 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useReducer, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
-import { getUser, register } from '../api'
+import { register } from '../api'
 import Errors from './Errors'
 
 const Register = ({ token, isEditing, showRegistrationModal, setShowRegistrationModal }) => {

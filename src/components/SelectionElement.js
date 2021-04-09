@@ -1,8 +1,8 @@
 import { Transition } from '@headlessui/react'
 import { useState, useEffect, useRef } from 'react'
-import { formatSelectedSession } from '../formatSelectionValues'
+import { formatSelectedSession } from './formatSelectionValues'
 
-const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSessionRegFilter }) => {
+const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRender }) => {
   const [showSessions, setShowSessions] = useState(false)
   //   const [sessionOptions, setSessionOptions] = useState([])
   const [selectedValue, setSelectedValue] = useState([])
@@ -22,14 +22,24 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSes
     }
   }, [showSessions])
 
-  useEffect(() => {
-    handleSessionRegFilter('session', sessionToRegister.pk)
-  }, [sessionToRegister, handleSessionRegFilter])
+  const setLabel = () => {
+    if (dropdownSelectorMode === 'view-session-registrants') {
+      return 'Select Session'
+    }
+  }
 
-  //   useEffect(() => {
-  //     const options = sessions.filter(session => session.pk !== sessionToRegister.pk)
-  //     setSessionOptions(options)
-  //   }, [])
+  const setSelectDisplay = () => {
+    if (dropdownSelectorMode === 'view-session-registrants') {
+      return (
+        <>
+          {/* {formatSelectedSession()} */}
+          {selectedValue.pk
+            ? formatSelectedSession(selectedValue)
+            : 'Select Session'}
+        </>
+      )
+    }
+  }
 
   return (
     <>
@@ -37,7 +47,7 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSes
         className='block text-sm sm:text-lg font-medium text-gray-700 text-left mt-4'
         htmlFor='pronouns'
       >
-        Pronouns
+        {setLabel()}
       </label>
       <div className='mt-1 relative'>
         <button
@@ -45,12 +55,7 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSes
           onClick={() => setShowSessions(!showSessions)}
         >
           <span className='flex truncate justify-center text-sm sm:text-md'>
-
-            {/* {formatSelectedSession()} */}
-            {selectedValue.pk
-              ? formatSelectedSession(selectedValue)
-              : formatSelectedSession(sessionToRegister)}
-
+            {setSelectDisplay()}
           </span>
           <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
             <svg className='h-5 w-5 text-gray-400' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
@@ -81,9 +86,13 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSes
                   className='hover:text-white hover:bg-indigo-600 text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9'
                   onClick={() => {
                     setSelectedValue(session)
-                    handleSessionRegFilter('session', session.pk)
+                    // handleSessionRegFilter('session', session.pk)
                     setShowSessions(false)
+                    if (dropdownSelectorMode === 'view-session-registrants') {
+                      setRegistrantsToRender(session)
+                    }
                   }}
+
                 >
                   {/* <!-- Selected: "font-semibold", Not Selected: "font-normal" --> */}
                   <span
@@ -107,4 +116,4 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSes
   )
 }
 
-export default SessionToRegister
+export default SelectionElement

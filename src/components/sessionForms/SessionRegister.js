@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react'
+import { useReducer } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { sessionRegister } from '../../api'
