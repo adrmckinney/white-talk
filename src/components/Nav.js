@@ -45,7 +45,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing,
               <img className='block h-8 w-8' src='https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg' alt='Workflow' />
             </div> */}
             <div className='hidden lg:block lg:ml-10'>
-              <NavBtns />
+              <NavBtns isLoggedIn={isLoggedIn} />
             </div>
           </div>
           {/* <Search /> */}

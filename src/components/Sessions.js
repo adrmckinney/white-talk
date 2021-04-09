@@ -5,9 +5,7 @@ import Moment from 'react-moment'
 import { listSessions, deleteSession } from '../api'
 import RegSuccessfulAlert from './RegSuccessfulAlert'
 
-const Sessions = ({ token, isLoggedIn, showRegSuccessfulAlert, setShowRegSuccessfulAlert, showSessionRegModal, setShowSessionRegModal }) => {
-  const [sessions, setSessions] = useState([])
-
+const Sessions = ({ token, isLoggedIn, showRegSuccessfulAlert, setShowRegSuccessfulAlert, showSessionRegModal, setShowSessionRegModal, sessions, setSessions, setSessionToRegister }) => {
   useEffect(() => {
     listSessions()
       .then(data => setSessions(data))
@@ -63,7 +61,10 @@ const Sessions = ({ token, isLoggedIn, showRegSuccessfulAlert, setShowRegSuccess
                     <Link
                       to='/session-register'
                       className='pt-40'
-                      onClick={() => setShowSessionRegModal(true)}
+                      onClick={() => {
+                        setSessionToRegister(session)
+                        setShowSessionRegModal(true)
+                      }}
                     >
                       <button
                         className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'

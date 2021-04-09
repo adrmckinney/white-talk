@@ -13,6 +13,7 @@ import LoginModal from './components/LoginModal'
 import Connect from './components/Connect'
 import SessionRegister from './components/sessionForms/SessionRegister'
 import CreateSession from './components/CreateSession'
+import ViewSessionRegistrants from './components/ViewSessionRegistrants'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -27,11 +28,14 @@ function App () {
   const [showSessionRegModal, setShowSessionRegModal] = useState(false)
   const [showCreateSessionModal, setShowCreateSessionModal] = useState(false)
   const [showRegSuccessfulAlert, setShowRegSuccessfulAlert] = useState(false)
+  const [sessions, setSessions] = useState([])
+  const [sessionToRegister, setSessionToRegister] = useState(null)
 
   function setAuth (username, token) {
     setUsername(username)
     setToken(token)
   }
+
   return (
     <Router>
       <div className='min-h-screen bg-blueGray-50'>
@@ -55,16 +59,19 @@ function App () {
                 <BookStudy />
               </Route>
               <Route path='/sessions'>
-                <Sessions token={token} isLoggedIn={isLoggedIn} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showSessionRegModal={showSessionRegModal} setShowSessionRegModal={setShowSessionRegModal} />
+                <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} setSessionToRegister={setSessionToRegister} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showSessionRegModal={showSessionRegModal} setShowSessionRegModal={setShowSessionRegModal} />
               </Route>
               <Route path='/connect'>
                 <Connect />
               </Route>
               <Route path='/session-register'>
-                <SessionRegister setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showSessionRegModal={showSessionRegModal} setShowSessionRegModal={setShowSessionRegModal} />
+                <SessionRegister sessions={sessions} sessionToRegister={sessionToRegister} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showSessionRegModal={showSessionRegModal} setShowSessionRegModal={setShowSessionRegModal} />
               </Route>
               <Route path='/create-session'>
                 <CreateSession token={token} showCreateSessionModal={showCreateSessionModal} setShowCreateSessionModal={setShowCreateSessionModal} />
+              </Route>
+              <Route path='/view-session-registrants'>
+                <ViewSessionRegistrants token={token} showCreateSessionModal={showCreateSessionModal} setShowCreateSessionModal={setShowCreateSessionModal} />
               </Route>
               <Route path='/'>
                 <Home />

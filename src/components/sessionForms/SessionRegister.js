@@ -6,9 +6,11 @@ import Comments from './Comments'
 import Email from './Email'
 import Name from './Name'
 import Pronouns from './Pronouns'
+import SessionToRegister from './SessionToRegister'
 
-const SessionRegister = ({ setShowRegSuccessfulAlert, showSessionRegModal, setShowSessionRegModal }) => {
+const SessionRegister = ({ sessions, sessionToRegister, setShowRegSuccessfulAlert, showSessionRegModal, setShowSessionRegModal }) => {
   const history = useHistory()
+
   const [filterInput, setFilterInput] = useReducer(
     (name, value) => ({ ...name, ...value }),
     {
@@ -16,9 +18,12 @@ const SessionRegister = ({ setShowRegSuccessfulAlert, showSessionRegModal, setSh
       last_name: '',
       pronouns: '',
       email: '',
-      comment: ''
+      comment: '',
+      session: null
     }
   )
+
+  console.log('filterInput.registered_session', filterInput.registered_session)
 
   const handleSessionRegFilter = (name, value) => {
     setFilterInput({ [name]: value })
@@ -76,6 +81,9 @@ const SessionRegister = ({ setShowRegSuccessfulAlert, showSessionRegModal, setSh
                     <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
                       Session Registration
                     </h3>
+                  </div>
+                  <div>
+                    <SessionToRegister filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} sessions={sessions} sessionToRegister={sessionToRegister} />
                   </div>
                   <div>
                     <Name filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} />

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-const NavBtns = () => {
+const NavBtns = ({ isLoggedIn }) => {
   return (
     <div className='flex space-x-4'>
       {/* <!-- Current: "bg-indigo-700 text-white", Default: "text-white hover:bg-indigo-500 hover:bg-opacity-75" --> */}
@@ -20,6 +20,11 @@ const NavBtns = () => {
       <Link to='/book-study' className='text-white hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
         Book Study
       </Link>
+
+      {isLoggedIn &&
+        <Link to='/view-session-registrants' className='text-white hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
+          Session Registrants
+        </Link>}
     </div>
   )
 }
