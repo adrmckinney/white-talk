@@ -30,6 +30,7 @@ function reducer (state, action) {
 
 function App () {
   const [mode, setMode] = useState('show')
+  //   not sure how to incorporate the two lines of code and not exactly sure how they work
   const [state, dispatch] = useReducer(reducer, initialState)
   const update = (field, value) => dispatch({ type: `update-${field}`, value })
 

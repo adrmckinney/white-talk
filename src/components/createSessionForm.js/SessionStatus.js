@@ -7,7 +7,7 @@ const SessionStatus = ({ handleFilterSession, filterInput }) => {
           className={`${filterInput.session_status ? 'bg-none' : 'bg-red-300 rounded-lg'} px-3 py-2 ml-3`}
           id='session-status'
         >
-          <span className='text-sm font-medium text-gray-900'>Session Closed</span>
+          <span className={`${filterInput.session_status ? 'text-gray-900' : 'text-gray-700'} text-sm font-medium`}>Session Closed</span>
         </span>
         <button
           type='button'
@@ -29,7 +29,7 @@ const SessionStatus = ({ handleFilterSession, filterInput }) => {
           className={`${filterInput.session_status ? 'bg-green-300 rounded-lg' : 'bg-none'} px-3 py-2 ml-3`}
           id='session-status'
         >
-          <span className='text-sm font-medium text-gray-900'>Session Open</span>
+          <span className={`${filterInput.session_status ? 'text-gray-700' : 'text-gray-900'} text-sm font-medium`}>Session Open</span>
         </span>
       </div>
     </>

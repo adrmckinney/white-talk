@@ -4,7 +4,7 @@ import { Transition } from '@headlessui/react'
 import { login } from '../api'
 import Errors from './Errors'
 
-const LoginModal = ({ showLoginModal, setShowLoginModal, setAuth }) => {
+const LoginModal = ({ showModal, setShowModal, setAuth }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState('')
@@ -16,22 +16,23 @@ const LoginModal = ({ showLoginModal, setShowLoginModal, setAuth }) => {
       .then(data => {
         if (data && data.auth_token) {
           setAuth(username, data.auth_token)
-          setShowLoginModal(false)
+          setShowModal('')
           history.push('/')
         }
       })
       .catch(error => {
+        console.log('error.message', error.message)
         setErrors(error.message)
       })
   }
-
+  console.log('errors', errors)
   return (
     <div className='fixed z-0 inset-0 overflow-y-auto'>
       <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
 
         {/* Background overlay, show/hide based on modal state. */}
         <Transition
-          show={showLoginModal}
+          show={showModal === 'login-form'}
           enter='ease-out duration-300'
           enterFrom='opacity-0'
           enterTo='opacity-100'
@@ -48,7 +49,7 @@ const LoginModal = ({ showLoginModal, setShowLoginModal, setAuth }) => {
 
         {/* Modal panel, show/hide based on modal state. */}
         <Transition
-          show={showLoginModal}
+          show={showModal === 'login-form'}
           enter='ease-out duration-300'
           enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           enterTo='opacity-100 translate-y-0 sm:scale-100'
@@ -70,7 +71,7 @@ const LoginModal = ({ showLoginModal, setShowLoginModal, setAuth }) => {
 
                 {errors && (
                   <div>
-                    <Errors errors={errors} />
+                    <Errors errors={errors} setErrors={setErrors} />
                   </div>
                 )}
                 <input type='hidden' name='remember' value='true' />
@@ -113,7 +114,7 @@ const LoginModal = ({ showLoginModal, setShowLoginModal, setAuth }) => {
                   className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                   onClick={() => {
                     history.goBack()
-                    setShowLoginModal(false)
+                    setShowModal('')
                   }}
                 >
                   Cancel

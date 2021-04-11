@@ -4,15 +4,9 @@ import { Transition } from '@headlessui/react'
 import { register } from '../api'
 import Errors from './Errors'
 
-const Register = ({ token, isEditing, showRegistrationModal, setShowRegistrationModal }) => {
-  // const [loginProfile, setLoginProfile] = useState([])
+const Register = ({ token, isEditing, showModal, setShowModal }) => {
   const [errors, setErrors] = useState('')
   const history = useHistory()
-
-  // useEffect(() => {
-  //   getUser(token)
-  //     .then(data => setLoginProfile(data))
-  // }, [])
 
   const [filterAdminRegister, setFilterAdminRegister] = useReducer(
     (name, value) => ({ ...name, ...value }),
@@ -36,6 +30,7 @@ const Register = ({ token, isEditing, showRegistrationModal, setShowRegistration
       .then(data => {
         // setUsername(data.username)
         // setPassword(data.password)
+        setShowModal('')
         history.push('/')
       })
       .catch(error => {
@@ -49,7 +44,7 @@ const Register = ({ token, isEditing, showRegistrationModal, setShowRegistration
 
         {/* Background overlay, show/hide based on modal state. */}
         <Transition
-          show={showRegistrationModal}
+          show={showModal === 'admin-registration-form'}
           enter='ease-out duration-300'
           enterFrom='opacity-0'
           enterTo='opacity-100'
@@ -66,7 +61,7 @@ const Register = ({ token, isEditing, showRegistrationModal, setShowRegistration
 
         {/* Modal panel, show/hide based on modal state. */}
         <Transition
-          show={showRegistrationModal}
+          show={showModal === 'admin-registration-form'}
           enter='ease-out duration-300'
           enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           enterTo='opacity-100 translate-y-0 sm:scale-100'
@@ -88,7 +83,7 @@ const Register = ({ token, isEditing, showRegistrationModal, setShowRegistration
 
                 {errors && (
                   <div>
-                    <Errors errors={errors} />
+                    <Errors errors={errors} setErrors={setErrors} />
                   </div>
                 )}
                 <input type='hidden' name='remember' value='true' />
@@ -131,7 +126,7 @@ const Register = ({ token, isEditing, showRegistrationModal, setShowRegistration
                   className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                   onClick={() => {
                     history.goBack()
-                    setShowRegistrationModal(false)
+                    setShowModal('')
                   }}
                 >
                   Cancel

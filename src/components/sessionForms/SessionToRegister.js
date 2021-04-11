@@ -1,4 +1,5 @@
 import { Transition } from '@headlessui/react'
+import Moment from 'react-moment'
 import { useState, useEffect, useRef } from 'react'
 import { formatSelectedSession } from '../formatSelectionValues'
 
@@ -35,13 +36,13 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSes
     <>
       <label
         className='block text-sm sm:text-lg font-medium text-gray-700 text-left mt-4'
-        htmlFor='pronouns'
+        htmlFor='sessions'
       >
-        Pronouns
+        Sessions
       </label>
       <div className='mt-1 relative'>
         <button
-          type='button' aria-haspopup='listbox' aria-expanded='true' aria-labelledby='listbox-label' className='bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+          type='button' id='sessions' aria-haspopup='listbox' aria-expanded='true' aria-labelledby='listbox-label' className='bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
           onClick={() => setShowSessions(!showSessions)}
         >
           <span className='flex truncate justify-center text-sm sm:text-md'>
@@ -85,15 +86,14 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSes
                     setShowSessions(false)
                   }}
                 >
-                  {/* <!-- Selected: "font-semibold", Not Selected: "font-normal" --> */}
                   <span
                     className='font-normal space-x-2 truncate flex'
                   >
                     <p>{session.title}</p>
                     <span className='flex space-x-1'>
-                      <p>({session.start_date}</p>
+                      <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
                       <p>-</p>
-                      <p>{session.end_date})</p>
+                      <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
                     </span>
                   </span>
                 </li>

@@ -1,3 +1,5 @@
+import Moment from 'react-moment'
+
 export const formatSelectedSession = (session) => {
 //   console.log('session', session)
 //   if (!session) {
@@ -10,9 +12,9 @@ export const formatSelectedSession = (session) => {
     >
       <p>{session.title}</p>
       <span className='flex space-x-1'>
-        <p>({session.start_date}</p>
+        <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
         <p>-</p>
-        <p>{session.end_date})</p>
+        <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
       </span>
     </span>
   )

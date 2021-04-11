@@ -7,7 +7,7 @@ import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionStartDate from './createSessionForm.js/SessionStartDate'
 import SessionStatus from './createSessionForm.js/SessionStatus'
 
-const CreateSession = ({ token, showCreateSessionModal, setShowCreateSessionModal }) => {
+const CreateSession = ({ token, showModal, setShowModal }) => {
   const [time, setTime] = useState('')
   const history = useHistory()
   const [filterInput, setFilterInput] = useReducer(
@@ -32,7 +32,7 @@ const CreateSession = ({ token, showCreateSessionModal, setShowCreateSessionModa
     createSession(token, filterInput)
       .then(data => {
         console.log('data', data)
-        setShowCreateSessionModal(false)
+        setShowModal('')
         history.goBack()
       })
   }
@@ -44,7 +44,7 @@ const CreateSession = ({ token, showCreateSessionModal, setShowCreateSessionModa
 
           {/* Background overlay, show/hide based on modal state. */}
           <Transition
-            show={showCreateSessionModal}
+            show={showModal === 'create-session-form'}
             enter='ease-out duration-300'
             enterFrom='opacity-0'
             enterTo='opacity-100'
@@ -61,7 +61,7 @@ const CreateSession = ({ token, showCreateSessionModal, setShowCreateSessionModa
 
           {/* Modal panel, show/hide based on modal state. */}
           <Transition
-            show={showCreateSessionModal}
+            show={showModal === 'create-session-form'}
             enter='ease-out duration-300'
             enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             enterTo='opacity-100 translate-y-0 sm:scale-100'
@@ -101,7 +101,7 @@ const CreateSession = ({ token, showCreateSessionModal, setShowCreateSessionModa
                     type='button'
                     className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                     onClick={() => {
-                      setShowCreateSessionModal(false)
+                      setShowModal('')
                       history.goBack()
                     }}
                   >

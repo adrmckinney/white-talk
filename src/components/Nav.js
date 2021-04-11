@@ -7,7 +7,7 @@ import MobileNavMenu from './MobileNavMenu'
 
 // import Search from './Search'
 
-const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal }) => {
+const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal }) => {
   const [showMenu, setShowMenu] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
@@ -117,7 +117,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing,
                           role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            setShowCreateSessionModal(true)
+                            setShowModal('create-session-form')
                           }}
                         >
                           Create New Session
@@ -129,17 +129,20 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing,
                           role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            setShowRegistrationModal(true)
+                            setShowModal('admin-registration-form')
                           }}
                         >
                           Register New Admin
                         </Link>
 
                         <Link
-                          to='/registeradmin'
+                          to='/view-form'
                           className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
                           role='menuitem'
-                          onClick={() => setIsEditing(true)}
+                          onClick={() => {
+                            setShowMenu(false)
+                            setShowModal('view-form')
+                          }}
                         >
                           Update User Settings
                         </Link>
@@ -165,7 +168,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing,
                           className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            setShowLoginModal(true)
+                            setShowModal('login-form')
                           }}
                         >
                           Sign in
