@@ -1,15 +1,15 @@
 import axios from 'axios'
 
-// const deployedUrl = axios.create({
-//   baseURL: 'https://white-talk-api.herokuapp.com/'
-// })
-
-const localUrl = axios.create({
-  baseURL: 'http://127.0.0.1:8000/'
+const deployedUrl = axios.create({
+  baseURL: 'https://white-talk-api.herokuapp.com/'
 })
 
+// const localUrl = axios.create({
+//   baseURL: 'http://127.0.0.1:8000/'
+// })
+
 export const register = (username, password) => {
-  return localUrl
+  return deployedUrl
     .post('api/auth/users/', {
       username,
       password
@@ -38,7 +38,7 @@ export const register = (username, password) => {
 }
 
 export const login = (username, password) => {
-  return localUrl
+  return deployedUrl
     .post('api/auth/token/login/', {
       username,
       password
@@ -59,7 +59,7 @@ export const login = (username, password) => {
 // ***************************
 
 export const getUser = (token) => {
-  return localUrl
+  return deployedUrl
     .get('api/my-login/',
       {
         headers: {
@@ -70,20 +70,20 @@ export const getUser = (token) => {
 }
 
 export const sessionRegister = (regData) => {
-  return localUrl
+  return deployedUrl
     .post('api/session-register/', regData)
     .then(res => res.data)
 }
 
 export const listSessions = () => {
-  return localUrl
+  return deployedUrl
     .get('api/sessions/')
     .then(res => res.data)
 }
 
 export const createSession = (token, sessionData) => {
   console.log('token in api', token)
-  return localUrl
+  return deployedUrl
     .post('api/create-session/', sessionData,
       {
         headers: {
@@ -94,7 +94,7 @@ export const createSession = (token, sessionData) => {
 }
 
 export const deleteSession = (token, pk) => {
-  return localUrl
+  return deployedUrl
     .delete(`api/delete-session/${pk}`,
       {
         headers: {
@@ -105,7 +105,7 @@ export const deleteSession = (token, pk) => {
 }
 
 export const updateSession = (token, pk) => {
-  return localUrl
+  return deployedUrl
     .delete(`api/update-session/${pk}`,
       {
         headers: {
