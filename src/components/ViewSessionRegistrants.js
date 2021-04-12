@@ -17,7 +17,7 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
         setSessions(sessions)
         setDropdownSelectorMode('view-session-registrants')
       })
-  }, [])
+  }, [setDropdownSelectorMode])
 
   console.log('sessions', sessions)
   console.log('registrantsToRender', registrantsToRender)

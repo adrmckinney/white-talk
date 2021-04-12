@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const deployedUrl = axios.create({
-  baseURL: 'https://white-talk-api.herokuapp.com/'
-})
+// const deployedUrl = axios.create({
+//   baseURL: 'https://white-talk-api.herokuapp.com/'
+// })
 
 const localUrl = axios.create({
   baseURL: 'http://127.0.0.1:8000/'

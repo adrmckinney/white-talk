@@ -8,7 +8,7 @@ const RegSuccessfulAlert = ({ showRegSuccessfulAlert, setShowRegSuccessfulAlert 
   // It needs the useRef Variable, menu state variable, and the menu setState function.
   useEffect(() => {
     pageClickEvent(dropdownRef, showRegSuccessfulAlert, setShowRegSuccessfulAlert)
-  }, [showRegSuccessfulAlert])
+  }, [showRegSuccessfulAlert, setShowRegSuccessfulAlert])
 
   return (
     <>

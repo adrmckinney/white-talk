@@ -8,7 +8,7 @@ const Errors = ({ errors, setErrors }) => {
   // It needs the useRef Variable, menu state variable, and the menu setState function.
   useEffect(() => {
     pageClickEvent(errorRef, errors, setErrors)
-  }, [errors])
+  }, [errors, setErrors])
 
   return (
     <div ref={errorRef}>

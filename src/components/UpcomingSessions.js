@@ -9,7 +9,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
   useEffect(() => {
     listSessions()
       .then(data => setSessions(data))
-  }, [])
+  }, [setSessions])
 
   const handleDelete = (pk) => {
     deleteSession(token, pk)
