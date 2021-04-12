@@ -1,5 +1,6 @@
+import { handleFormFilter } from '../functions'
 
-const Name = ({ filterInput, handleSessionRegFilter }) => {
+const Name = ({ filterInput, setFilterInput }) => {
   return (
     <>
       <div className='flex space-x-4'>
@@ -16,7 +17,7 @@ const Name = ({ filterInput, handleSessionRegFilter }) => {
             name='first_name'
             id='name'
             value={filterInput.first_name}
-            onChange={e => handleSessionRegFilter('first_name', e.target.value)}
+            onChange={e => handleFormFilter('first_name', e.target.value, setFilterInput)}
           />
         </div>
         <div className='w-full'>
@@ -32,7 +33,7 @@ const Name = ({ filterInput, handleSessionRegFilter }) => {
             name='name'
             id='last_name'
             value={filterInput.last_name}
-            onChange={e => handleSessionRegFilter('last_name', e.target.value)}
+            onChange={e => handleFormFilter('last_name', e.target.value, setFilterInput)}
           />
         </div>
       </div>

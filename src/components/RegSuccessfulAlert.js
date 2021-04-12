@@ -1,8 +1,18 @@
+import { useRef, useEffect } from 'react'
+import { pageClickEvent } from './functions'
 
-const RegSuccessfulAlert = ({ setShowRegSuccessfulAlert }) => {
+const RegSuccessfulAlert = ({ showRegSuccessfulAlert, setShowRegSuccessfulAlert }) => {
+  const dropdownRef = useRef(null)
+
+  // This useEffect calls the function (inside functions.js) that hides menues on window click.
+  // It needs the useRef Variable, menu state variable, and the menu setState function.
+  useEffect(() => {
+    pageClickEvent(dropdownRef, showRegSuccessfulAlert, setShowRegSuccessfulAlert)
+  }, [showRegSuccessfulAlert])
+
   return (
     <>
-      <div className='rounded-md bg-green-50 p-4'>
+      <div ref={dropdownRef} className='rounded-md bg-green-50 p-4'>
         <div className='flex'>
           <div className='flex-shrink-0'>
             {/* <!-- Heroicon name: solid/check-circle --> */}

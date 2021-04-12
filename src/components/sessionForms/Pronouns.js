@@ -1,22 +1,15 @@
 import { Transition } from '@headlessui/react'
 import { useState, useEffect, useRef } from 'react'
+import { handleFormFilter, pageClickEvent } from '../functions'
 
-const Pronouns = ({ filterInput, handleSessionRegFilter }) => {
+const Pronouns = ({ filterInput, setFilterInput }) => {
   const [showPronouns, setShowPronouns] = useState(false)
   const dropdownRef = useRef(null)
 
+  // This useEffect calls the function (inside functions.js) that hides menues on window click.
+  // It needs the useRef Variable, menu state variable, and the menu setState function.
   useEffect(() => {
-    const pageClickEvent = (e) => {
-      if (dropdownRef.current !== null && !dropdownRef.current.contains(e.target)) {
-        setShowPronouns(!showPronouns)
-      }
-    }
-    if (showPronouns) {
-      window.addEventListener('click', pageClickEvent)
-    }
-    return () => {
-      window.removeEventListener('click', pageClickEvent)
-    }
+    pageClickEvent(dropdownRef, showPronouns, setShowPronouns)
   }, [showPronouns])
 
   const PRONOUNS = [
@@ -70,7 +63,7 @@ const Pronouns = ({ filterInput, handleSessionRegFilter }) => {
                   value={PRONOUNS}
                   className='hover:text-white hover:bg-indigo-600 text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9'
                   onClick={() => {
-                    handleSessionRegFilter('pronouns', pronoun)
+                    handleFormFilter('pronouns', pronoun, setFilterInput)
                     setShowPronouns(false)
                   }}
                 >

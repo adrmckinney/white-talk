@@ -2,6 +2,7 @@ import { useReducer, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { register } from '../api'
+import { handleFormFilter } from './functions'
 import Errors from './Errors'
 
 const Register = ({ token, isEditing, showModal, setShowModal }) => {
@@ -15,15 +16,7 @@ const Register = ({ token, isEditing, showModal, setShowModal }) => {
       password: ''
     }
   )
-
-  const handleAdminRegFilter = (name, value) => {
-    setFilterAdminRegister({ [name]: value })
-  }
-
-  // if (isEditing) {
-  //   setFilterAdminRegister('username', loginProfile.username)
-  // }
-
+  console.log('filterAdminRegister', filterAdminRegister)
   const handleRegister = (e) => {
     e.preventDefault()
     register(filterAdminRegister.username, filterAdminRegister.password)
@@ -99,7 +92,7 @@ const Register = ({ token, isEditing, showModal, setShowModal }) => {
                       className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                       placeholder='Username'
                       value={filterAdminRegister.username}
-                      onChange={(e) => handleAdminRegFilter('username', e.target.value)}
+                      onChange={(e) => handleFormFilter('username', e.target.value, setFilterAdminRegister)}
                     />
                   </div>
                   <div>
@@ -112,7 +105,7 @@ const Register = ({ token, isEditing, showModal, setShowModal }) => {
                       required className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                       placeholder='Password'
                       value={filterAdminRegister.password}
-                      onChange={(e) => handleAdminRegFilter('password', e.target.value)}
+                      onChange={(e) => handleFormFilter('password', e.target.value, setFilterAdminRegister)}
                     />
                   </div>
                 </div>

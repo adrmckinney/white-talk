@@ -1,6 +1,7 @@
 import { Transition } from '@headlessui/react'
 import { useState, useEffect, useRef } from 'react'
-import { formatSelectedSession } from './formatSelectionValues'
+import Moment from 'react-moment'
+import { formatSelectedSession, pageClickEvent } from './functions'
 
 const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRender }) => {
   const [showSessions, setShowSessions] = useState(false)
@@ -8,18 +9,10 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
   const [selectedValue, setSelectedValue] = useState([])
   const dropdownRef = useRef(null)
 
+  // This useEffect calls the function (inside functions.js) that hides menues on window click.
+  // It needs the useRef Variable, menu state variable, and the menu setState function.
   useEffect(() => {
-    const pageClickEvent = (e) => {
-      if (dropdownRef.current !== null && !dropdownRef.current.contains(e.target)) {
-        setShowSessions(!showSessions)
-      }
-    }
-    if (showSessions) {
-      window.addEventListener('click', pageClickEvent)
-    }
-    return () => {
-      window.removeEventListener('click', pageClickEvent)
-    }
+    pageClickEvent(dropdownRef, showSessions, setShowSessions)
   }, [showSessions])
 
   const setLabel = () => {
@@ -100,9 +93,9 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
                   >
                     <p>{session.title}</p>
                     <span className='flex space-x-1'>
-                      <p>({session.start_date}</p>
+                      <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
                       <p>-</p>
-                      <p>{session.end_date})</p>
+                      <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
                     </span>
                   </span>
                 </li>

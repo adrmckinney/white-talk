@@ -1,20 +1,13 @@
 import { useRef, useEffect } from 'react'
+import { pageClickEvent } from './functions'
 
 const Errors = ({ errors, setErrors }) => {
   const errorRef = useRef(null)
 
+  // This useEffect calls the function (inside functions.js) that hides menues on window click.
+  // It needs the useRef Variable, menu state variable, and the menu setState function.
   useEffect(() => {
-    const pageClickEvent = (e) => {
-      if (errorRef.current !== null && !errorRef.current.contains(e.target)) {
-        setErrors('')
-      }
-    }
-    if (errors) {
-      window.addEventListener('click', pageClickEvent)
-    }
-    return () => {
-      window.removeEventListener('click', pageClickEvent)
-    }
+    pageClickEvent(errorRef, errors, setErrors)
   }, [errors])
 
   return (

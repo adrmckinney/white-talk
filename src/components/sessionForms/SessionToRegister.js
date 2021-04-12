@@ -1,36 +1,30 @@
 import { Transition } from '@headlessui/react'
 import Moment from 'react-moment'
 import { useState, useEffect, useRef } from 'react'
-import { formatSelectedSession } from '../formatSelectionValues'
+import { formatSelectedSession, handleFormFilter, pageClickEvent } from '../functions'
 
-const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSessionRegFilter }) => {
+const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilterInput }) => {
   const [showSessions, setShowSessions] = useState(false)
-  //   const [sessionOptions, setSessionOptions] = useState([])
   const [selectedValue, setSelectedValue] = useState([])
   const dropdownRef = useRef(null)
 
+  // This useEffect calls the function (inside functions.js) that hides menues on window click.
+  // It needs the useRef Variable, menu state variable, and the menu setState function.
   useEffect(() => {
-    const pageClickEvent = (e) => {
-      if (dropdownRef.current !== null && !dropdownRef.current.contains(e.target)) {
-        setShowSessions(!showSessions)
-      }
-    }
-    if (showSessions) {
-      window.addEventListener('click', pageClickEvent)
-    }
-    return () => {
-      window.removeEventListener('click', pageClickEvent)
-    }
+    pageClickEvent(dropdownRef, showSessions, setShowSessions)
   }, [showSessions])
 
-  useEffect(() => {
-    handleSessionRegFilter('session', sessionToRegister.pk)
-  }, [sessionToRegister, handleSessionRegFilter])
-
-  //   useEffect(() => {
-  //     const options = sessions.filter(session => session.pk !== sessionToRegister.pk)
-  //     setSessionOptions(options)
-  //   }, [])
+  // This function filters out the session that has been selected so that duplicates don't render on
+  // the options. It also filters out any session that is closed (that is, set to session_status: false).
+  const filterSessions = (sessions) => {
+    if (!selectedValue.pk) {
+      setSelectedValue(sessionToRegister)
+      handleFormFilter('session', sessionToRegister.pk, setFilterInput)
+    }
+    let options = []
+    options = sessions.filter(session => session.pk !== selectedValue.pk && session.session_status === true)
+    return options
+  }
 
   return (
     <>
@@ -73,7 +67,7 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSes
             ref={dropdownRef}
           >
             <ul tabIndex='-1' role='listbox' aria-labelledby='listbox-label' aria-activedescendant='listbox-item-3' className='max-h-40 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
-              {sessions.map((session, idx) => (
+              {filterSessions(sessions).map((session, idx) => (
                 <li
                   key={`session-${idx}`}
                   id={`session-${session}`}
@@ -82,7 +76,7 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, handleSes
                   className='hover:text-white hover:bg-indigo-600 text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9'
                   onClick={() => {
                     setSelectedValue(session)
-                    handleSessionRegFilter('session', session.pk)
+                    handleFormFilter('session', session.pk, setFilterInput)
                     setShowSessions(false)
                   }}
                 >

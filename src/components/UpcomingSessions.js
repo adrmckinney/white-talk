@@ -1,8 +1,44 @@
 import { useHistory } from 'react-router-dom'
 import Moment from 'react-moment'
+import { useEffect } from 'react'
+import { listSessions, deleteSession } from '../api'
 
-const UpcomingSessions = ({ sessions, isLoggedIn, setShowModal, setSessionToRegister, handleDelete }) => {
+const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowModal, setSessionToRegister }) => {
   const history = useHistory()
+
+  useEffect(() => {
+    listSessions()
+      .then(data => setSessions(data))
+  }, [])
+
+  const handleDelete = (pk) => {
+    deleteSession(token, pk)
+      .then(data => {
+        listSessions()
+          .then(data => setSessions(data))
+      })
+  }
+
+  const renderSessionStatus = (session) => {
+    if (session.session_status) {
+      return (
+        <button
+          className='w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lilac text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+          onClick={() => {
+            history.push('/session-register')
+            setSessionToRegister(session)
+            setShowModal('session-registration-form')
+          }}
+        >Sign up
+        </button>
+      )
+    } else {
+      return (
+        <div className='divx-6 py-4 whitespace-nowrap text-md text-gray-500'>Closed</div>
+      )
+    }
+  }
+
   return (
     <>
       <div className='flex flex-col pt-10 bg-gray-400 w-full h-screen mt-6'>
@@ -54,17 +90,7 @@ const UpcomingSessions = ({ sessions, isLoggedIn, setShowModal, setSessionToRegi
                           <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500'>
-                          {session.session_status
-                            ? <button
-                                className='w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lilac text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                                onClick={() => {
-                                  history.push('/session-register')
-                                  setSessionToRegister(session)
-                                  setShowModal('session-registration-form')
-                                }}
-                              >Sign up
-                              </button>
-                            : <div className='divx-6 py-4 whitespace-nowrap text-md text-gray-500'>Closed</div>}
+                          {renderSessionStatus(session)}
                         </td>
                         {isLoggedIn &&
                           <>

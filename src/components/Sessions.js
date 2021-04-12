@@ -1,22 +1,7 @@
-import { useEffect } from 'react'
-import { listSessions, deleteSession } from '../api'
 import RegSuccessfulAlert from './RegSuccessfulAlert'
 import UpcomingSessions from './UpcomingSessions'
 
 const Sessions = ({ token, isLoggedIn, setShowModal, showRegSuccessfulAlert, setShowRegSuccessfulAlert, sessions, setSessions, setSessionToRegister }) => {
-  useEffect(() => {
-    listSessions()
-      .then(data => setSessions(data))
-  }, [])
-
-  const handleDelete = (pk) => {
-    deleteSession(token, pk)
-      .then(data => {
-        listSessions()
-          .then(data => setSessions(data))
-      })
-  }
-
   console.log('sessions', sessions)
 
   return (
@@ -25,7 +10,7 @@ const Sessions = ({ token, isLoggedIn, setShowModal, showRegSuccessfulAlert, set
         <div className='bg-mellowApricot rounded-lg shadow px-5 py-6 sm:px-6'>
           <div className='h-96 border-4 border-gray-400 rounded-lg flex flex-col justify-center overflow-auto pl-4'>
             {showRegSuccessfulAlert &&
-              <RegSuccessfulAlert setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />}
+              <RegSuccessfulAlert showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />}
             <h3 className='text-xl font-bold text-center'>
               What are white Talk Sessions?
             </h3>
@@ -42,7 +27,7 @@ const Sessions = ({ token, isLoggedIn, setShowModal, showRegSuccessfulAlert, set
           </div>
         </div>
       </div>
-      <UpcomingSessions sessions={sessions} isLoggedIn={isLoggedIn} setShowModal={setShowModal} setSessionToRegister={setSessionToRegister} handleDelete={handleDelete} />
+      <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} setShowModal={setShowModal} setSessionToRegister={setSessionToRegister} />
     </>
   )
 }

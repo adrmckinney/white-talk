@@ -1,5 +1,6 @@
+import { handleFormFilter } from '../functions'
 
-const Comments = ({ filterInput, handleSessionRegFilter }) => {
+const Comments = ({ filterInput, setFilterInput }) => {
   return (
     <>
       <label
@@ -15,7 +16,7 @@ const Comments = ({ filterInput, handleSessionRegFilter }) => {
           id='comment'
           rows='3'
           value={filterInput.comment}
-          onChange={e => handleSessionRegFilter('comment', e.target.value)}
+          onChange={e => handleFormFilter('comment', e.target.value, setFilterInput)}
         />
       </div>
     </>

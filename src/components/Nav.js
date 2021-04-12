@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
+import { pageClickEvent } from './functions'
 import NavBtns from './NavBtns'
 import MobileNavBtns from './MobileNavBtns'
 import MobileNavMenu from './MobileNavMenu'
@@ -12,18 +13,10 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing,
   const dropdownRef = useRef(null)
   const history = useHistory('')
 
+  // This useEffect calls the function (inside functions.js) that hides menues on window click.
+  // It needs the useRef Variable, menu state variable, and the menu setState function.
   useEffect(() => {
-    const pageClickEvent = (e) => {
-      if (dropdownRef.current !== null && !dropdownRef.current.contains(e.target)) {
-        setShowMenu(!showMenu)
-      }
-    }
-    if (showMenu) {
-      window.addEventListener('click', pageClickEvent)
-    }
-    return () => {
-      window.removeEventListener('click', pageClickEvent)
-    }
+    pageClickEvent(dropdownRef, showMenu, setShowMenu)
   }, [showMenu])
 
   const renderName = () => {

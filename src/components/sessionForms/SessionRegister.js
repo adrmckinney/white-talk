@@ -23,11 +23,9 @@ const SessionRegister = ({ sessions, sessionToRegister, setShowRegSuccessfulAler
     }
   )
 
-  console.log('filterInput.first_name', filterInput.first_name)
-
-  const handleSessionRegFilter = (name, value) => {
-    setFilterInput({ [name]: value })
-  }
+  // const handleSessionRegFilter = (name, value) => {
+  //   setFilterInput({ [name]: value })
+  // }
 
   console.log('filterInput', filterInput)
 
@@ -35,7 +33,6 @@ const SessionRegister = ({ sessions, sessionToRegister, setShowRegSuccessfulAler
     e.preventDefault()
     sessionRegister(filterInput)
       .then(data => {
-        console.log('data', data)
         setShowModal('')
         setShowRegSuccessfulAlert(true)
         history.goBack()
@@ -60,8 +57,6 @@ const SessionRegister = ({ sessions, sessionToRegister, setShowRegSuccessfulAler
               <div className='absolute inset-0 bg-gray-500 opacity-75' />
             </div>
           </Transition>
-          {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-          {/* <span className='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden='true'>&#8203;</span> */}
 
           <Transition
             show={showModal === 'session-registration-form'}
@@ -81,19 +76,19 @@ const SessionRegister = ({ sessions, sessionToRegister, setShowRegSuccessfulAler
                     </h3>
                   </div>
                   <div>
-                    <SessionToRegister filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} sessions={sessions} sessionToRegister={sessionToRegister} />
+                    <SessionToRegister filterInput={filterInput} setFilterInput={setFilterInput} sessions={sessions} sessionToRegister={sessionToRegister} />
                   </div>
                   <div>
-                    <Name filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} />
+                    <Name filterInput={filterInput} setFilterInput={setFilterInput} />
                   </div>
                   <div>
-                    <Pronouns filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} />
+                    <Pronouns filterInput={filterInput} setFilterInput={setFilterInput} />
                   </div>
                   <div>
-                    <Email filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} />
+                    <Email filterInput={filterInput} setFilterInput={setFilterInput} />
                   </div>
                   <div>
-                    <Comments filterInput={filterInput} handleSessionRegFilter={handleSessionRegFilter} />
+                    <Comments filterInput={filterInput} setFilterInput={setFilterInput} />
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
