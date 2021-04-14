@@ -1,22 +1,45 @@
-import { useReducer, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { register } from '../api'
 import { handleFormFilter } from './functions'
 import Errors from './Errors'
+import AdminName from './registerAdminForm.js/AdminName'
+import AdminEmail from './registerAdminForm.js/AdminEmail'
+import AdminUsername from './registerAdminForm.js/AdminUsername'
+import AdminPassword from './registerAdminForm.js/AdminPassword'
 
-const Register = ({ token, isEditing, showModal, setShowModal }) => {
+const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) => {
   const [errors, setErrors] = useState('')
   const history = useHistory()
 
   const [filterAdminRegister, setFilterAdminRegister] = useReducer(
     (name, value) => ({ ...name, ...value }),
     {
+      first_name: '',
+      last_name: '',
       username: '',
+      email: '',
       password: ''
     }
   )
+
+  useEffect(() => {
+    if (isEditing === 'register' && loginProfile) {
+      handleFormFilter('username', loginProfile.username, setFilterAdminRegister)
+      // setFilterAdminRegister({ username: loginProfile.username })
+    }
+  }, [isEditing, loginProfile])
+
+  // if (isEditing === 'register' && loginProfile) {
+  //   setFilterAdminRegister({ username: loginProfile.username })
+  // }
+
+  console.log('isEditing REGISTER', isEditing)
+  console.log('showModal REGISTER', showModal)
+  console.log('loginProfile', loginProfile)
   console.log('filterAdminRegister', filterAdminRegister)
+
   const handleRegister = (e) => {
     e.preventDefault()
     register(filterAdminRegister.username, filterAdminRegister.password)
@@ -32,7 +55,7 @@ const Register = ({ token, isEditing, showModal, setShowModal }) => {
   }
 
   return (
-    <div className='fixed z-0 inset-0 overflow-y-auto'>
+    <div className='fixed z-20 inset-0 overflow-y-auto'>
       <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
 
         {/* Background overlay, show/hide based on modal state. */}
@@ -80,46 +103,35 @@ const Register = ({ token, isEditing, showModal, setShowModal }) => {
                   </div>
                 )}
                 <input type='hidden' name='remember' value='true' />
-                <div className='rounded-md shadow-sm -space-y-px'>
+                <div className='rounded-md shadow-sm space-y-4'>
                   <div>
-                    <label htmlFor='username' className='sr-only'>Username</label>
-                    <input
-                      id='username'
-                      name='username'
-                      type='text'
-                      autoComplete='username'
-                      required
-                      className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
-                      placeholder='Username'
-                      value={filterAdminRegister.username}
-                      onChange={(e) => handleFormFilter('username', e.target.value, setFilterAdminRegister)}
-                    />
+                    <AdminName filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
                   </div>
                   <div>
-                    <label htmlFor='password' className='sr-only'>Password</label>
-                    <input
-                      id='password'
-                      name='password'
-                      type='password'
-                      autoComplete='current-password'
-                      required className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
-                      placeholder='Password'
-                      value={filterAdminRegister.password}
-                      onChange={(e) => handleFormFilter('password', e.target.value, setFilterAdminRegister)}
-                    />
+                    <AdminUsername filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
+                  </div>
+                  <div>
+                    <AdminPassword filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
+                  </div>
+                  <div>
+                    <AdminEmail filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
                   </div>
                 </div>
               </div>
               <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
+                <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-darkerPurple text-base font-medium text-white hover:bg-mediumPurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
                   Register
                 </button>
                 <button
                   type='button'
-                  className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
+                  className='modal-submit-btn'
                   onClick={() => {
-                    history.goBack()
-                    setShowModal('')
+                    if (isEditing) {
+                      history.push('/')
+                    } else {
+                      history.goBack()
+                      setShowModal('')
+                    }
                   }}
                 >
                   Cancel

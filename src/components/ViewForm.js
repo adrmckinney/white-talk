@@ -1,15 +1,29 @@
 import { useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { useHistory } from 'react-router-dom'
-import { getUser } from '../api'
+import { getUser, login } from '../api'
+import Register from './Register'
 
-const ViewForm = ({ token, showModal, setShowModal }) => {
+const ViewForm = ({ token, showModal, setShowModal, isEditing, setIsEditing }) => {
   const [loginProfile, setLoginProfile] = useState([])
   const history = useHistory()
+
   useEffect(() => {
     getUser(token)
       .then(data => setLoginProfile(data))
   }, [token])
+
+  if (loginProfile && isEditing === 'register') {
+    history.push('/registeradmin')
+    setShowModal('admin-registration-form')
+    return (
+      <Register
+        loginProfile={loginProfile}
+        isEditing={isEditing}
+        token={token}
+      />
+    )
+  }
 
   return (
     <>
@@ -50,7 +64,7 @@ const ViewForm = ({ token, showModal, setShowModal }) => {
                 <div>
                   <div className='mt-2 mb-5 text-center'>
                     <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
-                      Register New Admin
+                      View Admin Registration Profile
                     </h3>
                   </div>
                   <div className='rounded-md shadow-sm -space-y-px'>
@@ -71,7 +85,16 @@ const ViewForm = ({ token, showModal, setShowModal }) => {
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                  <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
+                  <button
+                    type='submit'
+                    className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2
+                    sm:text-sm'
+                    onClick={() => {
+                      // history.push('/registeradmin')
+                      // setShowModal('admin-registration-form')
+                      setIsEditing('register')
+                    }}
+                  >
                     Edit
                   </button>
                   <button
@@ -80,6 +103,7 @@ const ViewForm = ({ token, showModal, setShowModal }) => {
                     onClick={() => {
                       history.goBack()
                       setShowModal('')
+                      setIsEditing('')
                     }}
                   >
                     Cancel

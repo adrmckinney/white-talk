@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import createPersistedState from 'use-persisted-state'
 import './App.css'
-// import Login from './components/Login'
+import { getUser } from './api'
 import Register from './components/Register'
 import Home from './Home'
 import Header from './components/Header'
@@ -21,9 +21,10 @@ const useToken = createPersistedState('token')
 
 function App () {
   const [username, setUsername] = useUsername(null)
+  const [loggedInName, setLoggedInName] = useState('')
   const [token, setToken] = useToken(null)
   const isLoggedIn = (username && token)
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState('')
   const [showRegSuccessfulAlert, setShowRegSuccessfulAlert] = useState(false)
   const [sessions, setSessions] = useState([])
   const [sessionToRegister, setSessionToRegister] = useState(null)
@@ -35,17 +36,22 @@ function App () {
     setToken(token)
   }
 
+  useEffect(() => {
+    getUser(token)
+      .then(data => setLoggedInName(data.first_name))
+  }, [token])
+
   return (
     <Router>
-      <div className='min-h-screen bg-blueGray-50'>
+      <div className='min-h-screen bg-ghostWhite'>
 
-        <div className='bg-lilac pb-32'>
-          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setIsEditing={setIsEditing} setShowModal={setShowModal} />
+        <div className='bg-mediumPurple pb-32'>
+          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setIsEditing={setIsEditing} setShowModal={setShowModal} loggedInName={loggedInName} />
           <Header />
         </div>
         <Switch>
           <Route path='/registeradmin'>
-            <Register token={token} isEditing={isEditing} showModal={showModal} setShowModal={setShowModal} />
+            <Register token={token} showModal={showModal} setShowModal={setShowModal} />
           </Route>
           <Route path='/login'>
             <LoginModal setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} />
@@ -72,7 +78,7 @@ function App () {
               <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} />
             </Route>
             <Route path='/view-form'>
-              <ViewForm token={token} isLoggedIn={isLoggedIn} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} />
+              <ViewForm token={token} isLoggedIn={isLoggedIn} isEditing={isEditing} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} />
             </Route>
             <Route path='/'>
               <Home />

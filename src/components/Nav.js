@@ -8,7 +8,7 @@ import MobileNavMenu from './MobileNavMenu'
 
 // import Search from './Search'
 
-const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal }) => {
+const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName }) => {
   const [showMenu, setShowMenu] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
@@ -19,18 +19,18 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing,
     pageClickEvent(dropdownRef, showMenu, setShowMenu)
   }, [showMenu])
 
-  const renderName = () => {
-    if (username === 'adrmckinney') {
-      return 'Dan'
-    } else if (username === 'admin') {
-      return 'Rachael'
-    } else {
-      return username
-    }
-  }
+  // const renderName = () => {
+  //   if (username === 'adrmckinney') {
+  //     return 'Dan'
+  //   } else if (username === 'admin') {
+  //     return 'Rachael'
+  //   } else {
+  //     return username
+  //   }
+  // }
 
   return (
-    <nav className='bg-lilac border-b border-indigo-300 border-opacity-25 lg:border-none'>
+    <nav className='bg-mediumPurple border-b border-indigo-300 border-opacity-25 lg:border-none fixed top-0 z-10 w-full'>
       <div className='max-w-7xl mx-auto px-2 sm:px-4 lg:px-8'>
         <div className='relative h-16 flex items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25'>
           <div className='px-2 flex items-center lg:px-0'>
@@ -72,14 +72,14 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing,
                 <div>
                   <button
                     type='button'
-                    className='bg-lilac rounded-full flex text-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white'
+                    className='bg-none rounded-full flex text-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white'
                     id='user-menu'
                     aria-expanded='false'
                     aria-haspopup='true'
                     onClick={() => setShowMenu(showMenu => !showMenu)}
                   >
                     {isLoggedIn
-                      ? `Hello ${renderName()}`
+                      ? `Hello ${loggedInName}`
                       : 'admin login'}
 
                   </button>

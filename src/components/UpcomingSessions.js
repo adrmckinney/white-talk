@@ -23,7 +23,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
     if (session.session_status) {
       return (
         <button
-          className='w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lilac text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+          className='w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
           onClick={() => {
             history.push('/session-register')
             setSessionToRegister(session)
@@ -34,22 +34,22 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
       )
     } else {
       return (
-        <div className='divx-6 py-4 whitespace-nowrap text-md text-gray-500'>Closed</div>
+        <div className='divx-6 py-4 whitespace-nowrap text-md text-red-300 font-bold'>Closed</div>
       )
     }
   }
 
   return (
     <>
-      <div className='flex flex-col pt-10 bg-gray-400 w-full h-screen mt-6'>
+      <div className='flex flex-col pt-10 bg-green-200 w-full h-screen mt-6 relative -top-16 border-b-4 border-coolGray-500'>
         <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='py-1 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
             {/* {sessions.map(session => ( */}
             <span>
-              <h1 className='text-4xl text-center text-white mb-10 shadow-sm rounded-lg'>Upcoming Sessions</h1>
+              <h1 className='text-6xl text-center text-coolGray-500 mb-10 shadow-sm rounded-lg'>Upcoming Sessions</h1>
               <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mx-8'>
                 <table className='min-w-full divide-y divide-gray-200'>
-                  <thead className='bg-gray-50'>
+                  <thead className='bg-magnolia'>
                     <tr>
                       <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                         Title
@@ -77,32 +77,32 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                     </tr>
                   </thead>
 
-                  <tbody className='bg-white divide-y divide-gray-200'>
+                  <tbody className='bg-ghostWhite divide-y divide-gray-200'>
                     {sessions.map(session => (
                       <tr key={`session-${session.pk}`}>
-                        <td className=' px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 space-x-1 flex'>
+                        <td className=' px-6 py-4 whitespace-nowrap text-sm font-medium text-coolGray-900 space-x-1 flex'>
                           <p>{session.title}</p>
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                        <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500'>
                           <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                        <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500'>
                           <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500'>
+                        <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                           {renderSessionStatus(session)}
                         </td>
                         {isLoggedIn &&
                           <>
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                               <button
-                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lilac text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                               >Edit
                               </button>
                             </td>
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                               <button
-                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lilac text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                                 onClick={() => handleDelete(session.pk)}
                               >Delete
                               </button>
