@@ -4,7 +4,7 @@ import { Transition } from '@headlessui/react'
 import { createSession } from '../api'
 import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
-import SessionStartDate from './createSessionForm.js/SessionStartDate'
+import SessionDates from './createSessionForm.js/SessionDates'
 import SessionStatus from './createSessionForm.js/SessionStatus'
 
 const CreateSession = ({ token, showModal, setShowModal }) => {
@@ -81,11 +81,8 @@ const CreateSession = ({ token, showModal, setShowModal }) => {
                     <SessionTitle handleFilterSession={handleFilterSession} filterInput={filterInput} />
                   </div>
                   <div>
-                    <SessionStartDate time={time} setTime={setTime} handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                    <SessionDates time={time} setTime={setTime} handleFilterSession={handleFilterSession} filterInput={filterInput} />
                   </div>
-                  {/* <div>
-                    <Email email={email} setEmail={setEmail} />
-                  </div> */}
                   <div>
                     <SessionDescription handleFilterSession={handleFilterSession} filterInput={filterInput} />
                   </div>

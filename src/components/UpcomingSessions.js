@@ -34,7 +34,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
       )
     } else {
       return (
-        <div className='divx-6 py-4 whitespace-nowrap text-md text-red-300 font-bold'>Closed</div>
+        <span className='whitespace-nowrap text-md text-center text-red-300 font-bold'>Closed</span>
       )
     }
   }
@@ -71,9 +71,6 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                         <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
                           Delete
                         </th>}
-                      {/* <th scope='col' className='relative px-6 py-3'>
-                        <span className='sr-only'>Edit</span>
-                      </th> */}
                     </tr>
                   </thead>
 
@@ -81,7 +78,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                     {sessions.map(session => (
                       <tr key={`session-${session.pk}`}>
                         <td className=' px-6 py-4 whitespace-nowrap text-sm font-medium text-coolGray-900 space-x-1 flex'>
-                          <p>{session.title}</p>
+                          {session.title}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500'>
                           <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>

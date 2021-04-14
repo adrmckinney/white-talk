@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { useHistory } from 'react-router-dom'
-import { getUser, login } from '../api'
+import { getUser } from '../api'
 import Register from './Register'
 
 const ViewForm = ({ token, showModal, setShowModal, isEditing, setIsEditing }) => {

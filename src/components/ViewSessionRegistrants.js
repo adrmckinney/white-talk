@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import Moment from 'react-moment'
 import { listSessions } from '../api'
 import SelectionElement from './SelectionElement'
 
@@ -19,8 +20,20 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
       })
   }, [setDropdownSelectorMode])
 
-  console.log('sessions', sessions)
-  console.log('registrantsToRender', registrantsToRender)
+  const setSessionTableTitle = () => {
+    return (
+      <span
+        className='font-normal space-x-2 truncate flex'
+      >
+        <p>{registrantsToRender.title}</p>
+        <span className='flex space-x-1'>
+          <Moment format='MM/DD/YYYY'>{registrantsToRender.start_date}</Moment>
+          <p>-</p>
+          <Moment format='MM/DD/YYYY'>{registrantsToRender.end_date}</Moment>
+        </span>
+      </span>
+    )
+  }
 
   return (
     <>
@@ -32,7 +45,7 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
             <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
               {/* {sessions.map(session => ( */}
               <span>
-                <h1 className='text-2xl text-center mb-10 shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : registrantsToRender.title}</h1>
+                <h1 className='text-2xl flex justify-center mb-10 shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1>
                 <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
                   <table className='min-w-full divide-y divide-gray-200'>
                     <thead className='bg-gray-50'>
