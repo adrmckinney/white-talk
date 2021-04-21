@@ -13,13 +13,13 @@ const NavBtns = ({ isLoggedIn }) => {
         Sessions
       </Link>
 
-      <Link to='/connect' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
+      {/* <Link to='/connect' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
         Connect
       </Link>
 
       <Link to='/book-study' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
         Book Study
-      </Link>
+      </Link> */}
 
       {isLoggedIn &&
         <Link to='/view-session-registrants' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>

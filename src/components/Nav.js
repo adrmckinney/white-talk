@@ -3,12 +3,13 @@ import { Link, useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { pageClickEvent } from './functions'
 import NavBtns from './NavBtns'
+import RegSuccessfulAlert from './RegSuccessfulAlert'
 import MobileNavBtns from './MobileNavBtns'
 import MobileNavMenu from './MobileNavMenu'
 
 // import Search from './Search'
 
-const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName }) => {
+const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert }) => {
   const [showMenu, setShowMenu] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
@@ -96,7 +97,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing,
                   leaveTo='transform opacity-0 scale-95'
                 >
                   <div
-                    className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10'
+                    className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 flex flex-col'
                     role='menu'
                     aria-orientation='vertical'
                     aria-labelledby='user-menu'
@@ -173,6 +174,8 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setIsEditing,
           </div>
         </div>
       </div>
+      {showRegSuccessfulAlert &&
+        <RegSuccessfulAlert showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />}
 
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
       <div className='lg:hidden' id='mobile-menu'>

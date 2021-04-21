@@ -1,8 +1,7 @@
 import Divider from './Divider'
-import RegSuccessfulAlert from './RegSuccessfulAlert'
 import UpcomingSessions from './UpcomingSessions'
 
-const Sessions = ({ token, isLoggedIn, setShowModal, showRegSuccessfulAlert, setShowRegSuccessfulAlert, sessions, setSessions, setSessionToRegister }) => {
+const Sessions = ({ token, isLoggedIn, setShowModal, sessions, setSessions, setSessionToRegister }) => {
   console.log('sessions', sessions)
 
   return (
@@ -10,8 +9,6 @@ const Sessions = ({ token, isLoggedIn, setShowModal, showRegSuccessfulAlert, set
       <div className='max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 relative'>
         <div className='bg-lavenderBlue rounded-lg shadow px-5 py-6 sm:px-6'>
           <div className='h-96 border-4 border-bluePurple rounded-lg flex flex-col justify-center overflow-auto pl-4'>
-            {showRegSuccessfulAlert &&
-              <RegSuccessfulAlert showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />}
             <h3 className='text-xl font-bold text-center text-coolGray-700'>
               What are white Talk Sessions?
             </h3>

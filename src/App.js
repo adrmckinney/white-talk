@@ -24,7 +24,7 @@ function App () {
   const [loggedInName, setLoggedInName] = useState('')
   const [token, setToken] = useToken(null)
   const isLoggedIn = (username && token)
-  const [isEditing, setIsEditing] = useState('')
+  // const [isEditing, setIsEditing] = useState('')
   const [showRegSuccessfulAlert, setShowRegSuccessfulAlert] = useState(false)
   const [sessions, setSessions] = useState([])
   const [sessionToRegister, setSessionToRegister] = useState(null)
@@ -46,12 +46,12 @@ function App () {
       <div className='min-h-screen bg-ghostWhite'>
 
         <div className='bg-mediumPurple pb-32'>
-          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setIsEditing={setIsEditing} setShowModal={setShowModal} loggedInName={loggedInName} />
+          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setShowModal={setShowModal} loggedInName={loggedInName} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />
           <Header />
         </div>
         <Switch>
           <Route path='/registeradmin'>
-            <Register token={token} showModal={showModal} setShowModal={setShowModal} />
+            <Register token={token} showModal='admin-registration-form' setShowModal={setShowModal} />
           </Route>
           <Route path='/login'>
             <LoginModal setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} />
@@ -63,7 +63,7 @@ function App () {
               <BookStudy />
             </Route>
             <Route path='/sessions'>
-              <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} setSessionToRegister={setSessionToRegister} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} setShowModal={setShowModal} />
+              <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} />
             </Route>
             <Route path='/connect'>
               <Connect />
@@ -78,7 +78,7 @@ function App () {
               <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} />
             </Route>
             <Route path='/view-form'>
-              <ViewForm token={token} isLoggedIn={isLoggedIn} isEditing={isEditing} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} />
+              <ViewForm token={token} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} />
             </Route>
             <Route path='/'>
               <Home />

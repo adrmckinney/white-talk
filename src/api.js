@@ -51,6 +51,17 @@ export const login = (username, password) => {
       throw new Error('Something went wrong.')
     })
 }
+
+export const updateAdmin = (token) => {
+  return url
+    .put('auth/users/',
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}
 // ***************************
 // *** All things SESSIONS ***
 // ***************************

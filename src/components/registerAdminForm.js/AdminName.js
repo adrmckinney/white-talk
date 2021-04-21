@@ -1,6 +1,6 @@
 import { handleFormFilter } from '../functions'
 
-const AdminName = ({ filterAdminRegister, setFilterAdminRegister }) => {
+const AdminName = ({ filterAdminRegister, setFilterAdminRegister, loginProfile }) => {
   return (
     <>
       <div className='flex space-x-4'>

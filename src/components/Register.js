@@ -23,11 +23,17 @@ const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) =
       password: ''
     }
   )
-
+  console.log('isEditing REGISTER before use', isEditing)
   useEffect(() => {
-    if (isEditing === 'register' && loginProfile) {
-      handleFormFilter('username', loginProfile.username, setFilterAdminRegister)
-      // setFilterAdminRegister({ username: loginProfile.username })
+    console.log('useeffect is running')
+    if (isEditing === 'register' && loginProfile.id) {
+      // handleFormFilter('username', loginProfile.username, setFilterAdminRegister)
+      setFilterAdminRegister({
+        first_name: loginProfile.first_name,
+        last_name: loginProfile.last_name,
+        username: loginProfile.username,
+        email: loginProfile.email
+      })
     }
   }, [isEditing, loginProfile])
 
@@ -41,6 +47,7 @@ const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) =
   console.log('filterAdminRegister', filterAdminRegister)
 
   const handleRegister = (e) => {
+    console.log('handle register ran')
     e.preventDefault()
     register(filterAdminRegister.username, filterAdminRegister.password)
       .then(data => {
@@ -73,73 +80,79 @@ const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) =
           </div>
         </Transition>
         {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-        {/* <span className='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden='true'>&#8203;</span> */}
+        <span className='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden='true'>&#8203;
 
-        {/* Modal panel, show/hide based on modal state. */}
-        <Transition
-          show={showModal === 'admin-registration-form'}
-          enter='ease-out duration-300'
-          enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
-          enterTo='opacity-100 translate-y-0 sm:scale-100'
-          leave='ease-in duration-200'
-          leaveFrom='opacity-100 translate-y-0 sm:scale-100'
-          leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
-        >
-          <form
-            className='mt-8 space-y-6'
-            onSubmit={handleRegister}
+          {/* Modal panel, show/hide based on modal state. */}
+          <Transition
+            show={showModal === 'admin-registration-form'}
+            enter='ease-out duration-300'
+            enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
+            enterTo='opacity-100 translate-y-0 sm:scale-100'
+            leave='ease-in duration-200'
+            leaveFrom='opacity-100 translate-y-0 sm:scale-100'
+            leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
-            <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6' role='dialog' aria-modal='true' aria-labelledby='modal-headline'>
-              <div>
-                <div className='mt-2 mb-5 text-center'>
-                  <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
-                    Register New Admin
-                  </h3>
-                </div>
+            <form
+              className='mt-8 space-y-6'
+              onSubmit={handleRegister}
+            >
+              <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6' role='dialog' aria-modal='true' aria-labelledby='modal-headline'>
+                <div>
+                  <div className='mt-2 mb-5 text-center'>
+                    <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
+                      {isEditing === 'register'
+                        ? 'Update Admin Info'
+                        : 'Register New Admin'}
+                    </h3>
+                  </div>
 
-                {errors && (
-                  <div>
-                    <Errors errors={errors} setErrors={setErrors} />
-                  </div>
-                )}
-                <input type='hidden' name='remember' value='true' />
-                <div className='rounded-md shadow-sm space-y-4'>
-                  <div>
-                    <AdminName filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
-                  </div>
-                  <div>
-                    <AdminUsername filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
-                  </div>
-                  <div>
-                    <AdminPassword filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
-                  </div>
-                  <div>
-                    <AdminEmail filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
+                  {errors && (
+                    <div>
+                      <Errors errors={errors} setErrors={setErrors} />
+                    </div>
+                  )}
+                  <input type='hidden' name='remember' value='true' />
+                  <div className='rounded-md shadow-sm space-y-4'>
+                    <div>
+                      <AdminName filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} loginProfile={loginProfile} />
+                    </div>
+                    <div>
+                      <AdminEmail filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
+                    </div>
+                    <div>
+                      <AdminUsername filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
+                    </div>
+                    {!isEditing === register &&
+                      <div>
+                        <AdminPassword filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
+                      </div>}
                   </div>
                 </div>
+                <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
+                  <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-darkerPurple text-base font-medium text-white hover:bg-mediumPurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
+                    {isEditing === 'register'
+                      ? 'Update'
+                      : 'Register'}
+                  </button>
+                  <button
+                    type='button'
+                    className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
+                    onClick={() => {
+                      if (isEditing) {
+                        history.push('/')
+                      } else {
+                        history.goBack()
+                        setShowModal('')
+                      }
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-              <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-darkerPurple text-base font-medium text-white hover:bg-mediumPurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                  Register
-                </button>
-                <button
-                  type='button'
-                  className='modal-submit-btn'
-                  onClick={() => {
-                    if (isEditing) {
-                      history.push('/')
-                    } else {
-                      history.goBack()
-                      setShowModal('')
-                    }
-                  }}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </form>
-        </Transition>
+            </form>
+          </Transition>
+        </span>
       </div>
     </div>
   )
