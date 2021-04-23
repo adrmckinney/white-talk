@@ -1,12 +1,12 @@
 import { useReducer, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
-import { createSession } from '../api'
+import moment from 'moment'
+import { createSession, updateSession } from '../api'
 import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionDates from './createSessionForm.js/SessionDates'
 import SessionStatus from './createSessionForm.js/SessionStatus'
-import moment from 'moment'
 
 const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit }) => {
   const [time, setTime] = useState('')
@@ -45,21 +45,29 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
   }, [isEditing, sessionToEdit])
 
   // DEBUGGER STATION
-  // console.log('sessionToEdit', sessionToEdit)
+  console.log('sessionToEdit', sessionToEdit.pk)
   console.log('filterInput', filterInput)
-  console.log('isEditing', isEditing)
-  console.log('showModal', showModal)
-  // console.log('sessionToEdit.start_date', sessionToEdit.start_date)
-  console.log('filterInput.start_date', typeof filterInput.start_date)
+  // console.log('isEditing', isEditing)
+  // console.log('showModal', showModal)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    createSession(token, filterInput)
-      .then(data => {
-        console.log('data', data)
-        setShowModal('')
-        history.goBack()
-      })
+    if (isEditing === 'create-session') {
+      console.log('sessionToEdit.pk', sessionToEdit.pk)
+      updateSession(token, sessionToEdit.pk, filterInput)
+        .then(data => {
+          console.log('data', data)
+          // setShowModal('')
+          history.push('/sessions')
+        })
+    } else {
+      createSession(token, filterInput)
+        .then(data => {
+          console.log('data', data)
+          setShowModal('')
+          history.goBack()
+        })
+    }
   }
 
   return (
@@ -94,12 +102,16 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={e => {
+                e.preventDefault()
+                handleSubmit(e)
+              }}
+              >
                 <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6' role='dialog' aria-modal='true' aria-labelledby='modal-headline'>
                   <div>
                     <div className='mt-2 mb-5 text-center'>
                       <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
-                        Create a new session
+                        {isEditing ? 'Update Session' : 'Create a new session'}
                       </h3>
                     </div>
                     <div>
@@ -117,14 +129,16 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                   </div>
                   <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
                     <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                      Create
+                      {isEditing === 'create-session'
+                        ? 'Update'
+                        : 'Create'}
                     </button>
                     <button
                       type='button'
                       className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                       onClick={() => {
                         if (isEditing) {
-                          history.push('/')
+                          history.goBack()
                           setIsEditing('')
                         } else {
                           history.goBack()

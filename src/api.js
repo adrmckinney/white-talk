@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const url = axios.create({
-  // baseURL: 'https://white-talk-api.herokuapp.com/'
-  baseURL: 'http://127.0.0.1:8000/'
+  baseURL: 'https://white-talk-api.herokuapp.com/'
+  // baseURL: 'http://127.0.0.1:8000/'
 })
 
 export const register = (username, password) => {
@@ -90,7 +90,7 @@ export const listSessions = () => {
 }
 
 export const createSession = (token, sessionData) => {
-  console.log('token in api', token)
+  console.log('create api ran')
   return url
     .post('api/create-session/', sessionData,
       {
@@ -112,9 +112,10 @@ export const deleteSession = (token, pk) => {
     .then(res => res.data)
 }
 
-export const updateSession = (token, pk) => {
+export const updateSession = (token, pk, input) => {
+  console.log('update api ran')
   return url
-    .delete(`api/update-session/${pk}`,
+    .put(`api/update-session/${pk}/`, input,
       {
         headers: {
           Authorization: `Token ${token}`
