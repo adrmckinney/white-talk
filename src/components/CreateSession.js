@@ -45,15 +45,15 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
   }, [isEditing, sessionToEdit])
 
   // DEBUGGER STATION
-  console.log('sessionToEdit', sessionToEdit.pk)
-  console.log('filterInput', filterInput)
+  // console.log('sessionToEdit', sessionToEdit.pk)
+  // console.log('filterInput', filterInput)
   // console.log('isEditing', isEditing)
   // console.log('showModal', showModal)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (isEditing === 'create-session') {
-      console.log('sessionToEdit.pk', sessionToEdit.pk)
+      // console.log('sessionToEdit.pk', sessionToEdit.pk)
       updateSession(token, sessionToEdit.pk, filterInput)
         .then(data => {
           console.log('data', data)
