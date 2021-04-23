@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { pageClickEvent } from './functions'
 import NavBtns from './NavBtns'
-import RegSuccessfulAlert from './RegSuccessfulAlert'
+import RegSuccessfulAlert from './alerts/RegSuccessfulAlert'
 import MobileNavBtns from './MobileNavBtns'
 import MobileNavMenu from './MobileNavMenu'
 

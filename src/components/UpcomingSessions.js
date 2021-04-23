@@ -1,12 +1,14 @@
 import { useHistory, Link } from 'react-router-dom'
 import Moment from 'react-moment'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { listSessions, deleteSession } from '../api'
+import DeleteAlert from './alerts/DeleteAlert'
 
 const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowModal, setSessionToRegister, setFormToView, setSessionToView }) => {
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [sessionToDelete, setSessionToDelete] = useState([])
   const history = useHistory()
 
-  console.log('sessions', sessions)
   useEffect(() => {
     listSessions()
       .then(data => {
@@ -21,6 +23,12 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
         listSessions()
           .then(data => setSessions(data))
       })
+  }
+
+  if (isDeleting) {
+    return (
+      <DeleteAlert setIsDeleting={setIsDeleting} handleDelete={handleDelete} sessionToDelete={sessionToDelete} />
+    )
   }
 
   const renderSessionStatus = (session) => {
@@ -110,7 +118,11 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                               <button
                                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                                onClick={() => handleDelete(session.pk)}
+                                onClick={() => {
+                                  setIsDeleting(true)
+                                  setSessionToDelete(session)
+                                  // handleDelete(session.pk)
+                                }}
                               >Delete
                               </button>
                             </td>

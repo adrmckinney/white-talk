@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { pageClickEvent } from './functions'
+import { pageClickEvent } from '../functions'
 
 const RegSuccessfulAlert = ({ showRegSuccessfulAlert, setShowRegSuccessfulAlert }) => {
   const dropdownRef = useRef(null)
