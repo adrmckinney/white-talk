@@ -1,10 +1,9 @@
 import { useHistory, Link } from 'react-router-dom'
 import Moment from 'react-moment'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { listSessions, deleteSession } from '../api'
 
 const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowModal, setSessionToRegister, setFormToView, setSessionToView }) => {
-  const [isEditing, setIsEditing] = useState('')
   const history = useHistory()
 
   console.log('sessions', sessions)

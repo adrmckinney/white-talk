@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { getUser } from '../../api'
 
@@ -10,7 +10,7 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIs
   useEffect(() => {
     getUser(token)
       .then(data => setLoginProfile(data))
-  }, [token])
+  }, [token, setLoginProfile])
 
   return (
     <>
