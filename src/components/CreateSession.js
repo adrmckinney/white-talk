@@ -1,13 +1,16 @@
-import { useReducer, useState } from 'react'
+import { useReducer, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
+import Moment from 'react-moment'
 import { createSession } from '../api'
 import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionDates from './createSessionForm.js/SessionDates'
 import SessionStatus from './createSessionForm.js/SessionStatus'
+import moment from 'moment'
+import { parse } from 'postcss'
 
-const CreateSession = ({ token, showModal, setShowModal }) => {
+const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit }) => {
   const [time, setTime] = useState('')
   const history = useHistory()
   const [filterInput, setFilterInput] = useReducer(
@@ -25,7 +28,31 @@ const CreateSession = ({ token, showModal, setShowModal }) => {
     setFilterInput({ [name]: value })
   }
 
-  //   console.log('filterInput', filterInput)
+  useEffect(() => {
+    if (isEditing === 'create-session' && sessionToEdit) {
+      // for the existing dates to populate the datepicker fields that have to
+      // run through this function that formats them correctly.
+      const convertDate = (date) => {
+        return moment(date)
+      }
+
+      setFilterInput({
+        title: sessionToEdit.title,
+        start_date: convertDate(sessionToEdit.start_date).toDate(),
+        end_date: convertDate(sessionToEdit.end_date).toDate(),
+        description: sessionToEdit.description,
+        session_status: sessionToEdit.sesstion_status
+      })
+    }
+  }, [isEditing, sessionToEdit])
+
+  // DEBUGGER STATION
+  // console.log('sessionToEdit', sessionToEdit)
+  console.log('filterInput', filterInput)
+  console.log('isEditing', isEditing)
+  console.log('showModal', showModal)
+  // console.log('sessionToEdit.start_date', sessionToEdit.start_date)
+  console.log('filterInput.start_date', typeof filterInput.start_date)
 
   const handleSubmit = (e) => {
     e.preventDefault()

@@ -2,14 +2,13 @@ import { useEffect, useReducer, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { register } from '../api'
-import { handleFormFilter } from './functions'
 import Errors from './Errors'
 import AdminName from './registerAdminForm.js/AdminName'
 import AdminEmail from './registerAdminForm.js/AdminEmail'
 import AdminUsername from './registerAdminForm.js/AdminUsername'
 import AdminPassword from './registerAdminForm.js/AdminPassword'
 
-const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) => {
+const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, loginProfile }) => {
   const [errors, setErrors] = useState('')
   const history = useHistory()
 
@@ -23,11 +22,9 @@ const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) =
       password: ''
     }
   )
-  console.log('isEditing REGISTER before use', isEditing)
+
   useEffect(() => {
-    console.log('useeffect is running')
     if (isEditing === 'register' && loginProfile.id) {
-      // handleFormFilter('username', loginProfile.username, setFilterAdminRegister)
       setFilterAdminRegister({
         first_name: loginProfile.first_name,
         last_name: loginProfile.last_name,
@@ -37,14 +34,11 @@ const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) =
     }
   }, [isEditing, loginProfile])
 
-  // if (isEditing === 'register' && loginProfile) {
-  //   setFilterAdminRegister({ username: loginProfile.username })
-  // }
-
-  console.log('isEditing REGISTER', isEditing)
-  console.log('showModal REGISTER', showModal)
-  console.log('loginProfile', loginProfile)
-  console.log('filterAdminRegister', filterAdminRegister)
+  // DEBUGGER STATION
+  // console.log('isEditing REGISTER', isEditing)
+  // console.log('showModal REGISTER', showModal)
+  // console.log('loginProfile', loginProfile)
+  // console.log('filterAdminRegister', filterAdminRegister)
 
   const handleRegister = (e) => {
     console.log('handle register ran')
@@ -54,6 +48,7 @@ const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) =
         // setUsername(data.username)
         // setPassword(data.password)
         setShowModal('')
+        setIsEditing('')
         history.push('/')
       })
       .catch(error => {
@@ -129,7 +124,10 @@ const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) =
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                  <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-darkerPurple text-base font-medium text-white hover:bg-mediumPurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
+                  <button
+                    type='submit'
+                    className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-darkerPurple text-base font-medium text-white hover:bg-mediumPurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                  >
                     {isEditing === 'register'
                       ? 'Update'
                       : 'Register'}
@@ -140,6 +138,7 @@ const Register = ({ token, isEditing, showModal, setShowModal, loginProfile }) =
                     onClick={() => {
                       if (isEditing) {
                         history.push('/')
+                        setIsEditing('')
                       } else {
                         history.goBack()
                         setShowModal('')

@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import Moment from 'react-moment'
 import { listSessions } from '../api'
 import SelectionElement from './SelectionElement'
+import StaticMenu from './dropdownMenus/StaticMenu'
 
 const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownSelectorMode }) => {
   const [sessions, setSessions] = useState([])
   const [registrantsToRender, setRegistrantsToRender] = useState([])
   const [allEmails, setAllEmails] = useState([])
   const [emails, setEmails] = useState([])
+  const [selectedAction, setSelectedAction] = useState('')
   // This state was for when I was trying to have a box that
   // would check all boxes. This was to get the checked
   // value from the each of the boxes.
   // const [checked, setChecked] = useReducer(
   //   (idx, value) => ({ ...idx, ...value })
   // )
-
+  console.log('selectedAction', selectedAction)
   const handleEmails = (email) => {
     const checkEmails = [...emails]
 
@@ -24,6 +27,56 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
     } else {
       const newEmails = [...emails, email]
       setEmails(newEmails)
+    }
+  }
+
+  const handleBtnText = () => {
+    if (selectedAction === 'Email All') {
+      return (
+        <a
+          href={`mailto:${allEmails}`}
+          rel='noreferrer'
+          target='_blank'
+        >
+          <span className='flex'>
+            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+            {selectedAction}
+          </span>
+        </a>
+      )
+    } else if (selectedAction === 'Email Selected') {
+      return (
+        <a
+          href={`mailto:${emails}`}
+          rel='noreferrer'
+          target='_blank'
+        >
+          <span className='flex'>
+            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+            {selectedAction}
+          </span>
+        </a>
+      )
+    } else if (selectedAction === 'Update') {
+      return (
+        <span className='flex'>
+          <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+          {selectedAction}
+        </span>
+      )
+    } else if (selectedAction === 'Delete') {
+      return (
+        <span className='flex'>
+          <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+          {selectedAction}
+        </span>
+      )
+    }
+  }
+
+  const handleBtnClick = () => {
+    if (selectedAction === 'Email All') {
+
     }
   }
 
@@ -93,13 +146,30 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
     <>
       <div className='max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8'>
         <SelectionElement sessions={sessions} dropdownSelectorMode={dropdownSelectorMode} setRegistrantsToRender={setRegistrantsToRender} setAllEmails={setAllEmails} />
-
         <div className='flex flex-col pt-20'>
           <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
             <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
               {/* {sessions.map(session => ( */}
               <span>
-                <h1 className='text-2xl flex justify-center mb-10 shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1>
+                <span className='flex items-start'>
+                  <h1 className='text-2xl flex flex-1 justify-center mb-10 shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1>
+                  {registrantsToRender.pk &&
+                    <>
+                      <div className='flex flex-1 justify-center'>
+                        <StaticMenu dropdownSelectorMode='action' selectedAction={selectedAction} setSelectedAction={setSelectedAction} />
+                      </div>
+                      {selectedAction &&
+                        <span className='flex flex-1/2 items-start'>
+                          <button
+                            type='button'
+                            className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                            onClick={() => handleBtnClick()}
+                          >
+                            {handleBtnText()}
+                          </button>
+                        </span>}
+                    </>}
+                </span>
                 <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
                   <table className='min-w-full divide-y divide-gray-200'>
                     <thead className='bg-gray-50'>
@@ -118,24 +188,7 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
                         </th>
                         <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
                           <span className='space-y-1'>
-                            <p>Email</p>
-                            {registrantsToRender.pk &&
-                              <span className='flex items-center justify-around space-x-1'>
-                                <a
-                                  href={`mailto:${allEmails}`}
-                                  rel='noreferrer'
-                                  target='_blank'
-                                  className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-xs'
-                                >All
-                                </a>
-                                <a
-                                  href={`mailto:${emails}`}
-                                  rel='noreferrer'
-                                  target='_blank'
-                                  className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-xs'
-                                >Selected
-                                </a>
-                              </span>}
+                            <p>Action</p>
                           </span>
                         </th>
                       </tr>

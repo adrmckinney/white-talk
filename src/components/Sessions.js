@@ -1,7 +1,7 @@
 import Divider from './Divider'
 import UpcomingSessions from './UpcomingSessions'
 
-const Sessions = ({ token, isLoggedIn, setShowModal, sessions, setSessions, setSessionToRegister }) => {
+const Sessions = ({ token, isLoggedIn, setShowModal, sessions, setSessions, setSessionToRegister, setFormToView, setSessionToView }) => {
   console.log('sessions', sessions)
 
   return (
@@ -26,7 +26,7 @@ const Sessions = ({ token, isLoggedIn, setShowModal, sessions, setSessions, setS
         </div>
       </div>
       <Divider />
-      <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} setShowModal={setShowModal} setSessionToRegister={setSessionToRegister} />
+      <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} setShowModal={setShowModal} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} />
     </>
   )
 }

@@ -1,33 +1,57 @@
-import { useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
-import { useHistory } from 'react-router-dom'
-import { getUser } from '../api'
-import { handleFormFilter } from './functions'
+import { useState } from 'react'
 import Register from './Register'
+import ViewAdminRegForm from './viewForms/ViewAdminRegForm'
+import ViewCreateSessionForm from './viewForms/ViewCreateSessionForm'
+import CreateSession from './CreateSession'
 
-const ViewForm = ({ token, showModal, setShowModal }) => {
-  const [loginProfile, setLoginProfile] = useState([])
+const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, sessionToView }) => {
   const [isEditing, setIsEditing] = useState('')
-  const history = useHistory()
+  const [loginProfile, setLoginProfile] = useState([])
 
-  useEffect(() => {
-    getUser(token)
-      .then(data => setLoginProfile(data))
-  }, [token])
+  //   Function to handle which form is to be rendered inside modal ViewForm
+  const handleFormSelection = () => {
+    if (formToView === 'admin-reg-form') {
+      return (
+        <ViewAdminRegForm token={token} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} loginProfile={loginProfile} setLoginProfile={setLoginProfile} />
+      )
+    } else if (formToView === 'create-session-form') {
+      return (
+        <ViewCreateSessionForm token={token} setIsEditing={setIsEditing} setShowModal={setShowModal} sessionToView={sessionToView} setFormToView={setFormToView} />
+      )
+    } else if (formToView === 'register') {
+      return (
+        <Register />
+      )
+    }
+  }
 
+  // isEditing CONDITIONALS: I originally had this inside the view form components but
+  // the modal would not render when isEditing. Placed at this component level it works
   if (loginProfile && isEditing === 'register') {
-    // history.push('/registeradmin')
-    // setShowModal('admin-registration-form')
-    console.log('isEditing in viewform', isEditing)
     return (
       <Register
+        token={token}
         loginProfile={loginProfile}
         isEditing={isEditing}
+        setIsEditing={setIsEditing}
         showModal='admin-registration-form'
-        token={token}
       />
     )
   }
+
+  if (sessionToView && isEditing === 'create-session') {
+    return (
+      <CreateSession
+        token={token}
+        sessionToEdit={sessionToView}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+        showModal='create-session-form'
+      />
+    )
+  }
+  // ^^^^^ isEditing CONDITIONALS ^^^^^
 
   return (
     <>
@@ -65,68 +89,7 @@ const ViewForm = ({ token, showModal, setShowModal }) => {
                 className='mt-8 space-y-6'
               >
                 <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6' role='dialog' aria-modal='true' aria-labelledby='modal-headline'>
-                  <div>
-                    <div className='mt-2 mb-5 text-center'>
-                      <h3 className='text-lg leading-6 font-medium text-coolGray-900' id='modal-headline'>
-                        View Admin Registration Profile
-                      </h3>
-                    </div>
-                    <div className='rounded-md shadow-sm space-y-4'>
-                      <div>
-                        <div className='text-coolGray-800 text-xl'>Name</div>
-                        <div
-                          className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'
-                        >
-                          <p>
-                            {loginProfile.first_name}
-                          </p>
-                          <p>
-
-                            {loginProfile.last_name}
-                          </p>
-                        </div>
-                      </div>
-                      <div>
-                        <div className='text-coolGray-800 text-xl'>Email</div>
-                        <div
-                          required className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'
-                        >{loginProfile.email}
-                        </div>
-                      </div>
-                      <div>
-                        <div className='text-coolGray-800 text-xl'>Username</div>
-                        <div
-                          className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'
-                        >{loginProfile.username}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                    <button
-                      type='submit'
-                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2
-                    sm:text-sm'
-                      onClick={() => {
-                        // history.push('/registeradmin')
-                        // setShowModal('admin-registration-form')
-                        setIsEditing('register')
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type='button'
-                      className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
-                      onClick={() => {
-                        history.goBack()
-                        setShowModal('')
-                        setIsEditing('')
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                  {handleFormSelection()}
                 </div>
               </div>
             </Transition>

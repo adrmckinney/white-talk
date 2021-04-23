@@ -9,7 +9,7 @@ import MobileNavMenu from './MobileNavMenu'
 
 // import Search from './Search'
 
-const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert }) => {
+const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView }) => {
   const [showMenu, setShowMenu] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
@@ -136,6 +136,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setShowModal,
                           onClick={() => {
                             setShowMenu(false)
                             setShowModal('view-form')
+                            setFormToView('admin-reg-form')
                           }}
                         >
                           Update User Settings

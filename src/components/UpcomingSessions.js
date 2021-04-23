@@ -1,14 +1,19 @@
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import Moment from 'react-moment'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { listSessions, deleteSession } from '../api'
 
-const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowModal, setSessionToRegister }) => {
+const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowModal, setSessionToRegister, setFormToView, setSessionToView }) => {
+  const [isEditing, setIsEditing] = useState('')
   const history = useHistory()
 
+  console.log('sessions', sessions)
   useEffect(() => {
     listSessions()
-      .then(data => setSessions(data))
+      .then(data => {
+        setSessions(data)
+        console.log('data', data)
+      })
   }, [setSessions])
 
   const handleDelete = (pk) => {
@@ -92,10 +97,16 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                         {isLoggedIn &&
                           <>
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-                              <button
+                              <Link
+                                to='/view-form'
                                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                onClick={() => {
+                                  setShowModal('view-form')
+                                  setFormToView('create-session-form')
+                                  setSessionToView(session)
+                                }}
                               >Edit
-                              </button>
+                              </Link>
                             </td>
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                               <button
