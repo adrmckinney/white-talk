@@ -1,14 +1,12 @@
 import { useReducer, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
-import Moment from 'react-moment'
 import { createSession } from '../api'
 import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionDates from './createSessionForm.js/SessionDates'
 import SessionStatus from './createSessionForm.js/SessionStatus'
 import moment from 'moment'
-import { parse } from 'postcss'
 
 const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit }) => {
   const [time, setTime] = useState('')
@@ -41,7 +39,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
         start_date: convertDate(sessionToEdit.start_date).toDate(),
         end_date: convertDate(sessionToEdit.end_date).toDate(),
         description: sessionToEdit.description,
-        session_status: sessionToEdit.sesstion_status
+        session_status: sessionToEdit.session_status
       })
     }
   }, [isEditing, sessionToEdit])
@@ -125,8 +123,13 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                       type='button'
                       className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                       onClick={() => {
-                        setShowModal('')
-                        history.goBack()
+                        if (isEditing) {
+                          history.push('/')
+                          setIsEditing('')
+                        } else {
+                          history.goBack()
+                          setShowModal('')
+                        }
                       }}
                     >
                       Cancel
