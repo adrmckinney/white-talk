@@ -2,23 +2,38 @@ import { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import Moment from 'react-moment'
-import { listSessions } from '../api'
+import { listSessions, deleteRegistrant } from '../api'
 import SelectionElement from './SelectionElement'
 import StaticMenu from './dropdownMenus/StaticMenu'
+import DeleteAlert from './alerts/DeleteAlert'
 
-const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownSelectorMode }) => {
+const ViewSessionRegistrants = ({ token, isLoggedIn, dropdownSelectorMode, setDropdownSelectorMode }) => {
   const [sessions, setSessions] = useState([])
   const [registrantsToRender, setRegistrantsToRender] = useState([])
   const [allEmails, setAllEmails] = useState([])
   const [emails, setEmails] = useState([])
   const [selectedAction, setSelectedAction] = useState('')
+  const [isDeleting, setIsDeleting] = useState('')
+  const [registrantToDelete, setRegistrantToDelete] = useState([])
   // This state was for when I was trying to have a box that
   // would check all boxes. This was to get the checked
   // value from the each of the boxes.
   // const [checked, setChecked] = useReducer(
   //   (idx, value) => ({ ...idx, ...value })
   // )
-  console.log('selectedAction', selectedAction)
+
+  console.log('allEmails', allEmails)
+  console.log('emails', emails)
+
+  useEffect(() => {
+    listSessions()
+      .then(sessions => {
+        setSessions(sessions)
+        setDropdownSelectorMode('view-session-registrants')
+        // setAllEmails(sessions.map(session => session.email))
+      })
+  }, [setDropdownSelectorMode])
+
   const handleEmails = (email) => {
     const checkEmails = [...emails]
 
@@ -74,11 +89,29 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
     }
   }
 
-  const handleBtnClick = () => {
-    if (selectedAction === 'Email All') {
-
-    }
+  const handleDelete = (pk) => {
+    deleteRegistrant(token, pk)
+      .then(data => {
+        listSessions()
+          .then(sessions => {
+            setSessions(sessions)
+            setDropdownSelectorMode('view-session-registrants')
+            // setAllEmails(sessions.map(session => session.email))
+          })
+      })
   }
+
+  if (isDeleting) {
+    return (
+      <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={registrantToDelete} />
+    )
+  }
+
+  // const handleBtnClick = () => {
+  //   if (selectedAction === 'Email All') {
+
+  //   }
+  // }
 
   // These functions were for when I was trying to have a box that
   // would check all boxes. This was to get the checked
@@ -110,22 +143,9 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
   // }
   // }
 
-  // const handleCheckAll = (idx, value) => {
-  //   setChecked({ [idx]: value })
-  // }
-
   if (!isLoggedIn) {
     <Redirect to='/' />
   }
-
-  useEffect(() => {
-    listSessions()
-      .then(sessions => {
-        setSessions(sessions)
-        setDropdownSelectorMode('view-session-registrants')
-        setAllEmails(sessions.map(session => session.email))
-      })
-  }, [setDropdownSelectorMode])
 
   const setSessionTableTitle = () => {
     return (
@@ -163,7 +183,7 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
                           <button
                             type='button'
                             className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                            onClick={() => handleBtnClick()}
+                            onClick={() => setIsDeleting('delete-registrant')}
                           >
                             {handleBtnText()}
                           </button>
@@ -219,6 +239,7 @@ const ViewSessionRegistrants = ({ isLoggedIn, dropdownSelectorMode, setDropdownS
                               onChange={(e) => {
                                 // handleCheckAll(idx, e.target.checked)
                                 handleEmails(registrant.email)
+                                setRegistrantToDelete(registrant)
                               }}
                             />
                           </td>

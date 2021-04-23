@@ -5,7 +5,6 @@ import { formatSelectedSession, pageClickEvent } from './functions'
 
 const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRender, setAllEmails }) => {
   const [showSessions, setShowSessions] = useState(false)
-  //   const [sessionOptions, setSessionOptions] = useState([])
   const [selectedValue, setSelectedValue] = useState([])
   const dropdownRef = useRef(null)
 
@@ -25,7 +24,6 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
     if (dropdownSelectorMode === 'view-session-registrants') {
       return (
         <>
-          {/* {formatSelectedSession()} */}
           {selectedValue.pk
             ? formatSelectedSession(selectedValue)
             : 'Select Session'}
@@ -79,7 +77,6 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
                   className='hover:text-white hover:bg-indigo-600 text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9'
                   onClick={() => {
                     setSelectedValue(session)
-                    // handleSessionRegFilter('session', session.pk)
                     setShowSessions(false)
                     if (dropdownSelectorMode === 'view-session-registrants') {
                       setRegistrantsToRender(session)

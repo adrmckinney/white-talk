@@ -5,7 +5,7 @@ import { listSessions, deleteSession } from '../api'
 import DeleteAlert from './alerts/DeleteAlert'
 
 const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowModal, setSessionToRegister, setFormToView, setSessionToView }) => {
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState('')
   const [sessionToDelete, setSessionToDelete] = useState([])
   const history = useHistory()
 
@@ -27,7 +27,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
 
   if (isDeleting) {
     return (
-      <DeleteAlert setIsDeleting={setIsDeleting} handleDelete={handleDelete} sessionToDelete={sessionToDelete} />
+      <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={sessionToDelete} />
     )
   }
 
@@ -89,7 +89,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                   <tbody className='bg-ghostWhite divide-y divide-gray-200'>
                     {sessions.map(session => (
                       <tr key={`session-${session.pk}`}>
-                        <td className=' px-6 py-4 whitespace-nowrap text-sm font-medium text-coolGray-900 space-x-1 flex'>
+                        <td className=' px-6 py-4 whitespace-nowrap text-sm font-medium text-coolGray-900'>
                           {session.title}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500'>
@@ -119,7 +119,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                               <button
                                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                                 onClick={() => {
-                                  setIsDeleting(true)
+                                  setIsDeleting('delete-session')
                                   setSessionToDelete(session)
                                   // handleDelete(session.pk)
                                 }}
@@ -133,7 +133,6 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                 </table>
               </div>
             </span>
-            {/* ))} */}
           </div>
         </div>
       </div>

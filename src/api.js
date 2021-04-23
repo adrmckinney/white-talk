@@ -123,3 +123,14 @@ export const updateSession = (token, pk, input) => {
       })
     .then(res => res.data)
 }
+
+export const deleteRegistrant = (token, pk) => {
+  return url
+    .delete(`api/delete-registrant/${pk}`,
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}
