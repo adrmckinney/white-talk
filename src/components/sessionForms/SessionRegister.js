@@ -1,4 +1,4 @@
-import { useReducer } from 'react'
+import { useReducer, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { sessionRegister } from '../../api'
@@ -8,9 +8,8 @@ import Name from './Name'
 import Pronouns from './Pronouns'
 import SessionToRegister from './SessionToRegister'
 
-const SessionRegister = ({ sessions, sessionToRegister, setShowRegSuccessfulAlert, showModal, setShowModal }) => {
+const SessionRegister = ({ sessions, sessionToRegister, setSessionToRegister, setShowRegSuccessfulAlert, showModal, setShowModal, isEditing, setIsEditing, registrantToUpdate, setIsRegistering }) => {
   const history = useHistory()
-
   const [filterInput, setFilterInput] = useReducer(
     (name, value) => ({ ...name, ...value }),
     {
@@ -23,25 +22,39 @@ const SessionRegister = ({ sessions, sessionToRegister, setShowRegSuccessfulAler
     }
   )
 
-  // const handleSessionRegFilter = (name, value) => {
-  //   setFilterInput({ [name]: value })
-  // }
-
+  // DEBUGGER STATION
+  console.log('sessions in SessionRegister', sessions)
+  console.log('sessionToRegister', sessionToRegister)
+  console.log('registrantToUpdate', registrantToUpdate)
   console.log('filterInput', filterInput)
+
+  useEffect(() => {
+    if (isEditing === 'edit-registrant' && registrantToUpdate.pk) {
+      setFilterInput({
+        first_name: registrantToUpdate.first_name,
+        last_name: registrantToUpdate.last_name,
+        pronouns: registrantToUpdate.pronouns,
+        email: registrantToUpdate.email,
+        comment: registrantToUpdate.comment,
+        session: registrantToUpdate.session
+      })
+    }
+  }, [isEditing, registrantToUpdate])
 
   const handleSubmit = (e) => {
     e.preventDefault()
     sessionRegister(filterInput)
       .then(data => {
         setShowModal('')
+        setIsRegistering(false)
         setShowRegSuccessfulAlert(true)
-        history.goBack()
+        // history.goBack()
       })
   }
 
   return (
     <>
-      <div className='fixed z-0 inset-0 overflow-y-auto'>
+      <div className='fixed z-20 inset-0 overflow-y-auto'>
         <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
 
           <Transition
@@ -102,7 +115,11 @@ const SessionRegister = ({ sessions, sessionToRegister, setShowRegSuccessfulAler
                     className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                     onClick={() => {
                       setShowModal('')
-                      history.goBack()
+                      if (isEditing) {
+                        setIsEditing('')
+                      } else {
+                        setIsRegistering(false)
+                      }
                     }}
                   >
                     Cancel

@@ -134,3 +134,14 @@ export const deleteRegistrant = (token, pk) => {
       })
     .then(res => res.data)
 }
+
+export const updateRegistrant = (token, pk, input) => {
+  return url
+    .put(`api/update-registrant/${pk}`, input,
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}

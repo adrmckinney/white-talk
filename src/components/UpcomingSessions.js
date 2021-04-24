@@ -1,11 +1,13 @@
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Moment from 'react-moment'
 import { useEffect, useState } from 'react'
 import { listSessions, deleteSession } from '../api'
 import DeleteAlert from './alerts/DeleteAlert'
+import SessionRegister from './sessionForms/SessionRegister'
 
-const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowModal, setSessionToRegister, setFormToView, setSessionToView }) => {
+const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setShowRegSuccessfulAlert }) => {
   const [isDeleting, setIsDeleting] = useState('')
+  const [isRegistering, setIsRegistering] = useState(false)
   const [sessionToDelete, setSessionToDelete] = useState([])
   const history = useHistory()
 
@@ -25,11 +27,20 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
       })
   }
 
+  if (isRegistering) {
+    return (
+      <SessionRegister sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showModal='session-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
+    )
+  }
+
   if (isDeleting) {
     return (
       <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={sessionToDelete} />
     )
   }
+
+  // DEBUGGER STATION
+  console.log('isRegistering', isRegistering)
 
   const renderSessionStatus = (session) => {
     if (session.session_status) {
@@ -37,9 +48,10 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
         <button
           className='w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
           onClick={() => {
-            history.push('/session-register')
+            // history.push('/session-register')
+            setIsRegistering(true)
             setSessionToRegister(session)
-            setShowModal('session-registration-form')
+            // setShowModal('session-registration-form')
           }}
         >Sign up
         </button>
@@ -104,8 +116,8 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                         {isLoggedIn &&
                           <>
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-                              <Link
-                                to='/view-form'
+                              <button
+                                // to='/view-form'
                                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                                 onClick={() => {
                                   setShowModal('view-form')
@@ -113,7 +125,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, setShowMod
                                   setSessionToView(session)
                                 }}
                               >Edit
-                              </Link>
+                              </button>
                             </td>
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                               <button

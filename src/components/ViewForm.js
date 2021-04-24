@@ -51,6 +51,17 @@ const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, s
       />
     )
   }
+  // if (sessionToView && isEditing === 'edit-registrant') {
+  //   return (
+  //     <ViewSessionRegistrant
+  //       token={token}
+  //       sessionToEdit={sessionToView}
+  //       isEditing={isEditing}
+  //       setIsEditing={setIsEditing}
+  //       showModal='create-session-form'
+  //     />
+  //   )
+  // }
   // ^^^^^ isEditing CONDITIONALS ^^^^^
 
   return (

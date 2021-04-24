@@ -3,10 +3,14 @@ import Moment from 'react-moment'
 import { useState, useEffect, useRef } from 'react'
 import { formatSelectedSession, handleFormFilter, pageClickEvent } from '../functions'
 
-const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilterInput }) => {
+const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilterInput, handleSessionToEdit }) => {
   const [showSessions, setShowSessions] = useState(false)
   const [selectedValue, setSelectedValue] = useState([])
   const dropdownRef = useRef(null)
+
+  console.log('sessions', sessions)
+  console.log('selectedValue', selectedValue)
+  console.log('sessionToRegister', sessionToRegister)
 
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
   // It needs the useRef Variable, menu state variable, and the menu setState function.
@@ -41,7 +45,6 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
         >
           <span className='flex truncate justify-center text-sm sm:text-md'>
 
-            {/* {formatSelectedSession()} */}
             {selectedValue.pk
               ? formatSelectedSession(selectedValue)
               : formatSelectedSession(sessionToRegister)}

@@ -1,9 +1,7 @@
 import Divider from './Divider'
 import UpcomingSessions from './UpcomingSessions'
 
-const Sessions = ({ token, isLoggedIn, setShowModal, sessions, setSessions, setSessionToRegister, setFormToView, setSessionToView }) => {
-  console.log('sessions', sessions)
-
+const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setShowRegSuccessfulAlert }) => {
   return (
     <>
       <div className='max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 relative'>
@@ -26,7 +24,7 @@ const Sessions = ({ token, isLoggedIn, setShowModal, sessions, setSessions, setS
         </div>
       </div>
       <Divider />
-      <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} setShowModal={setShowModal} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} />
+      <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />
     </>
   )
 }

@@ -2,19 +2,23 @@ import { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import Moment from 'react-moment'
-import { listSessions, deleteRegistrant } from '../api'
+import { listSessions, deleteRegistrant, updateRegistrant } from '../api'
 import SelectionElement from './SelectionElement'
 import StaticMenu from './dropdownMenus/StaticMenu'
 import DeleteAlert from './alerts/DeleteAlert'
+import SessionRegister from './sessionForms/SessionRegister'
 
-const ViewSessionRegistrants = ({ token, isLoggedIn, dropdownSelectorMode, setDropdownSelectorMode }) => {
+const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister }) => {
   const [sessions, setSessions] = useState([])
   const [registrantsToRender, setRegistrantsToRender] = useState([])
   const [allEmails, setAllEmails] = useState([])
   const [emails, setEmails] = useState([])
   const [selectedAction, setSelectedAction] = useState('')
   const [isDeleting, setIsDeleting] = useState('')
+  const [isEditing, setIsEditing] = useState('')
   const [registrantToDelete, setRegistrantToDelete] = useState([])
+  const [registrantToUpdate, setRegistrantToUpdate] = useState([])
+  const [sessionToUpdate, setSessionToUpdate] = useState([])
   // This state was for when I was trying to have a box that
   // would check all boxes. This was to get the checked
   // value from the each of the boxes.
@@ -22,8 +26,14 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, dropdownSelectorMode, setDr
   //   (idx, value) => ({ ...idx, ...value })
   // )
 
-  console.log('allEmails', allEmails)
-  console.log('emails', emails)
+  // DEBUGGER STATION
+  // console.log('allEmails', allEmails)
+  // console.log('emails', emails)
+  console.log('isDeleting', isDeleting)
+  console.log('isEditing', isEditing)
+  console.log('registrantToUpdate', registrantToUpdate)
+  console.log('sessions in ViewSessionReg', sessions)
+  console.log('sessionToUpate', sessionToUpdate)
 
   useEffect(() => {
     listSessions()
@@ -73,6 +83,10 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, dropdownSelectorMode, setDr
         </a>
       )
     } else if (selectedAction === 'Update') {
+      // const sessionToUpdte = sessions.filter(session => session.pk === registrantToUpdate.session)
+      // console.log('sessionToUpdte', sessionToUpdte)
+      // setSessionToUpdate(sessionToUpdte)
+      // console.log('registrantToUpdate', registrantToUpdate)
       return (
         <span className='flex'>
           <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
@@ -89,8 +103,29 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, dropdownSelectorMode, setDr
     }
   }
 
+  const handleSessionToEdit = (registrant) => {
+    // setSessionToUpdate(sessions.filter(session => session.pk === registrant.session))
+    sessions.forEach(session => {
+      if (session.pk === registrant.session) {
+        setSessionToUpdate(session)
+      }
+    })
+  }
+
   const handleDelete = (pk) => {
     deleteRegistrant(token, pk)
+      .then(data => {
+        listSessions()
+          .then(sessions => {
+            setSessions(sessions)
+            setDropdownSelectorMode('view-session-registrants')
+            // setAllEmails(sessions.map(session => session.email))
+          })
+      })
+  }
+
+  const handleRegistrantUpdate = (pk) => {
+    updateRegistrant(token, pk)
       .then(data => {
         listSessions()
           .then(sessions => {
@@ -104,6 +139,14 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, dropdownSelectorMode, setDr
   if (isDeleting) {
     return (
       <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={registrantToDelete} />
+    )
+  }
+
+  if (isEditing === 'edit-registrant' && registrantToUpdate.pk) {
+    return (
+      <SessionRegister
+        token={token} registrantToUpdate={registrantToUpdate} isEditing={isEditing} sessions={sessions} setIsEditing={setIsEditing} showModal='session-registration-form' setShowModal={setShowModal} sessionToRegister={sessionToUpdate}
+      />
     )
   }
 
@@ -183,7 +226,15 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, dropdownSelectorMode, setDr
                           <button
                             type='button'
                             className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                            onClick={() => setIsDeleting('delete-registrant')}
+                            onClick={() => {
+                              if (selectedAction === 'Delete') {
+                                setIsEditing('')
+                                setIsDeleting('delete-registrant')
+                              } else if (selectedAction === 'Update') {
+                                setIsDeleting('')
+                                setIsEditing('edit-registrant')
+                              }
+                            }}
                           >
                             {handleBtnText()}
                           </button>
@@ -240,6 +291,8 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, dropdownSelectorMode, setDr
                                 // handleCheckAll(idx, e.target.checked)
                                 handleEmails(registrant.email)
                                 setRegistrantToDelete(registrant)
+                                setRegistrantToUpdate(registrant)
+                                handleSessionToEdit(registrant)
                               }}
                             />
                           </td>
