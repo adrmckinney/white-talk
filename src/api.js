@@ -103,7 +103,7 @@ export const createSession = (token, sessionData) => {
 
 export const deleteSession = (token, pk) => {
   return url
-    .delete(`api/delete-session/${pk}`,
+    .delete(`api/delete-session/${pk}/`,
       {
         headers: {
           Authorization: `Token ${token}`
@@ -126,7 +126,7 @@ export const updateSession = (token, pk, input) => {
 
 export const deleteRegistrant = (token, pk) => {
   return url
-    .delete(`api/delete-registrant/${pk}`,
+    .delete(`api/delete-registrant/${pk}/`,
       {
         headers: {
           Authorization: `Token ${token}`
@@ -137,7 +137,7 @@ export const deleteRegistrant = (token, pk) => {
 
 export const updateRegistrant = (token, pk, input) => {
   return url
-    .put(`api/update-registrant/${pk}`, input,
+    .put(`api/update-registrant/${pk}/`, input,
       {
         headers: {
           Authorization: `Token ${token}`

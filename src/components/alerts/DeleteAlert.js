@@ -3,9 +3,25 @@ import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
 import Moment from 'react-moment'
 
-export default function DeleteAlert ({ isDeleting, setIsDeleting, handleDelete, dataToDelete }) {
+export default function DeleteAlert ({ isDeleting, setIsDeleting, handleDelete, dataToDelete, handleClearAllActionState }) {
   const [open, setOpen] = useState(true)
   const cancelButtonRef = useRef()
+
+  const handleMessage = () => {
+    if (dataToDelete.length === 0) {
+      return (
+        <p className='text-sm text-gray-500'>
+          There is nothing selected to delete. If a box is checked, please unckeck and check again.
+        </p>
+      )
+    } else {
+      return (
+        <p className='text-sm text-gray-500'>
+          Are you sure you want to delete <strong>{dataToDelete.first_name} {dataToDelete.last_name}</strong> from this session? This action cannot be undone.
+        </p>
+      )
+    }
+  }
 
   const handleAlertContent = () => {
     if (isDeleting === 'delete-session') {
@@ -16,7 +32,9 @@ export default function DeleteAlert ({ isDeleting, setIsDeleting, handleDelete, 
           </Dialog.Title>
           <div className='mt-2'>
             <p className='text-sm text-gray-500'>
-              Are you sure you want to delete the session <strong>{dataToDelete.title} <Moment format='MM/DD/YYYY'>{dataToDelete.start_date}</Moment>-<Moment format='MM/DD/YYYY'>{dataToDelete.end_date}</Moment></strong>? This action cannot be undone.
+              <p className='text-sm text-gray-500'>
+                Are you sure you want to delete the session <strong>{dataToDelete.title} <Moment format='MM/DD/YYYY'>{dataToDelete.start_date}</Moment>-<Moment format='MM/DD/YYYY'>{dataToDelete.end_date}</Moment></strong>? This action cannot be undone.
+              </p>
             </p>
           </div>
         </div>
@@ -28,9 +46,7 @@ export default function DeleteAlert ({ isDeleting, setIsDeleting, handleDelete, 
             Delete Registrant
           </Dialog.Title>
           <div className='mt-2'>
-            <p className='text-sm text-gray-500'>
-              Are you sure you want to delete the session <strong>{dataToDelete.first_name} {dataToDelete.last_name}</strong>? This action cannot be undone.
-            </p>
+            {handleMessage()}
           </div>
         </div>
       )
@@ -96,8 +112,11 @@ export default function DeleteAlert ({ isDeleting, setIsDeleting, handleDelete, 
                   type='button'
                   className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm'
                   onClick={() => {
-                    setIsDeleting('')
                     setOpen(false)
+                    if (isDeleting === 'delete-registrant') {
+                      handleClearAllActionState()
+                    }
+                    setIsDeleting('')
                   }}
                   ref={cancelButtonRef}
                 >

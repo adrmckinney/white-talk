@@ -1,5 +1,5 @@
 import { useReducer, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { sessionRegister } from '../../api'
 import Comments from './Comments'
@@ -8,8 +8,8 @@ import Name from './Name'
 import Pronouns from './Pronouns'
 import SessionToRegister from './SessionToRegister'
 
-const SessionRegister = ({ sessions, sessionToRegister, setSessionToRegister, setShowRegSuccessfulAlert, showModal, setShowModal, isEditing, setIsEditing, registrantToUpdate, setIsRegistering }) => {
-  const history = useHistory()
+const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegister, setShowRegSuccessfulAlert, showModal, setShowModal, isEditing, setIsEditing, registrantToEdit, setIsRegistering, handleRegistrantUpdate }) => {
+  // const history = useHistory()
   const [filterInput, setFilterInput] = useReducer(
     (name, value) => ({ ...name, ...value }),
     {
@@ -25,31 +25,34 @@ const SessionRegister = ({ sessions, sessionToRegister, setSessionToRegister, se
   // DEBUGGER STATION
   console.log('sessions in SessionRegister', sessions)
   console.log('sessionToRegister', sessionToRegister)
-  console.log('registrantToUpdate', registrantToUpdate)
+  console.log('registrantToEdit', registrantToEdit)
   console.log('filterInput', filterInput)
 
   useEffect(() => {
-    if (isEditing === 'edit-registrant' && registrantToUpdate.pk) {
+    if (isEditing === 'edit-registrant' && registrantToEdit.pk) {
       setFilterInput({
-        first_name: registrantToUpdate.first_name,
-        last_name: registrantToUpdate.last_name,
-        pronouns: registrantToUpdate.pronouns,
-        email: registrantToUpdate.email,
-        comment: registrantToUpdate.comment,
-        session: registrantToUpdate.session
+        first_name: registrantToEdit.first_name,
+        last_name: registrantToEdit.last_name,
+        pronouns: registrantToEdit.pronouns,
+        email: registrantToEdit.email,
+        comment: registrantToEdit.comment,
+        session: registrantToEdit.session
       })
     }
-  }, [isEditing, registrantToUpdate])
+  }, [isEditing, registrantToEdit])
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    sessionRegister(filterInput)
-      .then(data => {
-        setShowModal('')
-        setIsRegistering(false)
-        setShowRegSuccessfulAlert(true)
-        // history.goBack()
-      })
+    if (isEditing === 'edit-registrant') {
+      handleRegistrantUpdate(token, registrantToEdit.pk, filterInput)
+    } else {
+      sessionRegister(filterInput)
+        .then(data => {
+          setShowModal('')
+          setIsRegistering(false)
+          setShowRegSuccessfulAlert(true)
+        })
+    }
   }
 
   return (
@@ -85,7 +88,9 @@ const SessionRegister = ({ sessions, sessionToRegister, setSessionToRegister, se
                 <div>
                   <div className='mt-2 mb-5 text-center'>
                     <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
-                      Session Registration
+                      {isEditing
+                        ? 'Update Registrant Info'
+                        : 'Session Registration'}
                     </h3>
                   </div>
                   <span className='space-y-4'>
@@ -108,7 +113,9 @@ const SessionRegister = ({ sessions, sessionToRegister, setSessionToRegister, se
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
                   <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                    Register
+                    {isEditing
+                      ? 'Update'
+                      : 'Register'}
                   </button>
                   <button
                     type='button'

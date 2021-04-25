@@ -6,11 +6,13 @@ import NavBtns from './NavBtns'
 import RegSuccessfulAlert from './alerts/RegSuccessfulAlert'
 import MobileNavBtns from './MobileNavBtns'
 import MobileNavMenu from './MobileNavMenu'
+import LoginModal from './LoginModal'
 
 // import Search from './Search'
 
-const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView }) => {
+const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, showModal, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView }) => {
   const [showMenu, setShowMenu] = useState(false)
+  const [isSigningIn, setIsSigningIn] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
 
@@ -20,15 +22,11 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setShowModal,
     pageClickEvent(dropdownRef, showMenu, setShowMenu)
   }, [showMenu])
 
-  // const renderName = () => {
-  //   if (username === 'adrmckinney') {
-  //     return 'Dan'
-  //   } else if (username === 'admin') {
-  //     return 'Rachael'
-  //   } else {
-  //     return username
-  //   }
-  // }
+  if (isSigningIn) {
+    return (
+      <LoginModal setAuth={setAuth} showModal='login-form' setShowModal={setShowModal} setIsSigningIn={setIsSigningIn} />
+    )
+  }
 
   return (
     <nav className='bg-mediumPurple border-b border-indigo-300 border-opacity-25 lg:border-none fixed top-0 z-10 w-full'>
@@ -56,11 +54,11 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setShowModal,
 
               {/* Heroicon name: outline/menu */}
 
-              <svg className={`${showMenu ? 'block' : 'hidden'} h-6 w-6`} xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
+              <svg className={`${showMenu ? 'hidden' : 'block'} h-6 w-6`} xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M4 6h16M4 12h16M4 18h16' />
               </svg>
               {/* Heroicon name: outline/x */}
-              <svg className={`${showMenu ? 'hidden' : 'block'} h-6 w-6`} xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
+              <svg className={`${showMenu ? 'block' : 'hidden'} h-6 w-6`} xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
               </svg>
             </button>
@@ -158,16 +156,15 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setShowModal,
                         </Link>
                         )
                       : (
-                        <Link
-                          to='/login'
+                        <button
                           className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            setShowModal('login-form')
+                            setIsSigningIn(true)
                           }}
                         >
                           Sign in
-                        </Link>)}
+                        </button>)}
                   </div>
                 </Transition>
               </div>
@@ -180,8 +177,11 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setShowModal,
 
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
       <div className='lg:hidden' id='mobile-menu'>
-        <MobileNavBtns />
-        <MobileNavMenu showMenu={showMenu} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} username={username} />
+        {showMenu &&
+          <>
+            <MobileNavBtns isLoggedIn={isLoggedIn} />
+            <MobileNavMenu showMenu={showMenu} setIsSigningIn={setIsSigningIn} setToken={setToken} setUsername={setUsername} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} username={username} />
+          </>}
       </div>
     </nav>
   )

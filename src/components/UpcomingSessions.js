@@ -1,15 +1,16 @@
-import { useHistory } from 'react-router-dom'
 import Moment from 'react-moment'
 import { useEffect, useState } from 'react'
-import { listSessions, deleteSession } from '../api'
+import { listSessions, deleteSession, updateSession } from '../api'
 import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
+import CreateSession from './CreateSession'
 
 const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setShowRegSuccessfulAlert }) => {
   const [isDeleting, setIsDeleting] = useState('')
   const [isRegistering, setIsRegistering] = useState(false)
+  const [isEditing, setIsEditing] = useState('')
   const [sessionToDelete, setSessionToDelete] = useState([])
-  const history = useHistory()
+  const [sessionToEdit, setSessionToEdit] = useState([])
 
   useEffect(() => {
     listSessions()
@@ -21,6 +22,15 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
 
   const handleDelete = (pk) => {
     deleteSession(token, pk)
+      .then(data => {
+        listSessions()
+          .then(data => setSessions(data))
+      })
+  }
+
+  const handleEditSession = (token, pk, input) => {
+    console.log('token', token)
+    updateSession(token, pk, input)
       .then(data => {
         listSessions()
           .then(data => setSessions(data))
@@ -39,8 +49,14 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
     )
   }
 
+  if (isEditing === 'edit-session') {
+    return (
+      <CreateSession isEditing='edit-session' token={token} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} sessionToEdit={sessionToEdit} handleEditSession={handleEditSession} />
+    )
+  }
+
   // DEBUGGER STATION
-  console.log('isRegistering', isRegistering)
+  // console.log('isRegistering', isRegistering)
 
   const renderSessionStatus = (session) => {
     if (session.session_status) {
@@ -48,10 +64,8 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
         <button
           className='w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
           onClick={() => {
-            // history.push('/session-register')
             setIsRegistering(true)
             setSessionToRegister(session)
-            // setShowModal('session-registration-form')
           }}
         >Sign up
         </button>
@@ -68,7 +82,6 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
       <div className='flex flex-col pt-10 bg-green-200 w-full h-screen mt-6 relative -top-16 border-b-4 border-coolGray-500'>
         <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='py-1 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-            {/* {sessions.map(session => ( */}
             <span>
               <h1 className='text-6xl text-center text-coolGray-500 mb-10 shadow-sm rounded-lg'>Upcoming Sessions</h1>
               <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mx-8'>
@@ -117,12 +130,10 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                           <>
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                               <button
-                                // to='/view-form'
                                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                                 onClick={() => {
-                                  setShowModal('view-form')
-                                  setFormToView('create-session-form')
-                                  setSessionToView(session)
+                                  setSessionToEdit(session)
+                                  setIsEditing('edit-session')
                                 }}
                               >Edit
                               </button>
@@ -133,7 +144,6 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                                 onClick={() => {
                                   setIsDeleting('delete-session')
                                   setSessionToDelete(session)
-                                  // handleDelete(session.pk)
                                 }}
                               >Delete
                               </button>

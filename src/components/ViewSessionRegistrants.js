@@ -17,36 +17,36 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   const [isDeleting, setIsDeleting] = useState('')
   const [isEditing, setIsEditing] = useState('')
   const [registrantToDelete, setRegistrantToDelete] = useState([])
-  const [registrantToUpdate, setRegistrantToUpdate] = useState([])
+  const [registrantToEdit, setRegistrantToEdit] = useState([])
   const [sessionToUpdate, setSessionToUpdate] = useState([])
-  // This state was for when I was trying to have a box that
-  // would check all boxes. This was to get the checked
-  // value from the each of the boxes.
-  // const [checked, setChecked] = useReducer(
-  //   (idx, value) => ({ ...idx, ...value })
-  // )
 
   // DEBUGGER STATION
   // console.log('allEmails', allEmails)
   // console.log('emails', emails)
-  console.log('isDeleting', isDeleting)
-  console.log('isEditing', isEditing)
-  console.log('registrantToUpdate', registrantToUpdate)
-  console.log('sessions in ViewSessionReg', sessions)
-  console.log('sessionToUpate', sessionToUpdate)
+  // console.log('isDeleting', isDeleting)
+  // console.log('isEditing', isEditing)
+  // console.log('registrantToEdit', registrantToEdit)
+  // console.log('registrantToDelete', registrantToDelete)
+  // console.log('sessions in ViewSessionReg', sessions)
+  // console.log('sessionToUpate', sessionToUpdate)
 
   useEffect(() => {
     listSessions()
       .then(sessions => {
         setSessions(sessions)
         setDropdownSelectorMode('view-session-registrants')
-        // setAllEmails(sessions.map(session => session.email))
       })
   }, [setDropdownSelectorMode])
 
+  const handleClearAllActionState = () => {
+    setSessionToUpdate([])
+    setRegistrantToEdit([])
+    setRegistrantToDelete([])
+    setEmails([])
+  }
+
   const handleEmails = (email) => {
     const checkEmails = [...emails]
-
     if (checkEmails.includes(email)) {
       setEmails(emails.filter(em => em !== email))
     } else {
@@ -55,6 +55,24 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     }
   }
 
+  const handleDeleteState = (e, registrant) => {
+    if (!e.target.checked) {
+      setRegistrantToDelete([])
+    } else {
+      setRegistrantToDelete(registrant)
+    }
+  }
+
+  const handleEditState = (e, registrant) => {
+    if (!e.target.checked) {
+      setRegistrantToEdit([])
+    } else {
+      setRegistrantToEdit(registrant)
+    }
+  }
+
+  // This function handles how the btn text and mail functions
+  // are implemented based on the action dropdown selection
   const handleBtnText = () => {
     if (selectedAction === 'Email All') {
       return (
@@ -83,10 +101,10 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
         </a>
       )
     } else if (selectedAction === 'Update') {
-      // const sessionToUpdte = sessions.filter(session => session.pk === registrantToUpdate.session)
+      // const sessionToUpdte = sessions.filter(session => session.pk === registrantToEdit.session)
       // console.log('sessionToUpdte', sessionToUpdte)
       // setSessionToUpdate(sessionToUpdte)
-      // console.log('registrantToUpdate', registrantToUpdate)
+      // console.log('registrantToEdit', registrantToEdit)
       return (
         <span className='flex'>
           <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
@@ -103,8 +121,11 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     }
   }
 
+  // This function handles getting the session ready to
+  // be passed to SessionRegister.js. It is passed as
+  // 'sessionToRegister' because that is already
+  // working on the receiving end.
   const handleSessionToEdit = (registrant) => {
-    // setSessionToUpdate(sessions.filter(session => session.pk === registrant.session))
     sessions.forEach(session => {
       if (session.pk === registrant.session) {
         setSessionToUpdate(session)
@@ -119,72 +140,35 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
           .then(sessions => {
             setSessions(sessions)
             setDropdownSelectorMode('view-session-registrants')
-            // setAllEmails(sessions.map(session => session.email))
           })
       })
   }
 
-  const handleRegistrantUpdate = (pk) => {
-    updateRegistrant(token, pk)
+  const handleRegistrantUpdate = (token, pk, input) => {
+    updateRegistrant(token, pk, input)
       .then(data => {
         listSessions()
           .then(sessions => {
             setSessions(sessions)
+            setIsEditing('')
             setDropdownSelectorMode('view-session-registrants')
-            // setAllEmails(sessions.map(session => session.email))
           })
       })
   }
 
   if (isDeleting) {
     return (
-      <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={registrantToDelete} />
+      <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={registrantToDelete} handleClearAllActionState={handleClearAllActionState} />
     )
   }
 
-  if (isEditing === 'edit-registrant' && registrantToUpdate.pk) {
+  if (isEditing === 'edit-registrant' && registrantToEdit.pk) {
     return (
       <SessionRegister
-        token={token} registrantToUpdate={registrantToUpdate} isEditing={isEditing} sessions={sessions} setIsEditing={setIsEditing} showModal='session-registration-form' setShowModal={setShowModal} sessionToRegister={sessionToUpdate}
+        token={token} registrantToEdit={registrantToEdit} isEditing={isEditing} sessions={sessions} setIsEditing={setIsEditing} showModal='session-registration-form' setShowModal={setShowModal} sessionToRegister={sessionToUpdate} handleRegistrantUpdate={handleRegistrantUpdate}
       />
     )
   }
-
-  // const handleBtnClick = () => {
-  //   if (selectedAction === 'Email All') {
-
-  //   }
-  // }
-
-  // These functions were for when I was trying to have a box that
-  // would check all boxes. This was to get the checked
-  // value from the each of the boxes.
-
-  // const handleChecked = (idx, email) => {
-  //   // const checkChecked = [...checked]
-  //   if (!checked) {
-  //     setChecked({ [idx]: email })
-  //   } else {
-  //     let match = false
-  //     console.log('match before', match)
-  //     checked.forEach(check => {
-  //       if (check.idx === idx) {
-  //         match = true
-  //       }
-  //     })
-
-  //     if (match === false) {
-  //       setChecked({ [idx]: email })
-  //     } else {
-  //       console.log('match after', match)
-  //     }
-  //   }
-
-  //   setChecked(checked.filter(ch => ch !== idx))
-  // } else {
-  //   setChecked({ [idx]: email })
-  // }
-  // }
 
   if (!isLoggedIn) {
     <Redirect to='/' />
@@ -212,7 +196,6 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
         <div className='flex flex-col pt-20'>
           <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
             <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-              {/* {sessions.map(session => ( */}
               <span>
                 <span className='flex items-start'>
                   <h1 className='text-2xl flex flex-1 justify-center mb-10 shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1>
@@ -288,11 +271,10 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
                               type='checkbox'
                               value={registrant.email}
                               onChange={(e) => {
-                                // handleCheckAll(idx, e.target.checked)
                                 handleEmails(registrant.email)
-                                setRegistrantToDelete(registrant)
-                                setRegistrantToUpdate(registrant)
                                 handleSessionToEdit(registrant)
+                                handleEditState(e, registrant)
+                                handleDeleteState(e, registrant)
                               }}
                             />
                           </td>
@@ -302,7 +284,6 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
                   </table>
                 </div>
               </span>
-              {/* ))} */}
             </div>
           </div>
         </div>

@@ -9,9 +9,7 @@ import Header from './components/Header'
 import Nav from './components/Nav'
 import BookStudy from './components/BookStudy'
 import Sessions from './components/Sessions'
-import LoginModal from './components/LoginModal'
 import Connect from './components/Connect'
-// import SessionRegister from './components/sessionForms/SessionRegister'
 import CreateSession from './components/CreateSession'
 import ViewSessionRegistrants from './components/ViewSessionRegistrants'
 import ViewForm from './components/ViewForm'
@@ -44,21 +42,19 @@ function App () {
 
   // DEBUGGER STATION
   console.log('formToView', formToView)
+  console.log('token', token)
 
   return (
     <Router>
       <div className='min-h-screen bg-ghostWhite'>
 
         <div className='bg-mediumPurple pb-32'>
-          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setShowModal={setShowModal} loggedInName={loggedInName} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} setFormToView={setFormToView} />
+          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} setFormToView={setFormToView} />
           <Header />
         </div>
         <Switch>
           <Route path='/registeradmin'>
             <Register token={token} showModal='admin-registration-form' setShowModal={setShowModal} />
-          </Route>
-          <Route path='/login'>
-            <LoginModal setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} />
           </Route>
         </Switch>
         <main className='-mt-32'>
@@ -72,9 +68,6 @@ function App () {
             <Route path='/connect'>
               <Connect />
             </Route>
-            {/* <Route path='/session-register'>
-              <SessionRegister sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showModal={showModal} setShowModal={setShowModal} />
-            </Route> */}
             <Route path='/create-session'>
               <CreateSession token={token} showModal={showModal} setShowModal={setShowModal} formToView={formToView} setFormToView={setFormToView} />
             </Route>

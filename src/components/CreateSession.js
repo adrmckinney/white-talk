@@ -2,13 +2,13 @@ import { useReducer, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import moment from 'moment'
-import { createSession, updateSession } from '../api'
+import { createSession } from '../api'
 import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionDates from './createSessionForm.js/SessionDates'
 import SessionStatus from './createSessionForm.js/SessionStatus'
 
-const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit }) => {
+const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession }) => {
   const [time, setTime] = useState('')
   const history = useHistory()
   const [filterInput, setFilterInput] = useReducer(
@@ -27,7 +27,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
   }
 
   useEffect(() => {
-    if (isEditing === 'create-session' && sessionToEdit) {
+    if (isEditing === 'edit-session' && sessionToEdit) {
       // for the existing dates to populate the datepicker fields that have to
       // run through this function that formats them correctly.
       const convertDate = (date) => {
@@ -52,14 +52,10 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (isEditing === 'create-session') {
-      // console.log('sessionToEdit.pk', sessionToEdit.pk)
-      updateSession(token, sessionToEdit.pk, filterInput)
-        .then(data => {
-          console.log('data', data)
-          // setShowModal('')
-          history.push('/sessions')
-        })
+    if (isEditing === 'edit-session') {
+      handleEditSession(token, sessionToEdit.pk, filterInput)
+      setIsEditing('')
+      setShowModal('')
     } else {
       createSession(token, filterInput)
         .then(data => {
@@ -129,7 +125,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                   </div>
                   <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
                     <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                      {isEditing === 'create-session'
+                      {isEditing === 'edit-session'
                         ? 'Update'
                         : 'Create'}
                     </button>
@@ -138,10 +134,10 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                       className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                       onClick={() => {
                         if (isEditing) {
-                          history.goBack()
+                          // history.goBack()
                           setIsEditing('')
                         } else {
-                          history.goBack()
+                          // history.goBack()
                           setShowModal('')
                         }
                       }}

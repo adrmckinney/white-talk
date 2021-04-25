@@ -1,14 +1,12 @@
 import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { login } from '../api'
 import Errors from './Errors'
 
-const LoginModal = ({ showModal, setShowModal, setAuth }) => {
+const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState('')
-  const history = useHistory()
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -17,7 +15,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth }) => {
         if (data && data.auth_token) {
           setAuth(username, data.auth_token)
           setShowModal('')
-          history.push('/')
+          setIsSigningIn(false)
         }
       })
       .catch(error => {
@@ -44,7 +42,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth }) => {
           </div>
         </Transition>
         {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-        <span className='hidden sm:inline-block sm:align-middle sm:h-screen sm:w-1/3' aria-hidden='true'>&#8203;
+        <span className='inline-block align-middle h-screen w-auto sm:w-1/2 md:w-1/3' aria-hidden='true'>&#8203;
 
           {/* Modal panel, show/hide based on modal state. */}
           <Transition
@@ -112,7 +110,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth }) => {
                     type='button'
                     className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                     onClick={() => {
-                      history.goBack()
+                      setIsSigningIn(false)
                       setShowModal('')
                     }}
                   >
