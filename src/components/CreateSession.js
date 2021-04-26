@@ -2,13 +2,13 @@ import { useReducer, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import moment from 'moment'
-import { createSession } from '../api'
+import { createSession, listSessions } from '../api'
 import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionDates from './createSessionForm.js/SessionDates'
 import SessionStatus from './createSessionForm.js/SessionStatus'
 
-const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession }) => {
+const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession, setIsCreatingSession, setSessions }) => {
   const [time, setTime] = useState('')
   const history = useHistory()
   const [filterInput, setFilterInput] = useReducer(
@@ -59,9 +59,10 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
     } else {
       createSession(token, filterInput)
         .then(data => {
-          console.log('data', data)
           setShowModal('')
-          history.goBack()
+          setIsCreatingSession(false)
+          listSessions()
+            .then(data => setSessions(data))
         })
     }
   }
@@ -86,7 +87,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
             </div>
           </Transition>
           {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-          <span className='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden='true'>&#8203;
+          <span className='sm:inline-block sm:align-middle sm:h-screen w-3/4' aria-hidden='true'>&#8203;
 
             {/* Modal panel, show/hide based on modal state. */}
             <Transition
@@ -139,6 +140,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                         } else {
                           // history.goBack()
                           setShowModal('')
+                          setIsCreatingSession(false)
                         }
                       }}
                     >

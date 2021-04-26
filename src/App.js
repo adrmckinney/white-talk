@@ -10,7 +10,6 @@ import Nav from './components/Nav'
 import BookStudy from './components/BookStudy'
 import Sessions from './components/Sessions'
 import Connect from './components/Connect'
-import CreateSession from './components/CreateSession'
 import ViewSessionRegistrants from './components/ViewSessionRegistrants'
 import ViewForm from './components/ViewForm'
 
@@ -41,15 +40,15 @@ function App () {
   }, [token])
 
   // DEBUGGER STATION
-  console.log('formToView', formToView)
-  console.log('token', token)
+  // console.log('formToView', formToView)
+  // console.log('token', token)
 
   return (
     <Router>
       <div className='min-h-screen bg-ghostWhite'>
 
         <div className='bg-mediumPurple pb-32'>
-          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} setFormToView={setFormToView} />
+          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} setFormToView={setFormToView} setSessions={setSessions} />
           <Header />
         </div>
         <Switch>
@@ -67,9 +66,6 @@ function App () {
             </Route>
             <Route path='/connect'>
               <Connect />
-            </Route>
-            <Route path='/create-session'>
-              <CreateSession token={token} showModal={showModal} setShowModal={setShowModal} formToView={formToView} setFormToView={setFormToView} />
             </Route>
             <Route path='/view-session-registrants'>
               <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} sessions={sessions} />

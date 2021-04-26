@@ -4,7 +4,7 @@ const SessionDescription = ({ handleFilterSession, filterInput }) => {
     <>
       <label
         htmlFor='description'
-        className='block text-sm sm:text-lg font-medium text-gray-700 text-left mt-4'
+        className='block text-sm sm:text-lg font-medium text-gray-700 text-center sm:text-left mt-4'
       >
         Description
       </label>

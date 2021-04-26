@@ -4,7 +4,7 @@ const SessionStatus = ({ handleFilterSession, filterInput }) => {
     <>
       <div className='flex items-center justify-around'>
         <span
-          className={`${filterInput.session_status ? 'bg-none' : 'bg-red-300 rounded-lg'} px-3 py-2 ml-3`}
+          className={`${filterInput.session_status ? 'bg-none' : 'bg-red-300 rounded-lg'} px-2 py-0.5 sm:px-3 sm:py-2 ml-0 mr-3 sm:mr-0 sm:ml-3 text-center`}
           id='session-status'
         >
           <span className={`${filterInput.session_status ? 'text-gray-900' : 'text-gray-700'} text-sm font-medium`}>Session Closed</span>
@@ -26,7 +26,7 @@ const SessionStatus = ({ handleFilterSession, filterInput }) => {
           />
         </button>
         <span
-          className={`${filterInput.session_status ? 'bg-green-300 rounded-lg' : 'bg-none'} px-3 py-2 ml-3`}
+          className={`${filterInput.session_status ? 'bg-green-300 rounded-lg' : 'bg-none'} px-3 py-2 ml-3 text-center`}
           id='session-status'
         >
           <span className={`${filterInput.session_status ? 'text-gray-700' : 'text-gray-900'} text-sm font-medium`}>Session Open</span>

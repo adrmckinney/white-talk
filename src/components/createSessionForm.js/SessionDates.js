@@ -4,10 +4,10 @@ import 'react-datepicker/dist/react-datepicker.css'
 const SessionDates = ({ time, setTime, handleFilterSession, filterInput }) => {
   return (
     <>
-      <div className='flex space-x-4'>
+      <div className='flex flex-col sm:flex-row sm:space-x-6'>
         <div>
           <label
-            className='block text-sm sm:text-lg font-medium text-gray-700 text-left mt-4'
+            className='block text-sm sm:text-lg font-medium text-gray-700 text-center sm:text-left mt-4'
             htmlFor='startDate'
           >
             Start Date
@@ -22,7 +22,7 @@ const SessionDates = ({ time, setTime, handleFilterSession, filterInput }) => {
         </div>
         <div>
           <label
-            className='block text-sm sm:text-lg font-medium text-gray-700 text-left mt-4'
+            className='block text-sm sm:text-lg font-medium text-gray-700 text-center sm:text-left mt-4'
             htmlFor='endDate'
           >
             End Date
@@ -32,7 +32,6 @@ const SessionDates = ({ time, setTime, handleFilterSession, filterInput }) => {
             id='endDate'
             autoComplete='off'
             placeholderText='Select an End Date'
-            // onChange={date => setEndDate(date)}
             onChange={e => handleFilterSession('end_date', e)}
           />
         </div>

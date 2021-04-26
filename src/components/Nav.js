@@ -7,12 +7,14 @@ import RegSuccessfulAlert from './alerts/RegSuccessfulAlert'
 import MobileNavBtns from './MobileNavBtns'
 import MobileNavMenu from './MobileNavMenu'
 import LoginModal from './LoginModal'
+import CreateSession from './CreateSession'
 
 // import Search from './Search'
 
-const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, showModal, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView }) => {
+const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, showModal, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView, setSessions }) => {
   const [showMenu, setShowMenu] = useState(false)
   const [isSigningIn, setIsSigningIn] = useState(false)
+  const [isCreatingSession, setIsCreatingSession] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
 
@@ -25,6 +27,12 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   if (isSigningIn) {
     return (
       <LoginModal setAuth={setAuth} showModal='login-form' setShowModal={setShowModal} setIsSigningIn={setIsSigningIn} />
+    )
+  }
+
+  if (isCreatingSession) {
+    return (
+      <CreateSession token={token} showModal='create-session-form' setShowModal={setShowModal} setIsCreatingSession={setIsCreatingSession} setSessions={setSessions} />
     )
   }
 
@@ -103,17 +111,16 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                   >
                     {token &&
                       <>
-                        <Link
-                          to='/create-session'
-                          className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                        <button
+                          className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
                           role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            setShowModal('create-session-form')
+                            setIsCreatingSession(true)
                           }}
                         >
                           Create New Session
-                        </Link>
+                        </button>
 
                         <Link
                           to='/registeradmin'
@@ -180,7 +187,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
         {showMenu &&
           <>
             <MobileNavBtns isLoggedIn={isLoggedIn} />
-            <MobileNavMenu showMenu={showMenu} setIsSigningIn={setIsSigningIn} setToken={setToken} setUsername={setUsername} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} username={username} />
+            <MobileNavMenu showMenu={showMenu} setIsSigningIn={setIsSigningIn} setToken={setToken} setUsername={setUsername} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} username={username} setIsCreatingSession={setIsCreatingSession} />
           </>}
       </div>
     </nav>
