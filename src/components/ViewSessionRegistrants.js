@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
+import { ChevronDoubleRightSolid } from '@graywolfai/react-heroicons'
 import Moment from 'react-moment'
 import { listSessions, deleteRegistrant, updateRegistrant } from '../api'
 import SelectionElement from './SelectionElement'
@@ -19,12 +20,15 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   const [registrantToDelete, setRegistrantToDelete] = useState([])
   const [registrantToEdit, setRegistrantToEdit] = useState([])
   const [sessionToUpdate, setSessionToUpdate] = useState([])
+  const [refreshAfterAction, setRefreshAfterAction] = useState([])
 
   // DEBUGGER STATION
   // console.log('allEmails', allEmails)
   // console.log('emails', emails)
   // console.log('isDeleting', isDeleting)
   // console.log('isEditing', isEditing)
+  console.log('sessions', sessions)
+  console.log('registrantsToRender', registrantsToRender)
   // console.log('registrantToEdit', registrantToEdit)
   // console.log('registrantToDelete', registrantToDelete)
   // console.log('sessions in ViewSessionReg', sessions)
@@ -101,10 +105,6 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
         </a>
       )
     } else if (selectedAction === 'Update') {
-      // const sessionToUpdte = sessions.filter(session => session.pk === registrantToEdit.session)
-      // console.log('sessionToUpdte', sessionToUpdte)
-      // setSessionToUpdate(sessionToUpdte)
-      // console.log('registrantToEdit', registrantToEdit)
       return (
         <span className='flex'>
           <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
@@ -139,6 +139,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
         listSessions()
           .then(sessions => {
             setSessions(sessions)
+            handleRefreshAfterEdit(sessions)
             setDropdownSelectorMode('view-session-registrants')
           })
       })
@@ -150,10 +151,19 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
         listSessions()
           .then(sessions => {
             setSessions(sessions)
+            handleRefreshAfterEdit(sessions)
             setIsEditing('')
             setDropdownSelectorMode('view-session-registrants')
           })
       })
+  }
+
+  const handleRefreshAfterEdit = (sessions) => {
+    sessions.map(session => {
+      if (session.pk === registrantsToRender.pk) {
+        setRegistrantsToRender(session)
+      }
+    })
   }
 
   if (isDeleting) {
@@ -200,12 +210,16 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
                 <span className='flex items-start'>
                   <h1 className='text-2xl flex flex-1 justify-center mb-10 shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1>
                   {registrantsToRender.pk &&
-                    <>
-                      <div className='flex flex-1 justify-center'>
+                    <div className='flex flex-row space-x-2'>
+                      <div className={`flex justify-center ${selectedAction && 'transform -translate-x-2 duration-700'}`}>
                         <StaticMenu dropdownSelectorMode='action' selectedAction={selectedAction} setSelectedAction={setSelectedAction} />
                       </div>
                       {selectedAction &&
-                        <span className='flex flex-1/2 items-start'>
+                        <div className='flex items-center'>
+                          <ChevronDoubleRightSolid className='-ml-0.5 mr-2 h-4 w-4 transition delay-1000 animate-pulse' aria-hidden='true' />
+                        </div>}
+                      {selectedAction &&
+                        <span className='flex transition-all delay-1000 duration-500 ease-in-out'>
                           <button
                             type='button'
                             className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
@@ -222,7 +236,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
                             {handleBtnText()}
                           </button>
                         </span>}
-                    </>}
+                    </div>}
                 </span>
                 <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
                   <table className='min-w-full divide-y divide-gray-200'>

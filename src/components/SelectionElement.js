@@ -8,6 +8,9 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
   const [selectedValue, setSelectedValue] = useState([])
   const dropdownRef = useRef(null)
 
+  // DEBUGGER STATION
+  console.log('selectedValue', selectedValue)
+
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
   // It needs the useRef Variable, menu state variable, and the menu setState function.
   useEffect(() => {
