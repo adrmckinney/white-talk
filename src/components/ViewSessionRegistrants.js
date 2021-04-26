@@ -20,7 +20,6 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   const [registrantToDelete, setRegistrantToDelete] = useState([])
   const [registrantToEdit, setRegistrantToEdit] = useState([])
   const [sessionToUpdate, setSessionToUpdate] = useState([])
-  const [refreshAfterAction, setRefreshAfterAction] = useState([])
 
   // DEBUGGER STATION
   // console.log('allEmails', allEmails)
@@ -159,7 +158,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   }
 
   const handleRefreshAfterEdit = (sessions) => {
-    sessions.map(session => {
+    sessions.forEach(session => {
       if (session.pk === registrantsToRender.pk) {
         setRegistrantsToRender(session)
       }

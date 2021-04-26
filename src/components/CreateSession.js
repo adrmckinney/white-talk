@@ -1,5 +1,4 @@
 import { useReducer, useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import moment from 'moment'
 import { createSession, listSessions } from '../api'
@@ -10,7 +9,6 @@ import SessionStatus from './createSessionForm.js/SessionStatus'
 
 const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession, setIsCreatingSession, setSessions }) => {
   const [time, setTime] = useState('')
-  const history = useHistory()
   const [filterInput, setFilterInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -135,10 +133,8 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                       className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                       onClick={() => {
                         if (isEditing) {
-                          // history.goBack()
                           setIsEditing('')
                         } else {
-                          // history.goBack()
                           setShowModal('')
                           setIsCreatingSession(false)
                         }
