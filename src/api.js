@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const url = axios.create({
-  // baseURL: 'https://white-talk-api.herokuapp.com/'
-  baseURL: 'http://127.0.0.1:8000/'
+  baseURL: 'https://white-talk-api.herokuapp.com/'
+  // baseURL: 'http://127.0.0.1:8000/'
 })
 
 export const register = (username, password) => {
