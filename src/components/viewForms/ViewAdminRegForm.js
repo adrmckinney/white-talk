@@ -1,10 +1,7 @@
 import { useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import { getUser } from '../../api'
 
-const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIsEditing, loginProfile, setLoginProfile }) => {
-  const history = useHistory()
-
+const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIsEditing, loginProfile, setLoginProfile, setIsEditingAdmin }) => {
   console.log('showModal', showModal)
 
   useEffect(() => {
@@ -66,10 +63,10 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIs
           type='button'
           className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
           onClick={() => {
-            history.goBack()
             setShowModal('')
             setIsEditing('')
             setFormToView('')
+            setIsEditingAdmin(false)
           }}
         >
           Cancel

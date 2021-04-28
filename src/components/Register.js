@@ -8,7 +8,7 @@ import AdminEmail from './registerAdminForm.js/AdminEmail'
 import AdminUsername from './registerAdminForm.js/AdminUsername'
 import AdminPassword from './registerAdminForm.js/AdminPassword'
 
-const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, loginProfile }) => {
+const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, loginProfile, setIsRegistering, setIsEditingAdmin }) => {
   const [errors, setErrors] = useState('')
   const history = useHistory()
 
@@ -41,15 +41,17 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
   // console.log('filterAdminRegister', filterAdminRegister)
 
   const handleRegister = (e) => {
-    console.log('handle register ran')
     e.preventDefault()
+    if (isEditing === 'register') {
+      // figure out how to update user in djoser
+    }
     register(filterAdminRegister.username, filterAdminRegister.password)
       .then(data => {
         // setUsername(data.username)
         // setPassword(data.password)
         setShowModal('')
         setIsEditing('')
-        history.push('/')
+        setIsRegistering(false)
       })
       .catch(error => {
         setErrors(error.message)
@@ -137,10 +139,11 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
                     className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                     onClick={() => {
                       if (isEditing) {
-                        history.push('/')
                         setIsEditing('')
+                        setShowModal('')
                       } else {
-                        history.goBack()
+                        setIsRegistering(false)
+                        setIsEditingAdmin(false)
                         setShowModal('')
                       }
                     }}

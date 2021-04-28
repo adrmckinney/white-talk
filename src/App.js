@@ -52,9 +52,9 @@ function App () {
           <Header />
         </div>
         <Switch>
-          <Route path='/registeradmin'>
+          {/* <Route path='/registeradmin'>
             <Register token={token} showModal='admin-registration-form' setShowModal={setShowModal} />
-          </Route>
+          </Route> */}
         </Switch>
         <main className='-mt-32'>
           <Switch>

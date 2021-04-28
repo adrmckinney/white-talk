@@ -68,7 +68,7 @@ export const updateAdmin = (token) => {
 
 export const getUser = (token) => {
   return url
-    .get('api/my-login/',
+    .get('api/users/me/',
       {
         headers: {
           Authorization: `Token ${token}`

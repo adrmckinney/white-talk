@@ -5,7 +5,7 @@ import ViewAdminRegForm from './viewForms/ViewAdminRegForm'
 import ViewCreateSessionForm from './viewForms/ViewCreateSessionForm'
 import CreateSession from './CreateSession'
 
-const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, sessionToView }) => {
+const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, sessionToView, setIsEditingAdmin }) => {
   const [isEditing, setIsEditing] = useState('')
   const [loginProfile, setLoginProfile] = useState([])
 
@@ -13,16 +13,16 @@ const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, s
   const handleFormSelection = () => {
     if (formToView === 'admin-reg-form') {
       return (
-        <ViewAdminRegForm token={token} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} loginProfile={loginProfile} setLoginProfile={setLoginProfile} />
+        <ViewAdminRegForm token={token} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} loginProfile={loginProfile} setLoginProfile={setLoginProfile} setIsEditingAdmin={setIsEditingAdmin} />
       )
     } else if (formToView === 'create-session-form') {
       return (
         <ViewCreateSessionForm token={token} setIsEditing={setIsEditing} setShowModal={setShowModal} sessionToView={sessionToView} setFormToView={setFormToView} />
       )
     } else if (formToView === 'register') {
-      return (
-        <Register />
-      )
+      // return (
+      //   <Register token={token} showModal='admin-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
+      // )
     }
   }
 
@@ -33,9 +33,11 @@ const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, s
       <Register
         token={token}
         loginProfile={loginProfile}
-        isEditing={isEditing}
+        isEditing='register'
         setIsEditing={setIsEditing}
         showModal='admin-registration-form'
+        setShowModal={setShowModal}
+        setIsEditingAdmin={setIsEditingAdmin}
       />
     )
   }

@@ -8,15 +8,24 @@ import MobileNavBtns from './MobileNavBtns'
 import MobileNavMenu from './MobileNavMenu'
 import LoginModal from './LoginModal'
 import CreateSession from './CreateSession'
+import Register from './Register'
+import ViewForm from './ViewForm'
 
 // import Search from './Search'
 
 const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, showModal, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView, setSessions }) => {
   const [showMenu, setShowMenu] = useState(false)
   const [isSigningIn, setIsSigningIn] = useState(false)
+  const [isRegistering, setIsRegistering] = useState(false)
+  const [isEditingAdmin, setIsEditingAdmin] = useState(false)
   const [isCreatingSession, setIsCreatingSession] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
+
+  // DEBUGGER STATION
+  console.log('isRegistering', isRegistering)
+  console.log('isCreatingSession', isCreatingSession)
+  console.log('isSigningIn', isSigningIn)
 
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
   // It needs the useRef Variable, menu state variable, and the menu setState function.
@@ -30,9 +39,21 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
     )
   }
 
+  if (isRegistering) {
+    return (
+      <Register token={token} showModal='admin-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
+    )
+  }
+
   if (isCreatingSession) {
     return (
       <CreateSession token={token} showModal='create-session-form' setShowModal={setShowModal} setIsCreatingSession={setIsCreatingSession} setSessions={setSessions} />
+    )
+  }
+
+  if (isEditingAdmin) {
+    return (
+      <ViewForm token={token} isLoggedIn={isLoggedIn} showModal='view-form' setShowModal={setShowModal} formToView='admin-reg-form' setFormToView={setFormToView} setIsEditingAdmin={setIsEditingAdmin} />
     )
   }
 
@@ -122,30 +143,28 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                           Create New Session
                         </button>
 
-                        <Link
-                          to='/registeradmin'
-                          className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                        <button
+                          type='button'
+                          className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
                           role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            setShowModal('admin-registration-form')
+                            setIsRegistering(true)
                           }}
                         >
                           Register New Admin
-                        </Link>
+                        </button>
 
-                        <Link
-                          to='/view-form'
-                          className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                        <button
+                          className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
                           role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            setShowModal('view-form')
-                            setFormToView('admin-reg-form')
+                            setIsEditingAdmin(true)
                           }}
                         >
                           Update User Settings
-                        </Link>
+                        </button>
                       </>}
                     {isLoggedIn
                       ? (
