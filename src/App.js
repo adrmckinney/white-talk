@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import createPersistedState from 'use-persisted-state'
 import './App.css'
 import { getUser } from './api'
-import Register from './components/Register'
 import Home from './Home'
 import Header from './components/Header'
 import Nav from './components/Nav'
@@ -51,11 +50,6 @@ function App () {
           <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} setFormToView={setFormToView} setSessions={setSessions} />
           <Header />
         </div>
-        <Switch>
-          {/* <Route path='/registeradmin'>
-            <Register token={token} showModal='admin-registration-form' setShowModal={setShowModal} />
-          </Route> */}
-        </Switch>
         <main className='-mt-32'>
           <Switch>
             <Route path='/book-study'>

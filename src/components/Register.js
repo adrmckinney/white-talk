@@ -1,5 +1,4 @@
 import { useEffect, useReducer, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { register } from '../api'
 import Errors from './Errors'
@@ -10,7 +9,6 @@ import AdminPassword from './registerAdminForm.js/AdminPassword'
 
 const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, loginProfile, setIsRegistering, setIsEditingAdmin }) => {
   const [errors, setErrors] = useState('')
-  const history = useHistory()
 
   const [filterAdminRegister, setFilterAdminRegister] = useReducer(
     (name, value) => ({ ...name, ...value }),
