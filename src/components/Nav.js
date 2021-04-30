@@ -23,9 +23,9 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   const history = useHistory('')
 
   // DEBUGGER STATION
-  console.log('isRegistering', isRegistering)
-  console.log('isCreatingSession', isCreatingSession)
-  console.log('isSigningIn', isSigningIn)
+  // console.log('isRegistering', isRegistering)
+  // console.log('isCreatingSession', isCreatingSession)
+  // console.log('isSigningIn', isSigningIn)
 
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
   // It needs the useRef Variable, menu state variable, and the menu setState function.

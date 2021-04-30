@@ -4,17 +4,24 @@ import Register from './Register'
 import ViewAdminRegForm from './viewForms/ViewAdminRegForm'
 import ViewCreateSessionForm from './viewForms/ViewCreateSessionForm'
 import CreateSession from './CreateSession'
-import { changePassword } from '../api'
+import { requestChangePassword } from '../api'
+import ResetPasswordEmailAlert from './alerts/ResetPasswordEmailAlert'
 
 const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, sessionToView, setIsEditingAdmin }) => {
   const [isEditing, setIsEditing] = useState('')
   const [loginProfile, setLoginProfile] = useState([])
+  const [isEmailingReset, setIsEmailingReset] = useState('')
+
+  // DEBUGGER STATION
+  console.log('showModal', showModal)
+  console.log('formToView', formToView)
+  console.log('isEditing', isEditing)
 
   //   Function to handle which form is to be rendered inside modal ViewForm
   const handleFormSelection = () => {
     if (formToView === 'admin-reg-form') {
       return (
-        <ViewAdminRegForm token={token} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} loginProfile={loginProfile} setLoginProfile={setLoginProfile} setIsEditingAdmin={setIsEditingAdmin} handleChangePassword={handleChangePassword} />
+        <ViewAdminRegForm token={token} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} loginProfile={loginProfile} setLoginProfile={setLoginProfile} setIsEditingAdmin={setIsEditingAdmin} handleRequestChangePassword={handleRequestChangePassword} />
       )
     } else if (formToView === 'create-session-form') {
       return (
@@ -67,10 +74,18 @@ const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, s
   // }
   // ^^^^^ isEditing CONDITIONALS ^^^^^
 
-  const handleChangePassword = (email) => {
-    changePassword(email)
+  if (isEmailingReset) {
+    return (
+      <ResetPasswordEmailAlert isEmailingReset={isEmailingReset} setIsEmailingReset={setIsEmailingReset} />
+    )
+  }
+
+  const handleRequestChangePassword = (email) => {
+    setShowModal('')
+    setFormToView('')
+    requestChangePassword(email)
       .then(data => {
-        setShowModal('')
+        setIsEmailingReset('password-reset')
       })
   }
 

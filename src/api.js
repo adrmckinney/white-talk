@@ -65,11 +65,23 @@ export const updateAdmin = (token) => {
     .then(res => res.data)
 }
 
-export const changePassword = (email) => {
+export const requestChangePassword = (email) => {
   return url
     .post('api/auth/users/reset_password/',
       {
         email: email
+      }
+    )
+    .then(res => res.data)
+}
+
+export const confirmChangePassword = (uid, token, password) => {
+  return url
+    .post('api/auth/users/reset_password_confirm/',
+      {
+        uid,
+        token,
+        new_password: password
       }
     )
     .then(res => res.data)

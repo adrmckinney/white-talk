@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { getUser } from '../../api'
 
-const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIsEditing, loginProfile, setLoginProfile, setIsEditingAdmin, handleChangePassword }) => {
-  console.log('showModal', showModal)
+const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIsEditing, loginProfile, setLoginProfile, setIsEditingAdmin, handleRequestChangePassword }) => {
+  // console.log('showModal', showModal)
 
   useEffect(() => {
     getUser(token)
@@ -83,9 +83,7 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIs
               type='submit'
               className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
               onClick={() => {
-                // setIsEditing('register')
-                // setShowModal('')
-                handleChangePassword(loginProfile.email)
+                handleRequestChangePassword(loginProfile.email)
               }}
             >
               Change Password
@@ -94,15 +92,6 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIs
         </div>
       </div>
       <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-        {/* <button
-          type='submit'
-          className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-          onClick={() => {
-            setIsEditing('register')
-          }}
-        >
-          Change Password
-        </button> */}
         <button
           type='button'
           className='mt-3 w-full col-span-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
