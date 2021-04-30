@@ -33,7 +33,7 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
   }, [isEditing, loginProfile])
 
   // DEBUGGER STATION
-  // console.log('isEditing REGISTER', isEditing)
+  console.log('isEditing REGISTER', isEditing)
   // console.log('showModal REGISTER', showModal)
   // console.log('loginProfile', loginProfile)
   // console.log('filterAdminRegister', filterAdminRegister)
@@ -117,7 +117,7 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
                     <div>
                       <AdminUsername filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
                     </div>
-                    {!isEditing === register &&
+                    {isEditing !== 'register' &&
                       <div>
                         <AdminPassword filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
                       </div>}
@@ -139,9 +139,9 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
                       if (isEditing) {
                         setIsEditing('')
                         setShowModal('')
+                        setIsEditingAdmin(false)
                       } else {
                         setIsRegistering(false)
-                        setIsEditingAdmin(false)
                         setShowModal('')
                       }
                     }}

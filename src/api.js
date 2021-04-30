@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 const url = axios.create({
-  baseURL: 'https://white-talk-api.herokuapp.com/'
+  // baseURL: 'https://white-talk-api.herokuapp.com/'
+  // baseURL: process.env.REACT_APP_DEPLOYED_API_URL
+  baseURL: process.env.REACT_APP_LOCAL_API_URL
   // baseURL: 'http://127.0.0.1:8000/'
 })
 
@@ -54,7 +56,7 @@ export const login = (username, password) => {
 
 export const updateAdmin = (token) => {
   return url
-    .put('auth/users/',
+    .put('api/auth/users/',
       {
         headers: {
           Authorization: `Token ${token}`
@@ -62,6 +64,17 @@ export const updateAdmin = (token) => {
       })
     .then(res => res.data)
 }
+
+export const changePassword = (email) => {
+  return url
+    .post('api/auth/users/reset_password/',
+      {
+        email: email
+      }
+    )
+    .then(res => res.data)
+}
+
 // ***************************
 // *** All things SESSIONS ***
 // ***************************

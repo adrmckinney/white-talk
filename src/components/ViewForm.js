@@ -4,6 +4,7 @@ import Register from './Register'
 import ViewAdminRegForm from './viewForms/ViewAdminRegForm'
 import ViewCreateSessionForm from './viewForms/ViewCreateSessionForm'
 import CreateSession from './CreateSession'
+import { changePassword } from '../api'
 
 const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, sessionToView, setIsEditingAdmin }) => {
   const [isEditing, setIsEditing] = useState('')
@@ -13,7 +14,7 @@ const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, s
   const handleFormSelection = () => {
     if (formToView === 'admin-reg-form') {
       return (
-        <ViewAdminRegForm token={token} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} loginProfile={loginProfile} setLoginProfile={setLoginProfile} setIsEditingAdmin={setIsEditingAdmin} />
+        <ViewAdminRegForm token={token} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} loginProfile={loginProfile} setLoginProfile={setLoginProfile} setIsEditingAdmin={setIsEditingAdmin} handleChangePassword={handleChangePassword} />
       )
     } else if (formToView === 'create-session-form') {
       return (
@@ -66,6 +67,13 @@ const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, s
   // }
   // ^^^^^ isEditing CONDITIONALS ^^^^^
 
+  const handleChangePassword = (email) => {
+    changePassword(email)
+      .then(data => {
+        setShowModal('')
+      })
+  }
+
   return (
     <>
       <div className='fixed z-20 inset-0 overflow-y-auto'>
@@ -86,7 +94,7 @@ const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, s
             </div>
           </Transition>
           {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-          <span className='hidden sm:inline-block sm:align-middle sm:h-screen sm:w-1/3' aria-hidden='true'>&#8203;
+          <span className='hidden sm:inline-block sm:align-middle sm:h-screen sm:w-1/2' aria-hidden='true'>&#8203;
 
             {/* Modal panel, show/hide based on modal state. */}
             <Transition
