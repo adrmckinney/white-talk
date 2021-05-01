@@ -4,8 +4,8 @@ import Register from './Register'
 import ViewAdminRegForm from './viewForms/ViewAdminRegForm'
 import ViewCreateSessionForm from './viewForms/ViewCreateSessionForm'
 import CreateSession from './CreateSession'
-import { requestChangePassword } from '../api'
-import ResetPasswordEmailAlert from './alerts/ResetPasswordEmailAlert'
+import { requestChangePassword, requestChangeUsername } from '../api'
+import ResetPasswordUsernameEmailAlert from './alerts/ResetPasswordUsernameEmailAlert'
 
 const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, sessionToView, setIsEditingAdmin }) => {
   const [isEditing, setIsEditing] = useState('')
@@ -21,7 +21,7 @@ const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, s
   const handleFormSelection = () => {
     if (formToView === 'admin-reg-form') {
       return (
-        <ViewAdminRegForm token={token} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} loginProfile={loginProfile} setLoginProfile={setLoginProfile} setIsEditingAdmin={setIsEditingAdmin} handleRequestChangePassword={handleRequestChangePassword} />
+        <ViewAdminRegForm token={token} isEditing={isEditing} setIsEditing={setIsEditing} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} loginProfile={loginProfile} setLoginProfile={setLoginProfile} setIsEditingAdmin={setIsEditingAdmin} handleRequestChangeUsername={handleRequestChangeUsername} handleRequestChangePassword={handleRequestChangePassword} />
       )
     } else if (formToView === 'create-session-form') {
       return (
@@ -76,8 +76,17 @@ const ViewForm = ({ token, showModal, setShowModal, formToView, setFormToView, s
 
   if (isEmailingReset) {
     return (
-      <ResetPasswordEmailAlert isEmailingReset={isEmailingReset} setIsEmailingReset={setIsEmailingReset} />
+      <ResetPasswordUsernameEmailAlert isEmailingReset={isEmailingReset} setIsEmailingReset={setIsEmailingReset} />
     )
+  }
+
+  const handleRequestChangeUsername = (email) => {
+    setShowModal('')
+    setFormToView('')
+    requestChangeUsername(email)
+      .then(data => {
+        setIsEmailingReset('username-reset')
+      })
   }
 
   const handleRequestChangePassword = (email) => {

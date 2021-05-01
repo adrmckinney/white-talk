@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from 'react'
 import { Transition } from '@headlessui/react'
-import { register } from '../api'
+import { register, updateAdmin } from '../api'
 import Errors from './Errors'
 import AdminName from './registerAdminForm.js/AdminName'
 import AdminEmail from './registerAdminForm.js/AdminEmail'
@@ -26,7 +26,6 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
       setFilterAdminRegister({
         first_name: loginProfile.first_name,
         last_name: loginProfile.last_name,
-        username: loginProfile.username,
         email: loginProfile.email
       })
     }
@@ -36,24 +35,30 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
   console.log('isEditing REGISTER', isEditing)
   // console.log('showModal REGISTER', showModal)
   // console.log('loginProfile', loginProfile)
-  // console.log('filterAdminRegister', filterAdminRegister)
+  console.log('filterAdminRegister', filterAdminRegister)
 
   const handleRegister = (e) => {
     e.preventDefault()
     if (isEditing === 'register') {
-      // figure out how to update user in djoser
+      updateAdmin(token, filterAdminRegister, loginProfile.id)
+        .then(data => {
+          console.log('data', data)
+          setShowModal('')
+          setIsEditing('')
+          // setIsRegistering(false)
+        })
+    } else {
+      register(filterAdminRegister)
+        .then(data => {
+          // setUsername(data.username)
+          // setPassword(data.password)
+          setShowModal('')
+          setIsRegistering(false)
+        })
+        .catch(error => {
+          setErrors(error.message)
+        })
     }
-    register(filterAdminRegister.username, filterAdminRegister.password)
-      .then(data => {
-        // setUsername(data.username)
-        // setPassword(data.password)
-        setShowModal('')
-        setIsEditing('')
-        setIsRegistering(false)
-      })
-      .catch(error => {
-        setErrors(error.message)
-      })
   }
 
   return (
@@ -114,9 +119,10 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
                     <div>
                       <AdminEmail filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
                     </div>
-                    <div>
-                      <AdminUsername filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
-                    </div>
+                    {isEditing !== 'register' &&
+                      <div>
+                        <AdminUsername filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
+                      </div>}
                     {isEditing !== 'register' &&
                       <div>
                         <AdminPassword filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />

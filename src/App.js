@@ -12,6 +12,7 @@ import Connect from './components/Connect'
 import ViewSessionRegistrants from './components/ViewSessionRegistrants'
 import ViewForm from './components/ViewForm'
 import PasswordResetConfirm from './components/PasswordResetConfirm'
+import UsernameResetConfirm from './components/UsernameResetConfirm'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -69,6 +70,7 @@ function App () {
               <ViewForm token={token} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} formToView={formToView} setFormToView={setFormToView} sessionToView={sessionToView} />
             </Route>
             <Route exact path='/password/reset/confirm/:uid/:token' component={PasswordResetConfirm} />
+            <Route exact path='/username/reset/confirm/:uid/:token' component={UsernameResetConfirm} />
             <Route path='/'>
               <Home />
             </Route>

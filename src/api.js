@@ -7,14 +7,11 @@ const url = axios.create({
   // baseURL: 'http://127.0.0.1:8000/'
 })
 
-export const register = (username, password) => {
+export const register = (filterAdminRegister) => {
   return url
-    .post('api/auth/users/', {
-      username,
-      password
-    })
+    .post('api/auth/users/', filterAdminRegister)
     .then(res => {
-      return login(username, password)
+      return login(filterAdminRegister.username, filterAdminRegister.password)
     })
     .catch(error => {
       let errors = []
@@ -54,15 +51,19 @@ export const login = (username, password) => {
     })
 }
 
-export const updateAdmin = (token) => {
+export const updateAdmin = (token, filterAdminRegister, pk) => {
+  console.log('filterAdminRegister', filterAdminRegister)
   return url
-    .put('api/auth/users/',
+    .put(`api/auth/users/${pk}/`, filterAdminRegister,
       {
         headers: {
           Authorization: `Token ${token}`
         }
       })
-    .then(res => res.data)
+    .then(res => {
+      console.log('res', res)
+      return res.data
+    })
 }
 
 export const requestChangePassword = (email) => {
@@ -82,6 +83,28 @@ export const confirmChangePassword = (uid, token, password) => {
         uid,
         token,
         new_password: password
+      }
+    )
+    .then(res => res.data)
+}
+
+export const requestChangeUsername = (email) => {
+  return url
+    .post('api/auth/users/reset_username/',
+      {
+        email: email
+      }
+    )
+    .then(res => res.data)
+}
+
+export const confirmChangeUsername = (uid, token, username) => {
+  return url
+    .post('api/auth/users/reset_username_confirm/',
+      {
+        uid,
+        token,
+        new_username: username
       }
     )
     .then(res => res.data)

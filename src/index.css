@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .modal-submit-btn {
-    @apply 
-} */
+.btn-color {
+    @apply  bg-darkerPurple hover:bg-mediumPurple text-base font-medium text-white 
+}

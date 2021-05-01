@@ -1,18 +1,18 @@
 import { Fragment, useRef, useState } from 'react'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
-import { confirmChangePassword } from '../api'
+import { confirmChangeUsername } from '../api'
 
-export default function PasswordResetConfirm () {
+export default function UsernameResetConfirm () {
   const [open, setOpen] = useState(true)
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
   const { uid } = useParams()
   const { token } = useParams()
   const history = useHistory()
   const cancelButtonRef = useRef()
 
-  const handleConfirmChangePassword = () => {
-    confirmChangePassword(uid, token, password)
+  const handleConfirmChangeUsername = () => {
+    confirmChangeUsername(uid, token, username)
       .then(data => history.push('/'))
   }
 
@@ -56,20 +56,20 @@ export default function PasswordResetConfirm () {
               <div>
                 <div className='mt-3 text-center sm:mt-3'>
                   <Dialog.Title as='h3' className='mb-5 text-lg leading-6 font-medium text-gray-900'>
-                    Enter New Password
+                    Enter New Username
                   </Dialog.Title>
                   <div className='rounded-md shadow-sm -space-y-px'>
                     <div>
-                      <label htmlFor='password' className='sr-only'>Password</label>
+                      <label htmlFor='username' className='sr-only'>Username</label>
                       <input
-                        id='password'
-                        name='password'
-                        type='password'
-                        autoComplete='current-password'
+                        id='username'
+                        name='username'
+                        type='username'
+                        autoComplete='current-username'
                         required className='appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
-                        placeholder='Password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder='username'
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                       />
                     </div>
                   </div>
@@ -80,7 +80,7 @@ export default function PasswordResetConfirm () {
                   type='button'
                   className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                   onClick={() => {
-                    handleConfirmChangePassword()
+                    handleConfirmChangeUsername()
                     setOpen(false)
                   }}
                 >

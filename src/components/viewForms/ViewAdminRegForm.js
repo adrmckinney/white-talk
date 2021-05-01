@@ -1,13 +1,19 @@
 import { useEffect } from 'react'
 import { getUser } from '../../api'
 
-const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIsEditing, loginProfile, setLoginProfile, setIsEditingAdmin, handleRequestChangePassword }) => {
+const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, isEditing, setIsEditing, loginProfile, setLoginProfile, setIsEditingAdmin, handleRequestChangeUsername, handleRequestChangePassword }) => {
   // console.log('showModal', showModal)
 
   useEffect(() => {
     getUser(token)
       .then(data => setLoginProfile(data))
   }, [token, setLoginProfile])
+
+  //   const handleEmailField = () => {
+  // if (isEditing) {
+
+  // }
+  //   }
 
   return (
     <>
@@ -34,7 +40,7 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIs
             </span>
             <button
               type='button'
-              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
               onClick={() => setIsEditing('register')}
             >
               Edit Name
@@ -50,7 +56,7 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIs
             </span>
             <button
               type='button'
-              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
               onClick={() => setIsEditing('register')}
             >
               Edit Email
@@ -66,7 +72,10 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIs
             </span>
             <button
               type='button'
-              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+              onClick={() => {
+                handleRequestChangeUsername(loginProfile.email)
+              }}
             >
               Edit Username
             </button>
@@ -81,7 +90,7 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, setIs
             </span>
             <button
               type='submit'
-              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
               onClick={() => {
                 handleRequestChangePassword(loginProfile.email)
               }}
