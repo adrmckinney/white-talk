@@ -1,10 +1,8 @@
 import axios from 'axios'
 
 const url = axios.create({
-  // baseURL: 'https://white-talk-api.herokuapp.com/'
-  // baseURL: process.env.REACT_APP_DEPLOYED_API_URL
-  baseURL: process.env.REACT_APP_LOCAL_API_URL
-  // baseURL: 'http://127.0.0.1:8000/'
+  baseURL: process.env.WHITE_TALK_DEPLOYED_API_URL
+  // baseURL: process.env.WHITE_TALK_LOCAL_API_URL
 })
 
 export const register = (filterAdminRegister) => {
