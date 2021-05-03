@@ -2,13 +2,14 @@ import { useEffect, useReducer, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { register, updateAdmin } from '../api'
 import Errors from './Errors'
-import AdminName from './registerAdminForm.js/AdminName'
-import AdminEmail from './registerAdminForm.js/AdminEmail'
-import AdminUsername from './registerAdminForm.js/AdminUsername'
-import AdminPassword from './registerAdminForm.js/AdminPassword'
+import AdminName from './registerAdminForm/AdminName'
+import AdminEmail from './registerAdminForm/AdminEmail'
+import AdminUsername from './registerAdminForm/AdminUsername'
+import AdminPassword from './registerAdminForm/AdminPassword'
 
 const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, loginProfile, setIsRegistering, setIsEditingAdmin }) => {
   const [errors, setErrors] = useState('')
+  const [enableBtn, setEnableBtn] = useState(0)
 
   const [filterAdminRegister, setFilterAdminRegister] = useReducer(
     (name, value) => ({ ...name, ...value }),
@@ -33,10 +34,12 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
   }, [isEditing, loginProfile])
 
   // DEBUGGER STATION
-  console.log('isEditing REGISTER', isEditing)
+  // console.log('isEditing REGISTER', isEditing)
   // console.log('showModal REGISTER', showModal)
   // console.log('loginProfile', loginProfile)
-  console.log('filterAdminRegister', filterAdminRegister)
+  // console.log('filterAdminRegister', filterAdminRegister)
+
+  console.log('enableBtn', enableBtn)
 
   const handleRegister = (e) => {
     e.preventDefault()
@@ -46,17 +49,15 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
           console.log('data', data)
           setShowModal('')
           setIsEditing('')
-          // setIsRegistering(false)
         })
     } else {
       register(filterAdminRegister)
         .then(data => {
-          // setUsername(data.username)
-          // setPassword(data.password)
           setShowModal('')
           setIsRegistering(false)
         })
         .catch(error => {
+          console.log('error', error)
           setErrors(error.message)
         })
     }
@@ -126,13 +127,14 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
                       </div>}
                     {isEditing !== 'register' &&
                       <div>
-                        <AdminPassword filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
+                        <AdminPassword filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} setEnableBtn={setEnableBtn} />
                       </div>}
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
                   <button
                     type='submit'
+                    disabled={enableBtn > 0}
                     className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-darkerPurple text-base font-medium text-white hover:bg-mediumPurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                   >
                     {isEditing === 'register'

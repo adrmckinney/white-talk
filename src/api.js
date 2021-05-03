@@ -74,16 +74,32 @@ export const requestChangePassword = (email) => {
     .then(res => res.data)
 }
 
-export const confirmChangePassword = (uid, token, password) => {
+export const confirmChangePassword = (uid, token, password, confirmPassword) => {
   return url
     .post('api/auth/users/reset_password_confirm/',
       {
         uid,
         token,
-        new_password: password
+        new_password: password,
+        re_new_password: confirmPassword
       }
     )
     .then(res => res.data)
+    .catch(error => {
+      let errors = []
+      if (error.response) {
+        const data = error.response.data
+        if (data.password) {
+          errors = errors.concat(data.password)
+        }
+      }
+
+      if (errors.length === 0) {
+        errors.push('There was a problem registering.')
+      }
+      const err = new Error(errors[0])
+      throw err
+    })
 }
 
 export const requestChangeUsername = (email) => {
