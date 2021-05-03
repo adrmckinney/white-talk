@@ -17,7 +17,8 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
       last_name: '',
       username: '',
       email: '',
-      password: ''
+      password: '',
+      re_password: ''
     }
   )
 

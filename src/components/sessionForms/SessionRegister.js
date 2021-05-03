@@ -8,7 +8,7 @@ import Name from './Name'
 import Pronouns from './Pronouns'
 import SessionToRegister from './SessionToRegister'
 
-const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegister, setShowRegSuccessfulAlert, showModal, setShowModal, isEditing, setIsEditing, registrantToEdit, setIsRegistering, handleRegistrantUpdate, setRegistrantsToRender }) => {
+const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegister, setRegistered, showModal, setShowModal, isEditing, setIsEditing, registrantToEdit, setIsRegistering, handleRegistrantUpdate, setRegistrantsToRender }) => {
   // const history = useHistory()
   const [filterInput, setFilterInput] = useReducer(
     (name, value) => ({ ...name, ...value }),
@@ -50,7 +50,8 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
         .then(data => {
           setShowModal('')
           setIsRegistering(false)
-          setShowRegSuccessfulAlert(true)
+          setRegistered(true)
+          setRegistered(true)
         })
     }
   }

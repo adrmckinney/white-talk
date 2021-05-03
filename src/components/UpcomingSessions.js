@@ -5,7 +5,7 @@ import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
 import CreateSession from './CreateSession'
 
-const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setShowRegSuccessfulAlert }) => {
+const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setRegistered }) => {
   const [isDeleting, setIsDeleting] = useState('')
   const [isRegistering, setIsRegistering] = useState(false)
   const [isEditing, setIsEditing] = useState('')
@@ -39,7 +39,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
 
   if (isRegistering) {
     return (
-      <SessionRegister sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} showModal='session-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
+      <SessionRegister sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setRegistered={setRegistered} showModal='session-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
     )
   }
 

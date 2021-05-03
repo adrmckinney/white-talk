@@ -23,6 +23,7 @@ function App () {
   const [token, setToken] = useToken(null)
   const isLoggedIn = (username && token)
   const [showRegSuccessfulAlert, setShowRegSuccessfulAlert] = useState(false)
+  const [registered, setRegistered] = useState(false)
   const [sessions, setSessions] = useState([])
   const [sessionToRegister, setSessionToRegister] = useState([])
   const [dropdownSelectorMode, setDropdownSelectorMode] = useState('')
@@ -49,7 +50,7 @@ function App () {
       <div className='min-h-screen bg-ghostWhite'>
 
         <div className='bg-mediumPurple pb-32'>
-          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} setFormToView={setFormToView} setSessions={setSessions} />
+          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} setFormToView={setFormToView} setSessions={setSessions} />
           <Header />
         </div>
         <main className='-mt-32'>
@@ -58,7 +59,7 @@ function App () {
               <BookStudy />
             </Route>
             <Route path='/sessions'>
-              <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />
+              <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} />
             </Route>
             <Route path='/connect'>
               <Connect />

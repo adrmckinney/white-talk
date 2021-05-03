@@ -1,7 +1,14 @@
 import Divider from './Divider'
+import RegistrationMessage from './RegistrationMessage'
 import UpcomingSessions from './UpcomingSessions'
 
-const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setShowRegSuccessfulAlert }) => {
+const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, registered, setRegistered }) => {
+  if (registered) {
+    return (
+      <RegistrationMessage setRegistered={setRegistered} />
+    )
+  }
+
   return (
     <>
       <div className='max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 relative'>
@@ -24,7 +31,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
         </div>
       </div>
       <Divider />
-      <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />
+      <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} />
     </>
   )
 }
