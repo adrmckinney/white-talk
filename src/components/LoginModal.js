@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { login } from '../api'
 import Errors from './Errors'
+import ForgotPasswordRequest from './ForgotPasswordRequest'
 
 const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState('')
+  const [isForgotPassword, setIsForgotPassword] = useState(false)
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -21,6 +23,12 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn }) => {
       .catch(error => {
         setErrors(error.message)
       })
+  }
+
+  if (isForgotPassword) {
+    return (
+      <ForgotPasswordRequest setIsForgotPassword={setIsForgotPassword} />
+    )
   }
 
   return (
@@ -101,6 +109,31 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn }) => {
                       />
                     </div>
                   </div>
+
+                  <div className='flex items-center justify-between mt-2'>
+                    {/* <div className='flex items-center'>
+                      <input
+                        id='remember_me'
+                        name='remember_me'
+                        type='checkbox'
+                        className='h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
+                      />
+                      <label htmlFor='remember_me' className='ml-2 block text-sm text-gray-900'>
+                        Remember me
+                      </label>
+                    </div> */}
+
+                    <div className='text-sm'>
+                      <button
+                        type='button'
+                        className='font-medium text-indigo-600 hover:text-indigo-500'
+                        onClick={() => setIsForgotPassword(true)}
+                      >
+                        Forgot your password?
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
                   <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
