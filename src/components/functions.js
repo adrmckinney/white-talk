@@ -33,3 +33,7 @@ export const pageClickEvent = (useRefVariable, stateVariable, setStateFunction) 
     window.removeEventListener('click', clickEvent)
   }
 }
+
+export const sortSessions = (sessions) => {
+  return sessions.slice().sort((a, b) => new Date(b.start_date) - new Date(a.start_date))
+}

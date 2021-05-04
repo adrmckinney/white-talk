@@ -4,6 +4,7 @@ import { listSessions, deleteSession, updateSession } from '../api'
 import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
 import CreateSession from './CreateSession'
+import { sortSessions } from './functions'
 
 const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setRegistered }) => {
   const [isDeleting, setIsDeleting] = useState('')
@@ -144,7 +145,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                   </thead>
 
                   <tbody className='bg-ghostWhite divide-y divide-gray-200'>
-                    {sessions.map(session => (
+                    {sortSessions(sessions).map(session => (
                       <tr key={`session-${session.pk}`}>
                         <td className=' px-6 py-4 whitespace-nowrap text-sm font-medium text-coolGray-900'>
                           {session.title}
