@@ -1,5 +1,5 @@
 import Moment from 'react-moment'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { listSessions, deleteSession, updateSession } from '../api'
 import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
@@ -20,14 +20,23 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
       })
   }, [setSessions])
 
-  const handleEditSession = (token, pk, input) => {
+  // const handleEditSession = (token, pk, input) => {
+  //   console.log('token', token)
+  //   updateSession(token, pk, input)
+  //     .then(data => {
+  //       listSessions()
+  //         .then(data => setSessions(data))
+  //     })
+  // }
+
+  const handleEditSession = useCallback((token, pk, input) => {
     console.log('token', token)
     updateSession(token, pk, input)
       .then(data => {
         listSessions()
           .then(data => setSessions(data))
       })
-  }
+  }, [setSessions])
 
   useEffect(() => {
     const sessionLengths = sessions.map(ses => ses.session_registrants.length)
