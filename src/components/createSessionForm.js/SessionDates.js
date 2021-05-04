@@ -1,17 +1,18 @@
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-const SessionDates = ({ time, setTime, handleFilterSession, filterInput }) => {
+const SessionDates = ({ handleFilterSession, filterInput }) => {
   return (
     <>
-      <div className='flex flex-col sm:flex-row sm:space-x-6'>
+      <div className='flex flex-col space-y-2 items-center text-sm sm:text-lg font-medium text-gray-700'>
+        <h1>Dates</h1>
         <div>
-          <label
+          {/* <label
             className='block text-sm sm:text-lg font-medium text-gray-700 text-center sm:text-left mt-4'
             htmlFor='startDate'
           >
             Start Date
-          </label>
+          </label> */}
           <DatePicker
             selected={filterInput.start_date}
             id='startDate'
@@ -21,12 +22,12 @@ const SessionDates = ({ time, setTime, handleFilterSession, filterInput }) => {
           />
         </div>
         <div>
-          <label
+          {/* <label
             className='block text-sm sm:text-lg font-medium text-gray-700 text-center sm:text-left mt-4'
             htmlFor='endDate'
           >
             End Date
-          </label>
+          </label> */}
           <DatePicker
             selected={filterInput.end_date}
             id='endDate'
@@ -35,21 +36,6 @@ const SessionDates = ({ time, setTime, handleFilterSession, filterInput }) => {
             onChange={e => handleFilterSession('end_date', e)}
           />
         </div>
-      </div>
-      <div>
-        {/* <span>
-          <DatePicker
-            selected={time}
-            isClearable
-            showTimeSelect
-            showTimeSelectOnly
-            timeIntervals={15}
-            timeCaption='Time'
-            dateFormat='h:mm aa'
-            placeholderText='Select a Time'
-            onChange={time => setTime(time)}
-          />
-        </span> */}
       </div>
     </>
   )

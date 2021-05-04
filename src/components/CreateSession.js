@@ -1,4 +1,4 @@
-import { useReducer, useState, useEffect } from 'react'
+import { useReducer, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import moment from 'moment'
 import { createSession, listSessions } from '../api'
@@ -6,17 +6,21 @@ import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionDates from './createSessionForm.js/SessionDates'
 import SessionStatus from './createSessionForm.js/SessionStatus'
+import SessionTime from './createSessionForm.js/SessionTime'
+import NumberOfRegistrants from './createSessionForm.js/NumberOfRegistrants'
 
 const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession, setIsCreatingSession, setSessions }) => {
-  const [time, setTime] = useState('')
   const [filterInput, setFilterInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
       title: '',
       start_date: '',
       end_date: '',
+      start_time: '',
+      end_time: '',
       description: '',
-      session_status: false
+      session_status: false,
+      number_of_registrants: 8
     }
   )
 
@@ -36,15 +40,18 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
         title: sessionToEdit.title,
         start_date: convertDate(sessionToEdit.start_date).toDate(),
         end_date: convertDate(sessionToEdit.end_date).toDate(),
+        start_time: convertDate(sessionToEdit.start_time).toDate(),
+        end_time: convertDate(sessionToEdit.end_time).toDate(),
         description: sessionToEdit.description,
-        session_status: sessionToEdit.session_status
+        session_status: sessionToEdit.session_status,
+        number_of_registrants: sessionToEdit.number_of_registrants
       })
     }
   }, [isEditing, sessionToEdit])
 
   // DEBUGGER STATION
   // console.log('sessionToEdit', sessionToEdit.pk)
-  // console.log('filterInput', filterInput)
+  console.log('filterInput', filterInput)
   // console.log('isEditing', isEditing)
   // console.log('showModal', showModal)
 
@@ -85,7 +92,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
             </div>
           </Transition>
           {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-          <span className='sm:inline-block sm:align-middle sm:h-screen w-3/4' aria-hidden='true'>&#8203;
+          <span className='sm:inline-block sm:align-middle sm:h-screen w-full' aria-hidden='true'>&#8203;
 
             {/* Modal panel, show/hide based on modal state. */}
             <Transition
@@ -109,40 +116,54 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                         {isEditing ? 'Update Session' : 'Create a new session'}
                       </h3>
                     </div>
-                    <div>
-                      <SessionTitle handleFilterSession={handleFilterSession} filterInput={filterInput} />
-                    </div>
-                    <div>
-                      <SessionDates time={time} setTime={setTime} handleFilterSession={handleFilterSession} filterInput={filterInput} />
-                    </div>
-                    <div>
-                      <SessionDescription handleFilterSession={handleFilterSession} filterInput={filterInput} />
-                    </div>
-                    <div className='mt-4'>
-                      <SessionStatus handleFilterSession={handleFilterSession} filterInput={filterInput} />
-                    </div>
+                    <span className='flex flex-col space-y-8'>
+                      <div>
+                        <SessionTitle handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                      </div>
+                      <span className='flex justify-between'>
+                        <div>
+                          <SessionDates handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                        </div>
+                        <div>
+                          <SessionTime handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                        </div>
+                      </span>
+                      <span className='flex justify-between'>
+                        <div>
+                          <NumberOfRegistrants handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                        </div>
+                        <div>
+                          <SessionStatus handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                        </div>
+                      </span>
+                      <div>
+                        <SessionDescription handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                      </div>
+                    </span>
                   </div>
-                  <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                    <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                      {isEditing === 'edit-session'
-                        ? 'Update'
-                        : 'Create'}
-                    </button>
-                    <button
-                      type='button'
-                      className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
-                      onClick={() => {
-                        if (isEditing) {
-                          setIsEditing('')
-                        } else {
-                          setShowModal('')
-                          setIsCreatingSession(false)
-                        }
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                  <span className=''>
+                    <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
+                      <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
+                        {isEditing === 'edit-session'
+                          ? 'Update'
+                          : 'Create'}
+                      </button>
+                      <button
+                        type='button'
+                        className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
+                        onClick={() => {
+                          if (isEditing) {
+                            setIsEditing('')
+                          } else {
+                            setShowModal('')
+                            setIsCreatingSession(false)
+                          }
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </span>
                 </div>
               </form>
             </Transition>

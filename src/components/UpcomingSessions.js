@@ -16,21 +16,42 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
     listSessions()
       .then(data => {
         setSessions(data)
-        console.log('data', data)
       })
   }, [setSessions])
 
-  const handleDelete = (pk) => {
-    deleteSession(token, pk)
+  const handleEditSession = (token, pk, input) => {
+    console.log('token', token)
+    updateSession(token, pk, input)
       .then(data => {
         listSessions()
           .then(data => setSessions(data))
       })
   }
 
-  const handleEditSession = (token, pk, input) => {
-    console.log('token', token)
-    updateSession(token, pk, input)
+  useEffect(() => {
+    const sessionLengths = sessions.map(ses => ses.session_registrants.length)
+    console.log('sessionLengths', sessionLengths)
+
+    sessions.forEach(session => {
+      if (session.session_registrants.length >= session.number_of_registrants && session.session_status === true) {
+        const input = {
+          title: session.title,
+          start_date: session.start_date,
+          end_date: session.end_date,
+          start_time: session.start_time,
+          end_time: session.end_time,
+          description: session.description,
+          session_status: 'false',
+          number_of_registrants: session.number_of_registrants
+        }
+        console.log('input', input)
+        handleEditSession(token, session.pk, input)
+      }
+    })
+  }, [sessions, handleEditSession, token])
+
+  const handleDelete = (pk) => {
+    deleteSession(token, pk)
       .then(data => {
         listSessions()
           .then(data => setSessions(data))
@@ -51,12 +72,16 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
 
   if (isEditing === 'edit-session') {
     return (
-      <CreateSession isEditing='edit-session' token={token} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} sessionToEdit={sessionToEdit} handleEditSession={handleEditSession} />
+      <span className=''>
+        <CreateSession isEditing='edit-session' token={token} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} sessionToEdit={sessionToEdit} handleEditSession={handleEditSession} />
+      </span>
     )
   }
 
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
+  console.log('sessions', sessions)
+  console.log('sessions.map', sessions.map(ses => ses.session_registrants.length))
 
   const renderSessionStatus = (session) => {
     if (session.session_status) {
@@ -91,15 +116,22 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                       <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                         Title
                       </th>
-                      <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        Start Date
+                      <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        Date
                       </th>
-                      <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        End Date
+                      <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        Time
+                      </th>
+                      <th scope='col' className='px-6 py-3 w-96 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        Description
                       </th>
                       <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
                         Status
                       </th>
+                      {isLoggedIn &&
+                        <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Registered
+                        </th>}
                       {isLoggedIn &&
                         <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
                           Edit
@@ -118,16 +150,31 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                           {session.title}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500'>
-                          <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
+                          <span className='flex justify-between'>
+                            <span className='text-gray-700'>Start:</span>
+                            <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
+                          </span>
+                          <span className='flex justify-between'>
+                            <span className='text-gray-700'> End:</span>
+                            <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
+                          </span>
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500'>
-                          <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
+                        <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500 space-x-1 text-center'>
+                          <Moment format='h:mm a'>{session.start_time}</Moment>
+                          <span>-</span>
+                          <Moment format='h:mm a'>{session.end_time}</Moment>
+                        </td>
+                        <td className='px-6 py-4 break-words text-sm text-coolGray-500 space-x-1 text-center'>
+                          {session.description}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                           {renderSessionStatus(session)}
                         </td>
                         {isLoggedIn &&
                           <>
+                            <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
+                              {session.session_registrants.length}
+                            </td>
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                               <button
                                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'

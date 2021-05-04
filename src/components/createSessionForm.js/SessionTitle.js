@@ -3,7 +3,7 @@ const SessionTitle = ({ handleFilterSession, filterInput }) => {
   return (
     <>
       <label
-        className='block text-sm sm:text-lg font-medium text-gray-700 text-center sm:text-left mt-4'
+        className='block text-sm sm:text-lg font-medium text-gray-700 text-center sm:text-left'
         htmlFor='title'
       >
         Title

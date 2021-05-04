@@ -22,7 +22,6 @@ function App () {
   const [loggedInName, setLoggedInName] = useState('')
   const [token, setToken] = useToken(null)
   const isLoggedIn = (username && token)
-  const [showRegSuccessfulAlert, setShowRegSuccessfulAlert] = useState(false)
   const [registered, setRegistered] = useState(false)
   const [sessions, setSessions] = useState([])
   const [sessionToRegister, setSessionToRegister] = useState([])
