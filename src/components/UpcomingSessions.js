@@ -13,6 +13,10 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
   const [sessionToDelete, setSessionToDelete] = useState([])
   const [sessionToEdit, setSessionToEdit] = useState([])
 
+  // DEBUGGER STATION
+  // console.log('isRegistering', isRegistering)
+  // console.log('sessions', sessions)
+
   useEffect(() => {
     listSessions()
       .then(data => {
@@ -20,17 +24,9 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
       })
   }, [setSessions])
 
-  // const handleEditSession = (token, pk, input) => {
-  //   console.log('token', token)
-  //   updateSession(token, pk, input)
-  //     .then(data => {
-  //       listSessions()
-  //         .then(data => setSessions(data))
-  //     })
-  // }
-
+  // Had to use useCallback here because the handleEditSession without
+  // it was causing the useEffect below to run on every render
   const handleEditSession = useCallback((token, pk, input) => {
-    console.log('token', token)
     updateSession(token, pk, input)
       .then(data => {
         listSessions()
@@ -39,9 +35,6 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
   }, [setSessions])
 
   useEffect(() => {
-    const sessionLengths = sessions.map(ses => ses.session_registrants.length)
-    console.log('sessionLengths', sessionLengths)
-
     sessions.forEach(session => {
       if (session.session_registrants.length >= session.number_of_registrants && session.session_status === true) {
         const input = {
@@ -87,11 +80,6 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
       </span>
     )
   }
-
-  // DEBUGGER STATION
-  // console.log('isRegistering', isRegistering)
-  console.log('sessions', sessions)
-  console.log('sessions.map', sessions.map(ses => ses.session_registrants.length))
 
   const renderSessionStatus = (session) => {
     if (session.session_status) {
@@ -162,11 +150,11 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                         <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500'>
                           <span className='flex justify-between'>
                             <span className='text-gray-700'>Start:</span>
-                            <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
+                            <Moment format='MMM DD, YYYY'>{session.start_date}</Moment>
                           </span>
                           <span className='flex justify-between'>
                             <span className='text-gray-700'> End:</span>
-                            <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
+                            <Moment format='MMM DD, YYYY'>{session.end_date}</Moment>
                           </span>
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500 space-x-1 text-center'>

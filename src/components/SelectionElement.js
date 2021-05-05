@@ -1,9 +1,9 @@
 import { Transition } from '@headlessui/react'
 import { useState, useEffect, useRef } from 'react'
-import Moment from 'react-moment'
+// import Moment from 'react-moment'
 import { formatSelectedSession, pageClickEvent } from './functions'
 
-const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRender, setAllEmails }) => {
+const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRender, handleAllEmails }) => {
   const [showSessions, setShowSessions] = useState(false)
   const [selectedValue, setSelectedValue] = useState([])
   const dropdownRef = useRef(null)
@@ -37,12 +37,12 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
 
   return (
     <>
-      <label
+      {/* <label
         className='block text-sm sm:text-lg font-medium text-gray-700 text-left mt-4'
         htmlFor='pronouns'
       >
         {setLabel()}
-      </label>
+      </label> */}
       <div className='mt-1 relative'>
         <button
           type='button' aria-haspopup='listbox' aria-expanded='true' aria-labelledby='listbox-label' className='bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
@@ -83,7 +83,7 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
                     setShowSessions(false)
                     if (dropdownSelectorMode === 'view-session-registrants') {
                       setRegistrantsToRender(session)
-                      setAllEmails(session.session_registrants.map(registrants => registrants.email))
+                      handleAllEmails(session)
                     }
                   }}
 
@@ -93,11 +93,11 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
                     className='font-normal space-x-2 truncate flex'
                   >
                     <p>{session.title}</p>
-                    <span className='flex space-x-1'>
+                    {/* <span className='flex space-x-1'>
                       <Moment format='MM/DD/YYYY'>{session.start_date}</Moment>
                       <p>-</p>
                       <Moment format='MM/DD/YYYY'>{session.end_date}</Moment>
-                    </span>
+                    </span> */}
                   </span>
                 </li>
               ))}

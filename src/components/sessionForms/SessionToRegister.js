@@ -8,9 +8,10 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
   const [selectedValue, setSelectedValue] = useState([])
   const dropdownRef = useRef(null)
 
-  console.log('sessions', sessions)
-  console.log('selectedValue', selectedValue)
-  console.log('sessionToRegister', sessionToRegister)
+  // DEBUGGER STATION
+  // console.log('sessions', sessions)
+  // console.log('selectedValue', selectedValue)
+  // console.log('sessionToRegister', sessionToRegister)
 
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
   // It needs the useRef Variable, menu state variable, and the menu setState function.

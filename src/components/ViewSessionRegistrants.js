@@ -41,6 +41,17 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
       })
   }, [setDropdownSelectorMode])
 
+  const getConfirmationCount = () => {
+    const confirmationStatuses = registrantsToRender.session_registrants.map(reg => reg.confirm)
+    const confirmed = []
+    confirmationStatuses.forEach(status => {
+      if (status) {
+        confirmed.push(status)
+      }
+    })
+    return confirmed.length
+  }
+
   const handleClearAllActionState = () => {
     setSessionToUpdate([])
     setRegistrantToEdit([])
@@ -56,6 +67,10 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
       const newEmails = [...emails, email]
       setEmails(newEmails)
     }
+  }
+
+  const handleAllEmails = (session) => {
+    setAllEmails(session.session_registrants.map(registrants => registrants.email))
   }
 
   const handleDeleteState = (e, registrant) => {
@@ -161,6 +176,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     sessions.forEach(session => {
       if (session.pk === registrantsToRender.pk) {
         setRegistrantsToRender(session)
+        handleAllEmails(session)
       }
     })
   }
@@ -189,11 +205,11 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
         className='font-normal space-x-2 truncate flex'
       >
         <p>{registrantsToRender.title}</p>
-        <span className='flex space-x-1'>
+        {/* <span className='flex space-x-1'>
           <Moment format='MM/DD/YYYY'>{registrantsToRender.start_date}</Moment>
           <p>-</p>
           <Moment format='MM/DD/YYYY'>{registrantsToRender.end_date}</Moment>
-        </span>
+        </span> */}
       </span>
     )
   }
@@ -201,15 +217,48 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   return (
     <>
       <div className='max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8'>
-        <SelectionElement sessions={sessions} dropdownSelectorMode={dropdownSelectorMode} setRegistrantsToRender={setRegistrantsToRender} setAllEmails={setAllEmails} />
+        <span className='flex justify-around'>
+          <SelectionElement sessions={sessions} dropdownSelectorMode={dropdownSelectorMode} setRegistrantsToRender={setRegistrantsToRender} handleAllEmails={handleAllEmails} />
+
+          <span>
+            <h1 className='text-2xl flex justify-start shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1>
+            {registrantsToRender.pk &&
+              <>
+                <div className='flex space-x-1'>
+                  <p className='font-bold text-coolGray-800'>Date:</p>
+                  <span className='flex space-x-1'>
+                    <Moment format='MMM DD, YYYY'>{registrantsToRender.start_date}</Moment>
+                    <p>-</p>
+                    <Moment format='MMM DD, YYYY'>{registrantsToRender.end_date}</Moment>
+                  </span>
+                </div>
+                <div className='flex space-x-1'>
+                  <p className='font-bold text-coolGray-800'>Time:</p>
+                  <span className='flex space-x-1'>
+                    <Moment format='h:mm a'>{registrantsToRender.start_time}</Moment>
+                    <p>-</p>
+                    <Moment format='h:mm a'>{registrantsToRender.end_time}</Moment>
+                  </span>
+                </div>
+                <div className='flex space-x-1'>
+                  <p className='font-bold text-coolGray-800'>Number of registrants:</p>
+                  <p>{!registrantsToRender.pk || registrantsToRender.session_registrants.length}</p>
+                </div>
+                <div className='flex space-x-1'>
+                  <p className='font-bold text-coolGray-800'>Number confirmed:</p>
+                  <p>{!registrantsToRender.pk || getConfirmationCount()}</p>
+                </div>
+              </>}
+          </span>
+        </span>
         <div className='flex flex-col pt-20'>
           <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
             <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
               <span>
-                <span className='flex items-start'>
-                  <h1 className='text-2xl flex flex-1 justify-center mb-10 shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1>
+                <span className='flex items-start justify-end pt-10'>
+                  {/* <h1 className='text-2xl flex flex-1 justify-center mb-10 shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1> */}
                   {registrantsToRender.pk &&
-                    <div className='flex flex-row space-x-2'>
+                    <div className='flex flex-row space-x-2 mb-2'>
                       <div className={`flex justify-center ${selectedAction && 'transform -translate-x-2 duration-700'}`}>
                         <StaticMenu dropdownSelectorMode='action' selectedAction={selectedAction} setSelectedAction={setSelectedAction} />
                       </div>
@@ -254,9 +303,10 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
                           Comment
                         </th>
                         <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          <span className='space-y-1'>
-                            <p>Action</p>
-                          </span>
+                          Confirmed
+                        </th>
+                        <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Action
                         </th>
                       </tr>
                     </thead>
@@ -276,6 +326,9 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
                             {registrant.comment}
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center'>
+                            {registrant.confirm ? 'Yes' : 'No'}
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-center text-sm font-medium'>
                             <input

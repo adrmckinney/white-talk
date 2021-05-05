@@ -143,6 +143,15 @@ export const sessionRegister = (regData) => {
   return url
     .post('api/session-register/', regData)
     .then(res => res.data)
+    .catch(error => {
+      console.log(error.response.data)
+      if (error.response) {
+        if (error.response.data.non_field_errors) {
+          throw new Error(error.response.data.non_field_errors.join(' '))
+        }
+      }
+      throw new Error('Something went wrong.')
+    })
 }
 
 export const listSessions = () => {

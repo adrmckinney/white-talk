@@ -19,6 +19,7 @@ const Email = ({ filterInput, setFilterInput }) => {
         <input
           type='email'
           name='email'
+          required
           id='email'
           className='focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md text-sm sm:text-lg border-gray-300 border pl-10'
           placeholder='you@example.com'

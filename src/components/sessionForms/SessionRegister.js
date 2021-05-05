@@ -1,5 +1,4 @@
-import { useReducer, useEffect } from 'react'
-// import { useHistory } from 'react-router-dom'
+import { useReducer, useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { sessionRegister } from '../../api'
 import Comments from './Comments'
@@ -7,9 +6,11 @@ import Email from './Email'
 import Name from './Name'
 import Pronouns from './Pronouns'
 import SessionToRegister from './SessionToRegister'
+import ConfirmationStatus from './ConfirmationStatus'
+import { RefreshIcon } from '@heroicons/react/outline'
 
 const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegister, setRegistered, showModal, setShowModal, isEditing, setIsEditing, registrantToEdit, setIsRegistering, handleRegistrantUpdate, setRegistrantsToRender }) => {
-  // const history = useHistory()
+  const [isLoading, setIsLoading] = useState(false)
   const [filterInput, setFilterInput] = useReducer(
     (name, value) => ({ ...name, ...value }),
     {
@@ -18,15 +19,16 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
       pronouns: '',
       email: '',
       comment: '',
-      session: null
+      session: null,
+      confirm: false
     }
   )
 
   // DEBUGGER STATION
-  console.log('sessions in SessionRegister', sessions)
-  console.log('sessionToRegister', sessionToRegister)
-  console.log('registrantToEdit', registrantToEdit)
-  console.log('filterInput', filterInput)
+  // console.log('sessions in SessionRegister', sessions)
+  // console.log('sessionToRegister', sessionToRegister)
+  // console.log('registrantToEdit', registrantToEdit)
+  // console.log('filterInput', filterInput)
 
   useEffect(() => {
     if (isEditing === 'edit-registrant' && registrantToEdit.pk) {
@@ -43,16 +45,19 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setIsLoading(true)
     if (isEditing === 'edit-registrant') {
       handleRegistrantUpdate(token, registrantToEdit.pk, filterInput)
     } else {
       sessionRegister(filterInput)
         .then(data => {
+          setIsLoading(false)
           setShowModal('')
           setIsRegistering(false)
           setRegistered(true)
           setRegistered(true)
         })
+        .catch()
     }
   }
 
@@ -110,14 +115,23 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
                     <div>
                       <Comments filterInput={filterInput} setFilterInput={setFilterInput} />
                     </div>
+                    {isEditing &&
+                      <div>
+                        <ConfirmationStatus filterInput={filterInput} setFilterInput={setFilterInput} />
+                      </div>}
                   </span>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                  <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                    {isEditing
-                      ? 'Update'
-                      : 'Register'}
-                  </button>
+                  {isLoading
+                    ? <button type='submit' disabled className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
+                      <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
+                      Processing
+                      </button>
+                    : <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
+                      {isEditing
+                        ? 'Update'
+                        : 'Register'}
+                      </button>}
                   <button
                     type='button'
                     className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'

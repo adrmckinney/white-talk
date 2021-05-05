@@ -16,6 +16,8 @@ const Header = () => {
       return 'Sessions'
     } else if (path.pathname === '/connect') {
       return 'Connect'
+    } else if (path.pathname === '/view-session-registrants') {
+      return 'Session Registrants'
     }
   }
 
