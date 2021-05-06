@@ -12,6 +12,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
   const [isEditing, setIsEditing] = useState('')
   const [sessionToDelete, setSessionToDelete] = useState([])
   const [sessionToEdit, setSessionToEdit] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
@@ -31,8 +32,11 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
       .then(data => {
         listSessions()
           .then(data => setSessions(data))
+        setIsLoading(false)
+        setIsEditing('')
+        setShowModal('')
       })
-  }, [setSessions])
+  }, [setSessions, setShowModal])
 
   useEffect(() => {
     sessions.forEach(session => {
@@ -76,7 +80,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
   if (isEditing === 'edit-session') {
     return (
       <span className=''>
-        <CreateSession isEditing='edit-session' token={token} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} sessionToEdit={sessionToEdit} handleEditSession={handleEditSession} />
+        <CreateSession isEditing='edit-session' token={token} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} sessionToEdit={sessionToEdit} handleEditSession={handleEditSession} isLoading={isLoading} setIsLoading={setIsLoading} />
       </span>
     )
   }

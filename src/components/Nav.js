@@ -10,6 +10,7 @@ import LoginModal from './LoginModal'
 import CreateSession from './CreateSession'
 import Register from './Register'
 import ViewForm from './ViewForm'
+import { logout } from '../api'
 
 // import Search from './Search'
 
@@ -55,6 +56,16 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
     return (
       <ViewForm token={token} isLoggedIn={isLoggedIn} showModal='view-form' setShowModal={setShowModal} formToView='admin-reg-form' setFormToView={setFormToView} setIsEditingAdmin={setIsEditingAdmin} />
     )
+  }
+
+  const handleLogout = () => {
+    logout(token)
+      .then(data => {
+        setToken(null)
+        setUsername('')
+        setShowMenu(false)
+        history.push('/')
+      })
   }
 
   return (
@@ -172,10 +183,11 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                           to='/'
                           className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'
                           onClick={() => {
-                            setToken(null)
-                            setUsername('')
-                            setShowMenu(false)
-                            history.push('/')
+                            handleLogout()
+                            // setToken(null)
+                            // setUsername('')
+                            // setShowMenu(false)
+                            // history.push('/')
                           }}
                         >
                           Sign out

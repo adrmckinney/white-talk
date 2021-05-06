@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useState } from 'react'
+import { useReducer, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import moment from 'moment'
 import { createSession, listSessions } from '../api'
@@ -10,8 +10,7 @@ import SessionTime from './createSessionForm.js/SessionTime'
 import NumberOfRegistrants from './createSessionForm.js/NumberOfRegistrants'
 import { RefreshIcon } from '@heroicons/react/outline'
 
-const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession, setIsCreatingSession, setSessions }) => {
-  const [isLoading, setIsLoading] = useState(false)
+const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession, setIsCreatingSession, setSessions, isLoading, setIsLoading }) => {
   const [filterInput, setFilterInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -53,17 +52,16 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
 
   // DEBUGGER STATION
   // console.log('sessionToEdit', sessionToEdit.pk)
-  console.log('filterInput', filterInput)
+  // console.log('filterInput', filterInput)
   // console.log('isEditing', isEditing)
   // console.log('showModal', showModal)
+  // console.log('isLoading', isLoading)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsLoading(true)
     if (isEditing === 'edit-session') {
       handleEditSession(token, sessionToEdit.pk, filterInput)
-      setIsEditing('')
-      setShowModal('')
     } else {
       createSession(token, filterInput)
         .then(data => {

@@ -1,4 +1,4 @@
-import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
+import { EyeIcon, EyeOffIcon, RefreshIcon } from '@heroicons/react/outline'
 import { Fragment, useRef, useState, useEffect } from 'react'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
@@ -7,13 +7,14 @@ import PasswordAlert from './alerts/PasswordAlert'
 import PasswordMatchAlert from './alerts/PasswordMatchAlert'
 import UsePasswordValidation from './UsePasswordValidation'
 import Errors from './Errors'
+// import { LogoutSolid } from '@graywolfai/react-heroicons'
 
-export default function PasswordResetConfirm () {
+export default function PasswordResetConfirm ({ token, setToken, setUsername }) {
   const [open, setOpen] = useState(true)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const { uid } = useParams()
-  const { token } = useParams()
+  const { urlToken } = useParams()
   const history = useHistory()
   const cancelButtonRef = useRef()
   const [showPassword, setShowPassword] = useState(false)
@@ -22,6 +23,11 @@ export default function PasswordResetConfirm () {
   const [passwordMatchBlur, setPasswordMatchBlur] = useState(false)
   const [enableBtn, setEnableBtn] = useState(0)
   const [errors, setErrors] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  // DEBUGGER STATION
+  console.log('token', token)
+  console.log('urlToken', urlToken)
 
   const [validLength, hasNumber, upperCase, lowerCase, match, specialChar, falseCount] = UsePasswordValidation({
     password: password,
@@ -53,15 +59,22 @@ export default function PasswordResetConfirm () {
   }
 
   const handleConfirmChangePassword = () => {
-    confirmChangePassword(uid, token, password, confirmPassword)
+    setIsLoading(true)
+    confirmChangePassword(uid, urlToken, password, confirmPassword)
       .then(data => {
+        // logout(token)
+        //   .then(data => {
+        setIsLoading(false)
         setOpen(false)
+        setToken(null)
+        setUsername('')
         history.push('/')
+        // })
       })
-      .catch(error => {
-        console.log('error', error)
-        setErrors(error.message)
-      })
+      // .catch(error => {
+      //   console.log('error', error)
+      //   setErrors(error.message)
+      // })
   }
 
   return (
@@ -134,6 +147,7 @@ export default function PasswordResetConfirm () {
                         />
                         <button
                           type='button'
+                          tabIndex='-1'
                           className='px-3 py-2 border border-gray-300 border-l-0 rounded-md rounded-l-none focus:outline-none'
                           onClick={() => setShowPassword(!showPassword)}
                         >
@@ -167,6 +181,7 @@ export default function PasswordResetConfirm () {
                         />
                         <button
                           type='button'
+                          tabIndex='-1'
                           className='px-3 py-2 border border-gray-300 border-l-0 rounded-md rounded-l-none focus:outline-none'
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         >
@@ -181,17 +196,26 @@ export default function PasswordResetConfirm () {
                 </div>
               </div>
               <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                <button
-                  type='button'
-                  disabled={enableBtn > 0 || !match}
-                  className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                  onClick={() => {
-                    handleConfirmChangePassword()
-                    // setOpen(false)
-                  }}
-                >
-                  Submit
-                </button>
+                {isLoading
+                  ? <button
+                      type='button'
+                      disabled
+                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                    >
+                    <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
+                    Processing
+                  </button>
+                  : <button
+                      type='button'
+                      disabled={enableBtn > 0 || !match}
+                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                      onClick={() => {
+                        handleConfirmChangePassword()
+                      }}
+                    >
+                    Submit
+                  </button>}
+
                 <Link
                   to='/'
                   className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'

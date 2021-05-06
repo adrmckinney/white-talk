@@ -60,6 +60,7 @@ const AdminPassword = ({ filterAdminRegister, setFilterAdminRegister, setEnableB
         />
         <button
           type='button'
+          tabIndex='-1'
           className='px-3 py-2 border border-gray-300 border-l-0 rounded-md rounded-l-none focus:outline-none'
           onClick={() => setShowPassword(!showPassword)}
         >
@@ -93,6 +94,7 @@ const AdminPassword = ({ filterAdminRegister, setFilterAdminRegister, setEnableB
         />
         <button
           type='button'
+          tabIndex='-1'
           className='px-3 py-2 border border-gray-300 border-l-0 rounded-md rounded-l-none focus:outline-none'
           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
         >

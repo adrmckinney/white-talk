@@ -17,11 +17,11 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
     pageClickEvent(dropdownRef, showSessions, setShowSessions)
   }, [showSessions])
 
-  const setLabel = () => {
-    if (dropdownSelectorMode === 'view-session-registrants') {
-      return 'Select Session'
-    }
-  }
+  // const setLabel = () => {
+  //   if (dropdownSelectorMode === 'view-session-registrants') {
+  //     return 'Select Session'
+  //   }
+  // }
 
   const setSelectDisplay = () => {
     if (dropdownSelectorMode === 'view-session-registrants') {

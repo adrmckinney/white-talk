@@ -69,7 +69,9 @@ function App () {
             <Route path='/view-form'>
               <ViewForm token={token} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} formToView={formToView} setFormToView={setFormToView} sessionToView={sessionToView} />
             </Route>
-            <Route exact path='/password/reset/confirm/:uid/:token' component={PasswordResetConfirm} />
+            <Route exact path='/password/reset/confirm/:uid/:urlToken'>
+              <PasswordResetConfirm token={token} setToken={setToken} setUsername={setUsername} />
+            </Route>
             <Route exact path='/username/reset/confirm/:uid/:token' component={UsernameResetConfirm} />
             <Route path='/'>
               <Home />

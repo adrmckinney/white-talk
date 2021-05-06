@@ -1,7 +1,8 @@
+import { RefreshIcon } from '@heroicons/react/outline'
 import { useEffect } from 'react'
 import { getUser } from '../../api'
 
-const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, isEditing, setIsEditing, loginProfile, setLoginProfile, setIsEditingAdmin, handleRequestChangeUsername, handleRequestChangePassword }) => {
+const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, isEditing, setIsEditing, loginProfile, setLoginProfile, setIsEditingAdmin, handleRequestChangeUsername, handleRequestChangePassword, isLoading, isLoadingUsername }) => {
   // console.log('showModal', showModal)
 
   useEffect(() => {
@@ -70,15 +71,25 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, isEdi
               >{loginProfile.username}
               </div>
             </span>
-            <button
-              type='button'
-              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
-              onClick={() => {
-                handleRequestChangeUsername(loginProfile.email)
-              }}
-            >
-              Edit Username
-            </button>
+            {isLoadingUsername
+              ? <button
+                  type='button'
+                  disabled
+                  className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+                >
+                <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
+                Processing
+              </button>
+              : <button
+                  type='button'
+                  className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+                  onClick={() => {
+                    handleRequestChangeUsername(loginProfile.email)
+                  }}
+                >
+                Edit Username
+              </button>}
+
           </div>
           <div className='flex justify-between'>
             <span className='w-3/5'>
@@ -88,15 +99,25 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, isEdi
               >**********
               </div>
             </span>
-            <button
-              type='submit'
-              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
-              onClick={() => {
-                handleRequestChangePassword(loginProfile.email)
-              }}
-            >
-              Change Password
-            </button>
+            {isLoading
+              ? <button
+                  type='button'
+                  disabled
+                  className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+                >
+                <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
+                Processing
+              </button>
+              : <button
+                  type='submit'
+                  className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+                  onClick={() => {
+                    handleRequestChangePassword(loginProfile.email)
+                  }}
+                >
+                Change Password
+              </button>}
+
           </div>
         </div>
       </div>
