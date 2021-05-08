@@ -20,6 +20,9 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                       <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                         Title
                       </th>
+                      <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        Facilitator
+                      </th>
                       <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
                         Date
                       </th>
@@ -50,8 +53,11 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                   <tbody className='bg-ghostWhite divide-y-8 divide-lavenderWebb'>
                     {sortSessions(sessions).map(session => (
                       <tr key={`session-${session.pk}`}>
-                        <td className=' px-6 py-4 whitespace-nowrap text-sm font-medium text-coolGray-900'>
+                        <td className=' px-6 py-4 break-words text-sm font-medium text-coolGray-900'>
                           {session.title}
+                        </td>
+                        <td className=' px-6 py-4 break-words text-sm font-medium text-coolGray-900'>
+                          {session.facilitator}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500'>
                           <span className='flex justify-between'>

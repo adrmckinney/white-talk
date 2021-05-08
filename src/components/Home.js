@@ -1,7 +1,6 @@
 import { Fragment } from 'react'
-
-import { Popover, Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/outline'
+import { Popover } from '@headlessui/react'
+// import { XIcon } from '@heroicons/react/outline'
 import LandingCarousel from './LandingCarousel'
 
 // const navigation = [
@@ -39,9 +38,9 @@ const Home = () => {
             className='mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28'
           >
             <div
-              className='sm:text-center lg:text-left'
+              className='text-center lg:text-left'
             >
-              <h1 className='text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl flex flex-col'>
+              <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-4 lg:pt-0'>
                 <span className='block xl:inline'>Welcome to</span>{' '}
                 <span className='block text-mediumPurple xl:inline'>Racial Equity White Talk</span>
               </h1>
@@ -72,7 +71,7 @@ const Home = () => {
           </main>
         </div>
       </div>
-      <div className='lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-mediumPurple flex items-center justify-center lg:justify-end xl:justify-center'>
+      <div className='lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-mediumPurple flex items-center justify-center lg:justify-end xl:justify-center h-72 sm:h-auto'>
         <LandingCarousel />
       </div>
     </div>

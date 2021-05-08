@@ -15,6 +15,10 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
   const [sessionToEdit, setSessionToEdit] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
+  // DEBUGGER STATION
+  // console.log('isRegistering', isRegistering)
+  console.log('sessions', sessions)
+
   useEffect(() => {
     listSessions()
       .then(data => {
@@ -37,7 +41,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
 
   useEffect(() => {
     sessions.forEach(session => {
-      if (session.session_registrants.length >= session.number_of_registrants && session.session_status === true) {
+      if (session.session_registrants.length >= session.number_of_registrants_allowed && session.session_status === true) {
         const input = {
           title: session.title,
           start_date: session.start_date,
@@ -46,7 +50,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
           end_time: session.end_time,
           description: session.description,
           session_status: 'false',
-          number_of_registrants: session.number_of_registrants
+          number_of_registrants_allowed: session.number_of_registrants_allowed
         }
         console.log('input', input)
         handleEditSession(token, session.pk, input)
@@ -66,7 +70,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
     if (session.session_status) {
       return (
         <button
-          className='w-full sm:w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+          className='w-full sm:w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 table-btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
           onClick={() => {
             setIsRegistering(true)
             setSessionToRegister(session)

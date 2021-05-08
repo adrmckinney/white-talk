@@ -11,3 +11,7 @@
 .btn-color {
   @apply bg-darkerPurple hover:bg-mediumPurple text-base font-medium text-white;
 }
+
+.table-btn-color {
+  @apply bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple;
+}

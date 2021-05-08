@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 const LIST_ITEMS = [
   'What does it mean to live an anti-racist life?',
-  'Upcoming Event: Book Study',
+  'Upcoming Event: Book Study on "How to be an Antiracist"',
   'How can we do anti-racist work and mitigate white saviorism?'
 ]
 
@@ -19,8 +19,6 @@ const LandingCarousel = () => {
     setTimeout(goToNext, 5000)
   }, [goToNext])
 
-  console.log('current', current)
-
   if (!LIST_ITEMS || length <= 0) {
     return null
   }
@@ -31,9 +29,9 @@ const LandingCarousel = () => {
         {LIST_ITEMS.map((item, idx) => (
           <div
             key={idx}
-            className={`${idx === current ? 'block' : 'hidden'} text-5xl bg-darkerPurple w-full py-6 px-4 flex justify-end xl:justify-center`}
+            className={`${idx === current ? 'block' : 'hidden'} text-3xl sm:text-5xl bg-darkerPurple w-full py-6 px-4 flex justify-center sm:justify-end xl:justify-center`}
           >
-            <p className='w-2/3 xl:w-3/4 font-playFair font-semibold italic'>
+            <p className='w-full sm:w-2/3 xl:w-3/4 font-playFair font-semibold italic'>
               {item}
             </p>
           </div>

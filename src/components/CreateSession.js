@@ -9,6 +9,7 @@ import SessionStatus from './createSessionForm.js/SessionStatus'
 import SessionTime from './createSessionForm.js/SessionTime'
 import NumberOfRegistrants from './createSessionForm.js/NumberOfRegistrants'
 import { RefreshIcon } from '@heroicons/react/outline'
+import SessionFacilitator from './createSessionForm.js/SessionFacilitator'
 
 const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession, setIsCreatingSession, setSessions, isLoading, setIsLoading }) => {
   const [filterInput, setFilterInput] = useReducer(
@@ -21,7 +22,8 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
       end_time: '',
       description: '',
       session_status: false,
-      number_of_registrants: 8
+      number_of_registrants_allowed: 8,
+      facilitator: ''
     }
   )
 
@@ -45,14 +47,15 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
         end_time: convertDate(sessionToEdit.end_time).toDate(),
         description: sessionToEdit.description,
         session_status: sessionToEdit.session_status,
-        number_of_registrants: sessionToEdit.number_of_registrants
+        number_of_registrants_allowed: sessionToEdit.number_of_registrants_allowed,
+        facilitator: sessionToEdit.facilitator
       })
     }
   }, [isEditing, sessionToEdit])
 
   // DEBUGGER STATION
   // console.log('sessionToEdit', sessionToEdit.pk)
-  // console.log('filterInput', filterInput)
+  console.log('filterInput', filterInput)
   // console.log('isEditing', isEditing)
   // console.log('showModal', showModal)
   // console.log('isLoading', isLoading)
@@ -121,6 +124,9 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                     <span className='flex flex-col space-y-8'>
                       <div>
                         <SessionTitle handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                      </div>
+                      <div>
+                        <SessionFacilitator handleFilterSession={handleFilterSession} filterInput={filterInput} />
                       </div>
                       <span className='flex justify-between'>
                         <div>

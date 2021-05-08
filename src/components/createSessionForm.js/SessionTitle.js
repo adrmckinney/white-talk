@@ -14,7 +14,6 @@ const SessionTitle = ({ handleFilterSession, filterInput }) => {
         name='title'
         id='title'
         value={filterInput.title}
-        // onChange={e => setTitle(e.target.value)}
         onChange={(e) => handleFilterSession('title', e.target.value)}
       />
     </>
