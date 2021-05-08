@@ -1,108 +1,10 @@
 import Moment from 'react-moment'
-import { useCallback, useEffect, useState } from 'react'
-import { listSessions, deleteSession, updateSession } from '../api'
-import DeleteAlert from './alerts/DeleteAlert'
-import SessionRegister from './sessionForms/SessionRegister'
-import CreateSession from './CreateSession'
 import { sortSessions } from './functions'
 
-const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setRegistered }) => {
-  const [isDeleting, setIsDeleting] = useState('')
-  const [isRegistering, setIsRegistering] = useState(false)
-  const [isEditing, setIsEditing] = useState('')
-  const [sessionToDelete, setSessionToDelete] = useState([])
-  const [sessionToEdit, setSessionToEdit] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-
+const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setRegistered, isDeleting, setIsDeleting, isRegistering, setIsRegistering, isEditing, setIsEditing, sessionToDelete, setSessionToDelete, sessionToEdit, setSessionToEdit, isLoading, setIsLoading, renderSessionStatus }) => {
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
   // console.log('sessions', sessions)
-
-  useEffect(() => {
-    listSessions()
-      .then(data => {
-        setSessions(data)
-      })
-  }, [setSessions])
-
-  // Had to use useCallback here because the handleEditSession without
-  // it was causing the useEffect below to run on every render
-  const handleEditSession = useCallback((token, pk, input) => {
-    updateSession(token, pk, input)
-      .then(data => {
-        listSessions()
-          .then(data => setSessions(data))
-        setIsLoading(false)
-        setIsEditing('')
-        setShowModal('')
-      })
-  }, [setSessions, setShowModal])
-
-  useEffect(() => {
-    sessions.forEach(session => {
-      if (session.session_registrants.length >= session.number_of_registrants && session.session_status === true) {
-        const input = {
-          title: session.title,
-          start_date: session.start_date,
-          end_date: session.end_date,
-          start_time: session.start_time,
-          end_time: session.end_time,
-          description: session.description,
-          session_status: 'false',
-          number_of_registrants: session.number_of_registrants
-        }
-        console.log('input', input)
-        handleEditSession(token, session.pk, input)
-      }
-    })
-  }, [sessions, handleEditSession, token])
-
-  const handleDelete = (pk) => {
-    deleteSession(token, pk)
-      .then(data => {
-        listSessions()
-          .then(data => setSessions(data))
-      })
-  }
-
-  if (isRegistering) {
-    return (
-      <SessionRegister sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setRegistered={setRegistered} showModal='session-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
-    )
-  }
-
-  if (isDeleting) {
-    return (
-      <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={sessionToDelete} />
-    )
-  }
-
-  if (isEditing === 'edit-session') {
-    return (
-      <span className=''>
-        <CreateSession isEditing='edit-session' token={token} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} sessionToEdit={sessionToEdit} handleEditSession={handleEditSession} isLoading={isLoading} setIsLoading={setIsLoading} />
-      </span>
-    )
-  }
-
-  const renderSessionStatus = (session) => {
-    if (session.session_status) {
-      return (
-        <button
-          className='w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-          onClick={() => {
-            setIsRegistering(true)
-            setSessionToRegister(session)
-          }}
-        >Sign up
-        </button>
-      )
-    } else {
-      return (
-        <span className='whitespace-nowrap text-md text-center text-red-300 font-bold'>Closed</span>
-      )
-    }
-  }
 
   return (
     <>

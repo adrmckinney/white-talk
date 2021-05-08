@@ -1,8 +1,106 @@
-import { Fragment } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Popover } from '@headlessui/react'
 import UpcomingSessions from './UpcomingSessions'
+import MobileUpcomingSessions from './MobileUpcomingSessions'
+import { listSessions, deleteSession, updateSession } from '../api'
+import DeleteAlert from './alerts/DeleteAlert'
+import SessionRegister from './sessionForms/SessionRegister'
+import CreateSession from './CreateSession'
 
 const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, registered, setRegistered }) => {
+  const [isDeleting, setIsDeleting] = useState('')
+  const [isRegistering, setIsRegistering] = useState(false)
+  const [isEditing, setIsEditing] = useState('')
+  const [sessionToDelete, setSessionToDelete] = useState([])
+  const [sessionToEdit, setSessionToEdit] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    listSessions()
+      .then(data => {
+        setSessions(data)
+      })
+  }, [setSessions])
+
+  // Had to use useCallback here because the handleEditSession without
+  // it was causing the useEffect below to run on every render
+  const handleEditSession = useCallback((token, pk, input) => {
+    updateSession(token, pk, input)
+      .then(data => {
+        listSessions()
+          .then(data => setSessions(data))
+        setIsLoading(false)
+        setIsEditing('')
+        setShowModal('')
+      })
+  }, [setSessions, setShowModal])
+
+  useEffect(() => {
+    sessions.forEach(session => {
+      if (session.session_registrants.length >= session.number_of_registrants && session.session_status === true) {
+        const input = {
+          title: session.title,
+          start_date: session.start_date,
+          end_date: session.end_date,
+          start_time: session.start_time,
+          end_time: session.end_time,
+          description: session.description,
+          session_status: 'false',
+          number_of_registrants: session.number_of_registrants
+        }
+        console.log('input', input)
+        handleEditSession(token, session.pk, input)
+      }
+    })
+  }, [sessions, handleEditSession, token])
+
+  const handleDelete = (pk) => {
+    deleteSession(token, pk)
+      .then(data => {
+        listSessions()
+          .then(data => setSessions(data))
+      })
+  }
+
+  const renderSessionStatus = (session) => {
+    if (session.session_status) {
+      return (
+        <button
+          className='w-full sm:w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+          onClick={() => {
+            setIsRegistering(true)
+            setSessionToRegister(session)
+          }}
+        >Sign up
+        </button>
+      )
+    } else {
+      return (
+        <span className='whitespace-nowrap text-md text-center text-red-300 font-bold'>Closed</span>
+      )
+    }
+  }
+
+  if (isRegistering) {
+    return (
+      <SessionRegister sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setRegistered={setRegistered} showModal='session-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
+    )
+  }
+
+  if (isDeleting) {
+    return (
+      <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={sessionToDelete} />
+    )
+  }
+
+  if (isEditing === 'edit-session') {
+    return (
+      <span className=''>
+        <CreateSession isEditing='edit-session' token={token} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} sessionToEdit={sessionToEdit} handleEditSession={handleEditSession} isLoading={isLoading} setIsLoading={setIsLoading} />
+      </span>
+    )
+  }
+
   return (
     <>
       <div className='relative bg-white overflow-hidden'>
@@ -89,8 +187,13 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
           </div>
         </div>
       </div>
-      <div className='mt-32'>
-        <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} />
+      <div className='sm:mt-32 pb-20 sm:pb-0'>
+        <span className='hidden sm:block'>
+          <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} />
+        </span>
+        <span className='sm:hidden'>
+          <MobileUpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} />
+        </span>
       </div>
     </>
   )
