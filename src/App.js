@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
+// import 'animate.css/animate.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import createPersistedState from 'use-persisted-state'
 import './App.css'
 import { getUser } from './api'
-import Home from './Home'
-import Header from './components/Header'
+// import Header from './components/Header'
 import Nav from './components/Nav'
 import BookStudy from './components/BookStudy'
 import Sessions from './components/Sessions'
@@ -13,6 +13,7 @@ import ViewSessionRegistrants from './components/ViewSessionRegistrants'
 import ViewForm from './components/ViewForm'
 import PasswordResetConfirm from './components/PasswordResetConfirm'
 import UsernameResetConfirm from './components/UsernameResetConfirm'
+import Home from './components/Home'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -50,7 +51,7 @@ function App () {
 
         <div className='bg-mediumPurple pb-32'>
           <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} setFormToView={setFormToView} setSessions={setSessions} />
-          <Header />
+          {/* <Header /> */}
         </div>
         <main className='-mt-32'>
           <Switch>

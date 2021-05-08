@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
 
-const NavBtns = ({ isLoggedIn }) => {
+const NavBtns = ({ isLoggedIn, navBtnClass }) => {
   return (
-    <div className='flex space-x-4'>
+    <div className='flex space-x-4 font-nunito'>
       {/* <!-- Current: "bg-indigo-700 text-white", Default: "text-white hover:bg-indigo-500 hover:bg-opacity-75" --> */}
 
-      <Link to='/' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
+      <Link to='/' className={navBtnClass()}>
         Home
       </Link>
 
-      <Link to='/sessions' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
+      <Link to='/sessions' className={navBtnClass()}>
         Sessions
       </Link>
 
@@ -22,7 +22,7 @@ const NavBtns = ({ isLoggedIn }) => {
       </Link> */}
 
       {isLoggedIn &&
-        <Link to='/view-session-registrants' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
+        <Link to='/view-session-registrants' className={navBtnClass()}>
           Session Registrants
         </Link>}
     </div>

@@ -22,7 +22,7 @@ const Header = () => {
   }
 
   return (
-    <header className='pt-32 pb-10'>
+    <header className='pt-32 pb-10 bg-black'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <h1 className='text-3xl font-bold text-isabelline'>
           {renderLocation()}

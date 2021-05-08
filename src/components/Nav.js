@@ -11,6 +11,7 @@ import CreateSession from './CreateSession'
 import Register from './Register'
 import ViewForm from './ViewForm'
 import { logout } from '../api'
+import useDocumentScrollThrottled from './customComponents/useDocumentScrollThrottled'
 
 // import Search from './Search'
 
@@ -20,6 +21,8 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   const [isRegistering, setIsRegistering] = useState(false)
   const [isEditingAdmin, setIsEditingAdmin] = useState(false)
   const [isCreatingSession, setIsCreatingSession] = useState(false)
+  const [showTransparentNav, setShowTransparentNav] = useState(false)
+  const [adminBtn, setAdminBtn] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
 
@@ -27,6 +30,38 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   // console.log('isRegistering', isRegistering)
   // console.log('isCreatingSession', isCreatingSession)
   // console.log('isSigningIn', isSigningIn)
+
+  // scroll on click feature
+  const MINIMUM_SCROLL = 0
+  const TIMEOUT_DELAY = 0
+
+  useDocumentScrollThrottled(callbackData => {
+    const { previousScrollTop, currentScrollTop } = callbackData
+    const isScrolledDown = previousScrollTop < currentScrollTop
+    const isMinimumScrolled = currentScrollTop > MINIMUM_SCROLL
+
+    setShowTransparentNav(currentScrollTop > 2)
+
+    setTimeout(() => {
+      setShowTransparentNav(isScrolledDown && isMinimumScrolled)
+    }, TIMEOUT_DELAY)
+  })
+
+  // close menu on window click feature
+  useEffect(() => {
+    const pageClickEvent = (e) => {
+      if (dropdownRef.current !== null && !dropdownRef.current.contains(e.target)) {
+        setShowMenu(false)
+        setAdminBtn(false)
+      }
+    }
+    if (showMenu || adminBtn) {
+      window.addEventListener('click', pageClickEvent)
+    }
+    return () => {
+      window.removeEventListener('click', pageClickEvent)
+    }
+  }, [showMenu, adminBtn])
 
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
   // It needs the useRef Variable, menu state variable, and the menu setState function.
@@ -68,16 +103,22 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
       })
   }
 
+  const navBtnClass = () => {
+    return (
+      `${showTransparentNav ? 'text-gray-800 hover:bg-gray-700 hover:text-white' : 'text-white hover:bg-blueGray-100 hover:text-gray-800'} px-3 py-2 rounded-md text-xs lg:text-sm font-medium`
+    )
+  }
+
   return (
-    <nav className='bg-mediumPurple border-b border-indigo-300 border-opacity-25 lg:border-none fixed top-0 z-10 w-full'>
+    <nav className={`${showTransparentNav ? 'bg-none' : 'bg-mediumPurple'} fixed top-0 z-20 w-full`}>
       <div className='max-w-7xl mx-auto px-2 sm:px-4 lg:px-8'>
-        <div className='relative h-16 flex items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25'>
+        <div className='relative h-16 flex items-center justify-between'>
           <div className='px-2 flex items-center lg:px-0'>
             {/* <div className='flex-shrink-0'>
               <img className='block h-8 w-8' src='https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg' alt='Workflow' />
             </div> */}
             <div className='hidden lg:block lg:ml-10'>
-              <NavBtns isLoggedIn={isLoggedIn} />
+              <NavBtns isLoggedIn={isLoggedIn} navBtnClass={navBtnClass} />
             </div>
           </div>
           {/* <Search /> */}
@@ -107,11 +148,11 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
             <div className='flex items-center'>
 
               {/* <!-- Profile dropdown --> */}
-              <div className='ml-3 relative flex-shrink-0'>
+              <div className='ml-3 relative flex-shrink-0 font-nunito'>
                 <div>
                   <button
                     type='button'
-                    className='bg-none rounded-full flex text-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white'
+                    className={navBtnClass()}
                     id='user-menu'
                     aria-expanded='false'
                     aria-haspopup='true'
@@ -135,7 +176,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                   leaveTo='transform opacity-0 scale-95'
                 >
                   <div
-                    className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 flex flex-col'
+                    className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 flex flex-col font-nunito'
                     role='menu'
                     aria-orientation='vertical'
                     aria-labelledby='user-menu'

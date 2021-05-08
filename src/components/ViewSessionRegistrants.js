@@ -1,20 +1,17 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
+import { Popover } from '@headlessui/react'
 import { Redirect } from 'react-router-dom'
-import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
-import { ChevronDoubleRightSolid } from '@graywolfai/react-heroicons'
 import Moment from 'react-moment'
 import { listSessions, deleteRegistrant, updateRegistrant } from '../api'
 import SelectionElement from './SelectionElement'
-import StaticMenu from './dropdownMenus/StaticMenu'
 import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
+import RenderRegistrants from './RenderRegistrants'
 
 const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister }) => {
   const [sessions, setSessions] = useState([])
   const [registrantsToRender, setRegistrantsToRender] = useState([])
   const [allEmails, setAllEmails] = useState([])
-  const [emails, setEmails] = useState([])
-  const [selectedAction, setSelectedAction] = useState('')
   const [isDeleting, setIsDeleting] = useState('')
   const [isEditing, setIsEditing] = useState('')
   const [registrantToDelete, setRegistrantToDelete] = useState([])
@@ -56,17 +53,6 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     setSessionToUpdate([])
     setRegistrantToEdit([])
     setRegistrantToDelete([])
-    setEmails([])
-  }
-
-  const handleEmails = (email) => {
-    const checkEmails = [...emails]
-    if (checkEmails.includes(email)) {
-      setEmails(emails.filter(em => em !== email))
-    } else {
-      const newEmails = [...emails, email]
-      setEmails(newEmails)
-    }
   }
 
   const handleAllEmails = (session) => {
@@ -86,52 +72,6 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
       setRegistrantToEdit([])
     } else {
       setRegistrantToEdit(registrant)
-    }
-  }
-
-  // This function handles how the btn text and mail functions
-  // are implemented based on the action dropdown selection
-  const handleBtnText = () => {
-    if (selectedAction === 'Email All') {
-      return (
-        <a
-          href={`mailto:${allEmails}`}
-          rel='noreferrer'
-          target='_blank'
-        >
-          <span className='flex'>
-            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-            {selectedAction}
-          </span>
-        </a>
-      )
-    } else if (selectedAction === 'Email Selected') {
-      return (
-        <a
-          href={`mailto:${emails}`}
-          rel='noreferrer'
-          target='_blank'
-        >
-          <span className='flex'>
-            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-            {selectedAction}
-          </span>
-        </a>
-      )
-    } else if (selectedAction === 'Update') {
-      return (
-        <span className='flex'>
-          <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-          {selectedAction}
-        </span>
-      )
-    } else if (selectedAction === 'Delete') {
-      return (
-        <span className='flex'>
-          <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-          {selectedAction}
-        </span>
-      )
     }
   }
 
@@ -202,157 +142,92 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   const setSessionTableTitle = () => {
     return (
       <span
-        className='font-normal space-x-2 truncate flex'
+        className='text-3xl font-bold font-nunito space-x-2 break-words flex'
       >
         <p>{registrantsToRender.title}</p>
-        {/* <span className='flex space-x-1'>
-          <Moment format='MM/DD/YYYY'>{registrantsToRender.start_date}</Moment>
-          <p>-</p>
-          <Moment format='MM/DD/YYYY'>{registrantsToRender.end_date}</Moment>
-        </span> */}
       </span>
     )
   }
 
   return (
     <>
-      <div className='max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8'>
-        <span className='flex justify-around'>
-          <SelectionElement sessions={sessions} dropdownSelectorMode={dropdownSelectorMode} setRegistrantsToRender={setRegistrantsToRender} handleAllEmails={handleAllEmails} />
+      <div className='relative bg-white overflow-hidden'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32'>
+            <svg
+              className='hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2'
+              fill='currentColor'
+              viewBox='0 0 100 100'
+              preserveAspectRatio='none'
+              aria-hidden='true'
+            >
+              <polygon points='50,0 100,0 50,100 0,100' />
+            </svg>
 
-          <span>
-            <h1 className='text-2xl flex justify-start shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1>
-            {registrantsToRender.pk &&
-              <>
-                <div className='flex space-x-1'>
-                  <p className='font-bold text-coolGray-800'>Date:</p>
-                  <span className='flex space-x-1'>
-                    <Moment format='MMM DD, YYYY'>{registrantsToRender.start_date}</Moment>
-                    <p>-</p>
-                    <Moment format='MMM DD, YYYY'>{registrantsToRender.end_date}</Moment>
-                  </span>
-                </div>
-                <div className='flex space-x-1'>
-                  <p className='font-bold text-coolGray-800'>Time:</p>
-                  <span className='flex space-x-1'>
-                    <Moment format='h:mm a'>{registrantsToRender.start_time}</Moment>
-                    <p>-</p>
-                    <Moment format='h:mm a'>{registrantsToRender.end_time}</Moment>
-                  </span>
-                </div>
-                <div className='flex space-x-1'>
-                  <p className='font-bold text-coolGray-800'>Number of registrants:</p>
-                  <p>{!registrantsToRender.pk || registrantsToRender.session_registrants.length}</p>
-                </div>
-                <div className='flex space-x-1'>
-                  <p className='font-bold text-coolGray-800'>Number confirmed:</p>
-                  <p>{!registrantsToRender.pk || getConfirmationCount()}</p>
-                </div>
-              </>}
-          </span>
-        </span>
-        <div className='flex flex-col pt-20'>
-          <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
-            <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-              <span>
-                <span className='flex items-start justify-end pt-10'>
-                  {/* <h1 className='text-2xl flex flex-1 justify-center mb-10 shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session' : setSessionTableTitle()}</h1> */}
-                  {registrantsToRender.pk &&
-                    <div className='flex flex-row space-x-2 mb-2'>
-                      <div className={`flex justify-center ${selectedAction && 'transform -translate-x-2 duration-700'}`}>
-                        <StaticMenu dropdownSelectorMode='action' selectedAction={selectedAction} setSelectedAction={setSelectedAction} />
-                      </div>
-                      {selectedAction &&
-                        <div className='flex items-center'>
-                          <ChevronDoubleRightSolid className='-ml-0.5 mr-2 h-4 w-4 transition delay-1000 animate-pulse' aria-hidden='true' />
-                        </div>}
-                      {selectedAction &&
-                        <span className='flex transition-all delay-1000 duration-500 ease-in-out'>
-                          <button
-                            type='button'
-                            className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                            onClick={() => {
-                              if (selectedAction === 'Delete') {
-                                setIsEditing('')
-                                setIsDeleting('delete-registrant')
-                              } else if (selectedAction === 'Update') {
-                                setIsDeleting('')
-                                setIsEditing('edit-registrant')
-                              }
-                            }}
-                          >
-                            {handleBtnText()}
-                          </button>
-                        </span>}
-                    </div>}
-                </span>
-                <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
-                  <table className='min-w-full divide-y divide-gray-200'>
-                    <thead className='bg-gray-50'>
-                      <tr>
-                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          Name
-                        </th>
-                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          Pronouns
-                        </th>
-                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          Email
-                        </th>
-                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          Comment
-                        </th>
-                        <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          Confirmed
-                        </th>
-                        <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
+            {/* Have to keep this for style */}
+            <Popover>
+              {({ open }) => (
+                <>
+                  <div className='relative pt-6 px-4 sm:px-6 lg:px-8' />
+                </>
+              )}
+            </Popover>
 
-                    <tbody className='bg-white divide-y divide-gray-200'>
-                      {!registrantsToRender.pk || registrantsToRender.session_registrants.map((registrant, idx) => (
-                        <tr key={`${registrant.pk}-index-${idx}`}>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 space-x-1 flex'>
-                            <p>{registrant.first_name}</p>
-                            <p>{registrant.last_name}</p>
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                            {registrant.pronouns}
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                            {registrant.email}
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                            {registrant.comment}
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center'>
-                            {registrant.confirm ? 'Yes' : 'No'}
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-center text-sm font-medium'>
-                            <input
-                              name={idx}
-                              id={registrant.email}
-                              type='checkbox'
-                              value={registrant.email}
-                              onChange={(e) => {
-                                handleEmails(registrant.email)
-                                handleSessionToEdit(registrant)
-                                handleEditState(e, registrant)
-                                handleDeleteState(e, registrant)
-                              }}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+            <main
+              className='mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28'
+            >
+              <div
+                className='text-center lg:text-left'
+              >
+                <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-4 lg:pt-0'>
+                  <span className='block xl:inline'>Admin Hub</span>{' '}
+                  <span className='block text-mediumPurple xl:inline'>See Who's Registered</span>
+                </h1>
+                <SelectionElement sessions={sessions} dropdownSelectorMode={dropdownSelectorMode} setRegistrantsToRender={setRegistrantsToRender} handleAllEmails={handleAllEmails} />
+                <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start' />
+              </div>
+            </main>
+          </div>
+        </div>
+        <div className='lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-mediumPurple flex justify-center'>
+          <div className='flex flex-col items-end justify-center lg:w-full h-full space-y-4 xl:space-y-8 pb-2 xl:pb-0 font-nunito'>
+            <div className='bg-darkerPurple w-full flex md:justify-end lg:justify-end lg:pr-8 lg:pl-14 xl:justify-center xl:pr-0'>
+              <span className='text-white font-nunito text-md xl:text-xl'>
+                <h1 className='text-3xl font-bold flex justify-start shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session Dashboard' : setSessionTableTitle()}</h1>
+                {registrantsToRender.pk &&
+                  <>
+                    <div className='flex space-x-2'>
+                      <p className='font-bold text-coolGray-100'>Date:</p>
+                      <span className='flex space-x-1'>
+                        <Moment format='MMM DD, YYYY'>{registrantsToRender.start_date}</Moment>
+                        <p>-</p>
+                        <Moment format='MMM DD, YYYY'>{registrantsToRender.end_date}</Moment>
+                      </span>
+                    </div>
+                    <div className='flex space-x-2'>
+                      <p className='font-bold text-coolGray-100'>Time:</p>
+                      <span className='flex space-x-1'>
+                        <Moment format='h:mm a'>{registrantsToRender.start_time}</Moment>
+                        <p>-</p>
+                        <Moment format='h:mm a'>{registrantsToRender.end_time}</Moment>
+                      </span>
+                    </div>
+                    <div className='flex space-x-2'>
+                      <p className='font-bold text-coolGray-100'>Number of registrants:</p>
+                      <p>{!registrantsToRender.pk || registrantsToRender.session_registrants.length}</p>
+                    </div>
+                    <div className='flex space-x-2'>
+                      <p className='font-bold text-coolGray-100'>Number confirmed:</p>
+                      <p>{!registrantsToRender.pk || getConfirmationCount()}</p>
+                    </div>
+                  </>}
               </span>
             </div>
           </div>
         </div>
+      </div>
+      <div className=''>
+        <RenderRegistrants token={token} isLoggedIn={isLoggedIn} sessions={sessions} setShowModal={setShowModal} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} registrantsToRender={registrantsToRender} setRegistrantsToRender={setRegistrantsToRender} allEmails={allEmails} handleAllEmails={handleAllEmails} handleDeleteState={handleDeleteState} handleEditState={handleEditState} handleSessionToEdit={handleSessionToEdit} handleDelete={handleDelete} handleRegistrantUpdate={handleRegistrantUpdate} handleRefreshAfterEdit={handleRefreshAfterEdit} setIsDeleting={setIsDeleting} setIsEditing={setIsEditing} />
       </div>
     </>
   )

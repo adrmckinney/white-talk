@@ -1,5 +1,4 @@
 const colors = require('tailwindcss/colors')
-const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   // mode: 'jit',
@@ -28,6 +27,13 @@ module.exports = {
         // ming: '#28666E',
         // mellowApricot: '#FEB86C',
         // lilac: '#7C5585'
+      },
+      fontFamily: {
+        nunito: ['Nunito'],
+        spirax: ['Spirax'],
+        lobsterTwo: ['Lobster Two'],
+        paytone: ['Paytone One'],
+        playFair: ['Playfair Display']
       }
     }
   },
