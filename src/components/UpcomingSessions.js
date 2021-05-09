@@ -1,3 +1,4 @@
+import { PencilAltIcon, TrashIcon } from '@heroicons/react/outline'
 import Moment from 'react-moment'
 import { sortSessions } from './functions'
 
@@ -92,7 +93,9 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                                   setSessionToEdit(session)
                                   setIsEditing('edit-session')
                                 }}
-                              >Edit
+                              >
+                                <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                                Edit
                               </button>
                             </td>
                             <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
@@ -102,7 +105,9 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                                   setIsDeleting('delete-session')
                                   setSessionToDelete(session)
                                 }}
-                              >Delete
+                              >
+                                <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                                Delete
                               </button>
                             </td>
                           </>}

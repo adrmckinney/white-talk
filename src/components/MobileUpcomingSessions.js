@@ -1,15 +1,15 @@
-import { PhoneIcon } from '@heroicons/react/solid'
+import { PencilAltIcon, TrashIcon } from '@heroicons/react/outline'
 import Moment from 'react-moment'
 import { sortSessions } from './functions'
 
-export default function MobileUpcomingSessions ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setRegistered, isDeleting, setIsDeleting, isRegistering, setIsRegistering, isEditing, setIsEditing, sessionToDelete, setSessionToDelete, sessionToEdit, setSessionToEdit, isLoading, setIsLoading, renderSessionStatus }) {
+export default function MobileUpcomingSessions ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setRegistered, isDeleting, setIsDeleting, isRegistering, setIsRegistering, isEditing, setIsEditing, sessionToDelete, setSessionToDelete, sessionToEdit, setSessionToEdit, isLoading, setIsLoading, renderSessionStatus, getConfirmationCount }) {
   return (
     <ul className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 sm:px-10'>
       <h1 className='col-span-full text-3xl text-center text-gray-900 font-extrabold font-sans my-10 rounded-lg'>Upcoming Sessions</h1>
       {sortSessions(sessions).map((session) => (
         <li
           key={`session-${session.pk}`}
-          className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y-4 divide-mediumPurple font-nunito mx-2 border border-mediumPurple'
+          className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y-2 divide-mediumPurple font-nunito mx-2 border border-mediumPurple'
         >
           <div className='text-2xl font-bold py-2 break-words'>
             {session.title}
@@ -43,35 +43,43 @@ export default function MobileUpcomingSessions ({ token, sessions, setSessions, 
             </div>
           </div>
           {isLoggedIn &&
-            <div>
-              <span>
+            <div className='flex flex-col justify-between h-full'>
+              <span className='flex justify-around py-4'>
                 <div className='flex justify-center space-x-2'>
                   <h3>Registered:</h3>
                   <p>{session.session_registrants.length}</p>
                 </div>
                 <div className='flex justify-center space-x-2'>
                   <h3>Confirmed:</h3>
-                  <p>{session.confirmed}</p>
+                  <p>{getConfirmationCount(session)}</p>
                 </div>
               </span>
-              <div className='-mt-px flex divide-x divide-gray-200'>
+              <div className='-mt-px flex divide-x divide-gray-200 border-t-2 border-darkerPurple'>
                 <div className='-ml-px w-0 flex-1 flex'>
-                  <a
-                    href={`tel:${session.telephone}`}
-                    className='relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm table-btn-color font-medium border border-transparent rounded-br-lg'
+                  <button
+                    type='button'
+                    className='relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500'
+                    onClick={() => {
+                      setIsDeleting('delete-session')
+                      setSessionToDelete(session)
+                    }}
                   >
-                    <PhoneIcon className='w-5 h-5 text-gray-400' aria-hidden='true' />
-                    <span className='ml-3'>Call</span>
-                  </a>
+                    <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                    <span className='ml-3'>Delete Session</span>
+                  </button>
                 </div>
                 <div className='-ml-px w-0 flex-1 flex'>
-                  <a
-                    href={`tel:${session.telephone}`}
-                    className='relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500'
+                  <button
+                    type='button'
+                    className='relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm table-btn-color font-medium border border-transparent rounded-br-lg'
+                    onClick={() => {
+                      setSessionToEdit(session)
+                      setIsEditing('edit-session')
+                    }}
                   >
-                    <PhoneIcon className='w-5 h-5 text-gray-400' aria-hidden='true' />
-                    <span className='ml-3'>Call</span>
-                  </a>
+                    <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                    <span className='ml-3'>Edit Session</span>
+                  </button>
                 </div>
               </div>
             </div>}

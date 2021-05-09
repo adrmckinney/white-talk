@@ -6,6 +6,7 @@ import { listSessions, deleteSession, updateSession } from '../api'
 import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
 import CreateSession from './CreateSession'
+import { PencilIcon } from '@heroicons/react/outline'
 
 const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, registered, setRegistered }) => {
   const [isDeleting, setIsDeleting] = useState('')
@@ -75,7 +76,9 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
             setIsRegistering(true)
             setSessionToRegister(session)
           }}
-        >Sign up
+        >
+          <PencilIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+          Sign up
         </button>
       )
     } else {
@@ -83,6 +86,17 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
         <span className='whitespace-nowrap text-md text-center text-red-300 font-bold'>Closed</span>
       )
     }
+  }
+
+  const getConfirmationCount = (session) => {
+    const confirmationStatuses = session.session_registrants.map(reg => reg.confirm)
+    const confirmed = []
+    confirmationStatuses.forEach(status => {
+      if (status) {
+        confirmed.push(status)
+      }
+    })
+    return confirmed.length
   }
 
   if (isRegistering) {
@@ -191,12 +205,12 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
           </div>
         </div>
       </div>
-      <div className='md:mt-8 lg:mt-32 pb-20 sm:pb-0'>
+      <div className='md:mt-8 lg:mt-32 pb-20 sm:pb-10 lg:pb-0'>
         <span className='hidden lg:block'>
-          <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} />
+          <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
         </span>
         <span className='lg:hidden'>
-          <MobileUpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} />
+          <MobileUpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
         </span>
       </div>
     </>
