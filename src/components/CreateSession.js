@@ -97,7 +97,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
             </div>
           </Transition>
           {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-          <span className='sm:inline-block sm:align-middle sm:h-screen w-full' aria-hidden='true'>&#8203;
+          <span className='sm:inline-block sm:align-middle sm:h-screen w-1/2 sm:w-full' aria-hidden='true'>&#8203;
 
             {/* Modal panel, show/hide based on modal state. */}
             <Transition
@@ -128,7 +128,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                       <div>
                         <SessionFacilitator handleFilterSession={handleFilterSession} filterInput={filterInput} />
                       </div>
-                      <span className='flex justify-between'>
+                      <span className='flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between'>
                         <div>
                           <SessionDates handleFilterSession={handleFilterSession} filterInput={filterInput} />
                         </div>
@@ -136,7 +136,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                           <SessionTime handleFilterSession={handleFilterSession} filterInput={filterInput} />
                         </div>
                       </span>
-                      <span className='flex justify-between'>
+                      <span className='flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between'>
                         <div>
                           <NumberOfRegistrants handleFilterSession={handleFilterSession} filterInput={filterInput} />
                         </div>
@@ -160,7 +160,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                           {isEditing === 'edit-session'
                             ? 'Update'
                             : 'Create'}
-                          </button>}
+                        </button>}
                       <button
                         type='button'
                         className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'

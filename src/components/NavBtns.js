@@ -25,6 +25,16 @@ const NavBtns = ({ isLoggedIn, navBtnClass }) => {
         <Link to='/view-session-registrants' className={navBtnClass()}>
           Session Registrants
         </Link>}
+
+      <div className='hidden sm:block md:hidden text-red-700'>
+        small
+      </div>
+      <div className='hidden md:block lg:hidden text-red-700'>
+        medium
+      </div>
+      <div className='hidden lg:block text-red-700'>
+        large
+      </div>
     </div>
   )
 }

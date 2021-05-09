@@ -40,7 +40,7 @@ const Home = () => {
             <div
               className='text-center lg:text-left'
             >
-              <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-4 lg:pt-0'>
+              <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-10 sm:pt-4 lg:pt-0'>
                 <span className='block xl:inline'>Welcome to</span>{' '}
                 <span className='block text-mediumPurple xl:inline'>Racial Equity White Talk</span>
               </h1>

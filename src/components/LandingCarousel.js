@@ -29,7 +29,7 @@ const LandingCarousel = () => {
         {LIST_ITEMS.map((item, idx) => (
           <div
             key={idx}
-            className={`${idx === current ? 'block' : 'hidden'} text-3xl sm:text-5xl bg-darkerPurple w-full py-6 px-4 flex justify-center sm:justify-end xl:justify-center`}
+            className={`${idx === current ? 'block' : 'hidden'} text-3xl sm:text-5xl bg-darkerPurple w-full py-6 px-4 flex justify-center lg:justify-end xl:justify-center`}
           >
             <p className='w-full sm:w-2/3 xl:w-3/4 font-playFair font-semibold italic'>
               {item}

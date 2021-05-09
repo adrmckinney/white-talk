@@ -54,7 +54,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn }) => {
           </div>
         </Transition>
         {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-        <span className='inline-block align-middle h-screen w-auto sm:w-1/2 md:w-1/3' aria-hidden='true'>&#8203;
+        <span className='inline-block align-middle h-screen w-3/4 sm:w-1/2 md:w-1/3' aria-hidden='true'>&#8203;
 
           {/* Modal panel, show/hide based on modal state. */}
           <Transition

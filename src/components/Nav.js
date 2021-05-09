@@ -23,6 +23,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   const [isCreatingSession, setIsCreatingSession] = useState(false)
   const [showTransparentNav, setShowTransparentNav] = useState(false)
   const [adminBtn, setAdminBtn] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const dropdownRef = useRef(null)
   const history = useHistory('')
 
@@ -83,7 +84,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
 
   if (isCreatingSession) {
     return (
-      <CreateSession token={token} showModal='create-session-form' setShowModal={setShowModal} setIsCreatingSession={setIsCreatingSession} setSessions={setSessions} />
+      <CreateSession token={token} showModal='create-session-form' setShowModal={setShowModal} setIsCreatingSession={setIsCreatingSession} setSessions={setSessions} isLoading={isLoading} setIsLoading={setIsLoading} />
     )
   }
 
@@ -110,19 +111,19 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   }
 
   return (
-    <nav className={`${showTransparentNav ? 'bg-none' : 'bg-mediumPurple'} fixed top-0 z-20 w-full`}>
+    <nav className={`${showTransparentNav ? 'sm:bg-none' : 'sm:bg-mediumPurple'} bg-ghostWhite fixed top-0 z-20 w-full`}>
       <div className='max-w-7xl mx-auto px-2 sm:px-4 lg:px-8'>
         <div className='relative h-16 flex items-center justify-between'>
           <div className='px-2 flex items-center lg:px-0'>
             {/* <div className='flex-shrink-0'>
               <img className='block h-8 w-8' src='https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg' alt='Workflow' />
             </div> */}
-            <div className='hidden lg:block lg:ml-10'>
+            <div className='hidden sm:block sm:ml-10'>
               <NavBtns isLoggedIn={isLoggedIn} navBtnClass={navBtnClass} />
             </div>
           </div>
           {/* <Search /> */}
-          <div className='flex lg:hidden'>
+          <div className='flex sm:hidden'>
             {/* <!-- Mobile menu button --> */}
             <button
               type='button'
@@ -144,7 +145,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
               </svg>
             </button>
           </div>
-          <div className='hidden lg:block lg:ml-4'>
+          <div className='hidden sm:block sm:ml-4'>
             <div className='flex items-center'>
 
               {/* <!-- Profile dropdown --> */}
@@ -255,11 +256,12 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
         <RegSuccessfulAlert showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />}
 
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
-      <div className='lg:hidden' id='mobile-menu'>
+      <div className='lg:hidden text-gray-800 border-b-8 border-gray-300' id='mobile-menu'>
         {showMenu &&
           <>
-            <MobileNavBtns isLoggedIn={isLoggedIn} />
-            <MobileNavMenu showMenu={showMenu} setIsSigningIn={setIsSigningIn} setToken={setToken} setUsername={setUsername} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} username={username} setIsCreatingSession={setIsCreatingSession} />
+            <MobileNavBtns isLoggedIn={isLoggedIn} loggedInName={loggedInName} handleLogout={handleLogout} showMenu={showMenu} setShowMenu={setShowMenu} setIsSigningIn={setIsSigningIn} />
+            {isLoggedIn &&
+              <MobileNavMenu setToken={setToken} showMenu={showMenu} setUsername={setUsername} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} username={username} setIsCreatingSession={setIsCreatingSession} setIsRegistering={setIsRegistering} setIsEditingAdmin={setIsEditingAdmin} loggedInName={loggedInName} handleLogout={handleLogout} />}
           </>}
       </div>
     </nav>

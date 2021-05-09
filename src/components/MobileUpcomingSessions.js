@@ -1,11 +1,11 @@
-import { MailIcon, PhoneIcon } from '@heroicons/react/solid'
+import { PhoneIcon } from '@heroicons/react/solid'
 import Moment from 'react-moment'
 import { sortSessions } from './functions'
 
 export default function MobileUpcomingSessions ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setRegistered, isDeleting, setIsDeleting, isRegistering, setIsRegistering, isEditing, setIsEditing, sessionToDelete, setSessionToDelete, sessionToEdit, setSessionToEdit, isLoading, setIsLoading, renderSessionStatus }) {
   return (
-    <ul className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-      <h1 className='text-3xl text-center text-gray-900 font-extrabold font-sans my-10 rounded-lg'>Upcoming Sessions</h1>
+    <ul className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 sm:px-10'>
+      <h1 className='col-span-full text-3xl text-center text-gray-900 font-extrabold font-sans my-10 rounded-lg'>Upcoming Sessions</h1>
       {sortSessions(sessions).map((session) => (
         <li
           key={`session-${session.pk}`}

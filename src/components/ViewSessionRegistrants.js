@@ -190,9 +190,9 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
           </div>
         </div>
         <div className='lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-mediumPurple flex justify-center'>
-          <div className='flex flex-col items-end justify-center lg:w-full h-full space-y-4 xl:space-y-8 pb-2 xl:pb-0 font-nunito'>
-            <div className='bg-darkerPurple w-full flex md:justify-end lg:justify-end lg:pr-8 lg:pl-14 xl:justify-center xl:pr-0'>
-              <span className='text-white font-nunito text-md xl:text-xl'>
+          <div className='flex flex-col items-end justify-center w-full h-72 sm:h-64 lg:h-full space-y-4 xl:space-y-8 pb-2 xl:pb-0 font-nunito'>
+            <div className='bg-darkerPurple w-full flex justify-center lg:justify-end lg:pr-8 lg:pl-14 xl:justify-center xl:pr-0'>
+              <span className='text-white font-nunito text-md xl:text-xl lg:max-w-xs xl:max-w-none'>
                 <h1 className='text-3xl font-bold flex justify-start shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session Dashboard' : setSessionTableTitle()}</h1>
                 {registrantsToRender.pk &&
                   <>
