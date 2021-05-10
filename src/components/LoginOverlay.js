@@ -62,8 +62,11 @@ export default function LoginOverlay ({ showModal, setShowModal, setAuth, setIsS
                           className='bg-indigo-700 rounded-md text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white'
                           onClick={() => {
                             setIsSigningIn('')
-                            setShowModal('')
                             setIsLoading(false)
+                            setFilterLogin({
+                              username: '',
+                              password: ''
+                            })
                             setOpen(false)
                           }}
                         >
@@ -145,8 +148,11 @@ export default function LoginOverlay ({ showModal, setShowModal, setAuth, setIsS
                             className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
                             onClick={() => {
                               setIsSigningIn('')
-                              setShowModal('')
                               setIsLoading(false)
+                              setFilterLogin({
+                                username: '',
+                                password: ''
+                              })
                               setOpen(false)
                             }}
                           >

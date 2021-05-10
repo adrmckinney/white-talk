@@ -5,19 +5,20 @@ import MobileUpcomingSessions from './MobileUpcomingSessions'
 import { listSessions, deleteSession, updateSession } from '../api'
 import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
+import SessionRegisterOverlay from './sessionForms/SessionRegisterOverlay'
 import CreateSession from './CreateSession'
 import { PencilIcon } from '@heroicons/react/outline'
 
 const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, registered, setRegistered }) => {
   const [isDeleting, setIsDeleting] = useState('')
-  const [isRegistering, setIsRegistering] = useState(false)
+  const [isRegistering, setIsRegistering] = useState('')
   const [isEditing, setIsEditing] = useState('')
   const [sessionToDelete, setSessionToDelete] = useState([])
   const [sessionToEdit, setSessionToEdit] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
   // DEBUGGER STATION
-  // console.log('isRegistering', isRegistering)
+  console.log('isRegistering', isRegistering)
   console.log('sessions', sessions)
 
   useEffect(() => {
@@ -67,13 +68,13 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
       })
   }
 
-  const renderSessionStatus = (session) => {
+  const renderSessionStatus = (session, mode) => {
     if (session.session_status) {
       return (
         <button
           className='w-full sm:w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 table-btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
           onClick={() => {
-            setIsRegistering(true)
+            setIsRegistering(mode)
             setSessionToRegister(session)
           }}
         >
@@ -99,9 +100,15 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
     return confirmed.length
   }
 
-  if (isRegistering) {
+  if (isRegistering === 'register-modal') {
     return (
       <SessionRegister sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setRegistered={setRegistered} showModal='session-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
+    )
+  }
+
+  if (isRegistering === 'register-overlay') {
+    return (
+      <SessionRegisterOverlay sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setRegistered={setRegistered} showModal='session-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
     )
   }
 

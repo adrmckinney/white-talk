@@ -78,7 +78,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                           {session.description}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
-                          {renderSessionStatus(session)}
+                          {renderSessionStatus(session, 'register-modal')}
                         </td>
                         {isLoggedIn &&
                           <>

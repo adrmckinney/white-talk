@@ -135,6 +135,15 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     )
   }
 
+  // USE THIS WHEN MOBILE VIEW REGISTRANTS IS WORKING
+  // if (isEditing === 'edit-registrant-overlay' && registrantToEdit.pk) {
+  //   return (
+  //     <SessionRegister
+  //       token={token} registrantToEdit={registrantToEdit} isEditing={isEditing} sessions={sessions} setIsEditing={setIsEditing} showModal='session-registration-form' setShowModal={setShowModal} sessionToRegister={sessionToUpdate} handleRegistrantUpdate={handleRegistrantUpdate}
+  //     />
+  //   )
+  // }
+
   if (!isLoggedIn) {
     <Redirect to='/' />
   }

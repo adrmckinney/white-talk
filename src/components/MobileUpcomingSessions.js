@@ -38,7 +38,7 @@ export default function MobileUpcomingSessions ({ token, sessions, setSessions, 
             </span>
             <div className='flex divide-x divide-gray-200'>
               <div className='w-0 flex-1 flex justify-center'>
-                {renderSessionStatus(session)}
+                {renderSessionStatus(session, 'register-overlay')}
               </div>
             </div>
           </div>
