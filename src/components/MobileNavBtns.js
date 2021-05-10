@@ -38,9 +38,6 @@ const MobileNavBtns = ({ isLoggedIn, loggedInName, handleLogout, showMenu, setSh
             className='block rounded-md py-2 px-3 text-base font-medium  hover:bg-indigo-500 hover:bg-opacity-75'
             onClick={() => {
               handleLogout()
-              // setToken(null)
-              // setUsername('')
-              // setShowMenu(false)
             }}
           >
             Sign out
@@ -52,7 +49,7 @@ const MobileNavBtns = ({ isLoggedIn, loggedInName, handleLogout, showMenu, setSh
             role='menuitem'
             onClick={() => {
               setShowMenu(false)
-              setIsSigningIn(true)
+              setIsSigningIn('login-overlay')
             }}
           >
             Sign in

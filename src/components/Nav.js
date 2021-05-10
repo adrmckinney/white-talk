@@ -1,7 +1,7 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useReducer } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
-import { pageClickEvent } from './functions'
+import { handleFormFilter, pageClickEvent } from './functions'
 import NavBtns from './NavBtns'
 import RegSuccessfulAlert from './alerts/RegSuccessfulAlert'
 import MobileNavBtns from './MobileNavBtns'
@@ -12,18 +12,20 @@ import Register from './Register'
 import ViewForm from './ViewForm'
 import { logout } from '../api'
 import useDocumentScrollThrottled from './customComponents/useDocumentScrollThrottled'
+import LoginOverlay from './LoginOverlay'
 
 // import Search from './Search'
 
 const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, showModal, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView, setSessions }) => {
   const [showMenu, setShowMenu] = useState(false)
-  const [isSigningIn, setIsSigningIn] = useState(false)
+  const [isSigningIn, setIsSigningIn] = useState('')
   const [isRegistering, setIsRegistering] = useState(false)
   const [isEditingAdmin, setIsEditingAdmin] = useState(false)
   const [isCreatingSession, setIsCreatingSession] = useState(false)
   const [showTransparentNav, setShowTransparentNav] = useState(false)
   const [adminBtn, setAdminBtn] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [errors, setErrors] = useState('')
   const dropdownRef = useRef(null)
   const history = useHistory('')
 
@@ -31,6 +33,8 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   // console.log('isRegistering', isRegistering)
   // console.log('isCreatingSession', isCreatingSession)
   // console.log('isSigningIn', isSigningIn)
+  console.log('isLoading', isLoading)
+  console.log('username', username)
 
   // scroll on click feature
   const MINIMUM_SCROLL = 0
@@ -70,11 +74,26 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
     pageClickEvent(dropdownRef, showMenu, setShowMenu)
   }, [showMenu])
 
-  if (isSigningIn) {
+  // ********** LOGIN FEATURES *************
+  const [filterLogin, setFilterLogin] = useReducer(
+    (name, value) => ({ ...name, ...value }),
+    {
+      username: '',
+      password: ''
+    }
+  )
+  console.log('filterLogin', filterLogin)
+  if (isSigningIn === 'login-modal') {
     return (
-      <LoginModal setAuth={setAuth} showModal='login-form' setShowModal={setShowModal} setIsSigningIn={setIsSigningIn} />
+      <LoginModal setAuth={setAuth} showModal='login-form' setShowModal={setShowModal} setIsSigningIn={setIsSigningIn} filterLogin={filterLogin} setFilterLogin={setFilterLogin} isLoading={isLoading} setIsLoading={setIsLoading} errors={errors} setErrors={setErrors} />
     )
   }
+  if (isSigningIn === 'login-overlay') {
+    return (
+      <LoginOverlay setAuth={setAuth} showModal='login-form' setShowModal={setShowModal} setIsSigningIn={setIsSigningIn} filterLogin={filterLogin} setFilterLogin={setFilterLogin} isLoading={isLoading} setIsLoading={setIsLoading} errors={errors} setErrors={setErrors} />
+    )
+  }
+  // ********** LOGIN FEATURES *************
 
   if (isRegistering) {
     return (
@@ -100,6 +119,10 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
         setToken(null)
         setUsername('')
         setShowMenu(false)
+        setFilterLogin({
+          username: '',
+          password: ''
+        })
         history.push('/')
       })
   }
@@ -226,10 +249,6 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                           className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'
                           onClick={() => {
                             handleLogout()
-                            // setToken(null)
-                            // setUsername('')
-                            // setShowMenu(false)
-                            // history.push('/')
                           }}
                         >
                           Sign out
@@ -240,7 +259,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                           className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            setIsSigningIn(true)
+                            setIsSigningIn('login-modal')
                           }}
                         >
                           Sign in

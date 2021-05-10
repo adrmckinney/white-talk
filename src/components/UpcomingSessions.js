@@ -25,10 +25,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                         Facilitator
                       </th>
                       <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        Date
-                      </th>
-                      <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                        Time
+                        Date/Time
                       </th>
                       <th scope='col' className='px-6 py-3 w-96 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
                         Description
@@ -37,17 +34,14 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                         Status
                       </th>
                       {isLoggedIn &&
-                        <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          Registered
-                        </th>}
-                      {isLoggedIn &&
-                        <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          Edit
-                        </th>}
-                      {isLoggedIn &&
-                        <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          Delete
-                        </th>}
+                        <>
+                          <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                            Registered
+                          </th>
+                          <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                            Edit/Delete
+                          </th>
+                        </>}
                     </tr>
                   </thead>
 
@@ -61,21 +55,26 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                           {session.facilitator}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500'>
-                          <span className='flex justify-between'>
-                            <span className='text-gray-700'>Start:</span>
-                            <Moment format='MMM DD, YYYY'>{session.start_date}</Moment>
-                          </span>
-                          <span className='flex justify-between'>
-                            <span className='text-gray-700'> End:</span>
-                            <Moment format='MMM DD, YYYY'>{session.end_date}</Moment>
+                          <span className='space-y-2'>
+                            <span className='flex justify-between'>
+                              <span className='text-gray-800'>First Mtg:</span>
+                              <Moment format='MMM DD, YYYY'>{session.start_date}</Moment>
+                            </span>
+                            <span className='flex justify-between'>
+                              <span className='text-gray-800'> Last Mtg:</span>
+                              <Moment format='MMM DD, YYYY'>{session.end_date}</Moment>
+                            </span>
+                            <span className='flex space-x-2'>
+                              <span className='text-gray-800'> From:</span>
+                              <span className='space-x-1'>
+                                <Moment format='h:mm a'>{session.start_time}</Moment>
+                                <span>-</span>
+                                <Moment format='h:mm a'>{session.end_time}</Moment>
+                              </span>
+                            </span>
                           </span>
                         </td>
-                        <td className='px-6 py-4 whitespace-nowrap text-sm text-coolGray-500 space-x-1 text-center'>
-                          <Moment format='h:mm a'>{session.start_time}</Moment>
-                          <span>-</span>
-                          <Moment format='h:mm a'>{session.end_time}</Moment>
-                        </td>
-                        <td className='px-6 py-4 break-words text-sm text-coolGray-500 space-x-1 text-center'>
+                        <td className={`${isLoggedIn ? 'whitespace-nowrap truncate max-w-sm' : 'break-words'} px-6 py-4 text-sm text-coolGray-500 space-x-1 text-center`}>
                           {session.description}
                         </td>
                         <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
@@ -86,29 +85,29 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                             <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                               {session.session_registrants.length}
                             </td>
-                            <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-                              <button
-                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                                onClick={() => {
-                                  setSessionToEdit(session)
-                                  setIsEditing('edit-session')
-                                }}
-                              >
-                                <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                                Edit
-                              </button>
-                            </td>
-                            <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-                              <button
-                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                                onClick={() => {
-                                  setIsDeleting('delete-session')
-                                  setSessionToDelete(session)
-                                }}
-                              >
-                                <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                                Delete
-                              </button>
+                            <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
+                              <span className='flex flex-col space-y-4'>
+                                <button
+                                  className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                  onClick={() => {
+                                    setSessionToEdit(session)
+                                    setIsEditing('edit-session')
+                                  }}
+                                >
+                                  <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                                  Edit
+                                </button>
+                                <button
+                                  className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                  onClick={() => {
+                                    setIsDeleting('delete-session')
+                                    setSessionToDelete(session)
+                                  }}
+                                >
+                                  <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                                  Delete
+                                </button>
+                              </span>
                             </td>
                           </>}
                       </tr>
