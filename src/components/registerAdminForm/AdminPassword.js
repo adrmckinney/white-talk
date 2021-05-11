@@ -53,7 +53,8 @@ const AdminPassword = ({ filterAdminRegister, setFilterAdminRegister, setEnableB
           onBlur={e => setPasswordBlur(true)}
           type={`${showPassword ? 'text' : 'password'}`}
           autoComplete='current-password'
-          required className='appearance-none rounded-md rounded-r-none relative block w-full px-3 py-2 border border-gray-300 border-r-0 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-darkerPurple focus:darkerPurple focus:z-10 sm:text-sm'
+          required
+          className='appearance-none rounded-md rounded-r-none relative block w-full px-3 py-2 border border-gray-300 border-r-0 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-darkerPurple focus:darkerPurple focus:z-10 sm:text-sm'
           placeholder='Password'
           value={filterAdminRegister.password}
           onChange={(e) => handleFormFilter('password', e.target.value, setFilterAdminRegister)}

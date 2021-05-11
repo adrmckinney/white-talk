@@ -20,6 +20,7 @@ const AdminEmail = ({ filterAdminRegister, setFilterAdminRegister }) => {
           type='email'
           name='email'
           id='email'
+          required
           className='focus:ring-darkerPurple focus:darkerPurple flex-1 block w-full rounded-md text-sm sm:text-sm border-gray-300 border pl-10'
           placeholder='you@example.com'
           value={filterAdminRegister.email}

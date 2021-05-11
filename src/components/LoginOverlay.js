@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { RefreshIcon, XIcon } from '@heroicons/react/outline'
+import { EyeIcon, EyeOffIcon, RefreshIcon, XIcon } from '@heroicons/react/outline'
 import { handleFormFilter } from './functions'
 import ForgotPasswordRequest from './ForgotPasswordRequest'
 import Errors from './Errors'
@@ -9,6 +9,7 @@ import { login } from '../api'
 export default function LoginOverlay ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLogin, setFilterLogin, isLoading, setIsLoading, errors, setErrors }) {
   const [open, setOpen] = useState(true)
   const [isForgotPassword, setIsForgotPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   console.log('filterLogin', filterLogin)
   console.log('isLoading', isLoading)
@@ -106,16 +107,29 @@ export default function LoginOverlay ({ showModal, setShowModal, setAuth, setIsS
                           </div>
                           <div>
                             <label htmlFor='password' className='sr-only'>Password</label>
-                            <input
-                              id='password'
-                              name='password'
-                              type='password'
-                              autoComplete='current-password'
-                              required className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
-                              placeholder='Password'
-                              value={filterLogin.password}
-                              onChange={(e) => handleFormFilter(e.target.name, e.target.value, setFilterLogin)}
-                            />
+                            <span className='flex'>
+                              <input
+                                id='modal-password'
+                                name='password'
+                                type={`${showPassword ? 'text' : 'password'}`}
+                                autoComplete='current-password'
+                                required
+                                className='appearance-none rounded-md rounded-r-none rounded-t-none relative block w-full px-3 py-2 border border-gray-300 border-r-0 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-darkerPurple focus:darkerPurple focus:z-10 sm:text-sm'
+                                placeholder='Password'
+                                value={filterLogin.password}
+                                onChange={(e) => handleFormFilter(e.target.name, e.target.value, setFilterLogin)}
+                              />
+                              <button
+                                type='button'
+                                tabIndex='-1'
+                                className='px-3 py-2 border border-gray-300 border-l-0 rounded-t-none rounded-md rounded-l-none focus:outline-none'
+                                onClick={() => setShowPassword(!showPassword)}
+                              >
+                                {showPassword
+                                  ? <EyeOffIcon className='w-4 h-4' />
+                                  : <EyeIcon className='w-4 h-4' />}
+                              </button>
+                            </span>
                           </div>
                         </div>
 
@@ -135,14 +149,14 @@ export default function LoginOverlay ({ showModal, setShowModal, setAuth, setIsS
                             ? <button type='submit' disabled className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
                               <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                               Processing
-                            </button>
+                              </button>
                             : <button
                                 type='submit'
                                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                                 onClick={(e) => handleLoginOverlay(e)}
                               >
                               Login
-                            </button>}
+                              </button>}
 
                           <button
                             type='button'

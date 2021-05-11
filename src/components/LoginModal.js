@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Transition } from '@headlessui/react'
 import Errors from './Errors'
 import ForgotPasswordRequest from './ForgotPasswordRequest'
-import { RefreshIcon } from '@heroicons/react/outline'
+import { EyeIcon, EyeOffIcon, RefreshIcon } from '@heroicons/react/outline'
 import { handleFormFilter } from './functions'
 import { login } from '../api'
 
 const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLogin, setFilterLogin, isLoading, setIsLoading, errors, setErrors }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   if (isForgotPassword) {
     return (
@@ -99,16 +100,29 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
                     </div>
                     <div>
                       <label htmlFor='modal-password' className='sr-only'>Password</label>
-                      <input
-                        id='modal-password'
-                        name='password'
-                        type='password'
-                        autoComplete='current-password'
-                        required className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
-                        placeholder='Password'
-                        value={filterLogin.password}
-                        onChange={(e) => handleFormFilter(e.target.name, e.target.value, setFilterLogin)}
-                      />
+                      <span className='flex'>
+                        <input
+                          id='modal-password'
+                          name='password'
+                          type={`${showPassword ? 'text' : 'password'}`}
+                          autoComplete='current-password'
+                          required
+                          className='appearance-none rounded-md rounded-r-none rounded-t-none  relative block w-full px-3 py-2 border border-gray-300 border-r-0 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-darkerPurple focus:darkerPurple focus:z-10 sm:text-sm'
+                          placeholder='Password'
+                          value={filterLogin.password}
+                          onChange={(e) => handleFormFilter(e.target.name, e.target.value, setFilterLogin)}
+                        />
+                        <button
+                          type='button'
+                          tabIndex='-1'
+                          className='px-3 py-2 border border-gray-300 border-l-0 rounded-md rounded-t-none  rounded-l-none focus:outline-none'
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword
+                            ? <EyeOffIcon className='w-4 h-4' />
+                            : <EyeIcon className='w-4 h-4' />}
+                        </button>
+                      </span>
                     </div>
                   </div>
 
