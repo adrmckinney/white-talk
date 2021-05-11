@@ -29,6 +29,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
       })
       .catch(error => {
         setErrors(error.message)
+        setIsLoading(false)
       })
   }
 
@@ -129,10 +130,10 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
                     ? <button type='submit' disabled className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
                       <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                       Processing
-                    </button>
+                      </button>
                     : <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
                       Login
-                    </button>}
+                      </button>}
 
                   <button
                     type='button'
