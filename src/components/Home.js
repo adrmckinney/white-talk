@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { Popover } from '@headlessui/react'
 // import { XIcon } from '@heroicons/react/outline'
 import LandingCarousel from './LandingCarousel'
+import { Animated } from 'react-animated-css'
 
 // const navigation = [
 //   { name: 'Product', href: '#' },
@@ -37,20 +38,25 @@ const Home = () => {
           <main
             className='mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28'
           >
-            <div
-              className='text-center lg:text-left'
-            >
-              <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-10 sm:pt-4 lg:pt-0'>
-                <span className='block xl:inline'>Welcome to</span>{' '}
-                <span className='block text-mediumPurple xl:inline'>Racial Equity White Talk</span>
-              </h1>
-              <p
-                className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 font-nunito'
+            <Animated animationIn='fadeIn' animationInDuration={3000} animationOut='fadeOutLeft' isVisible>
+              <div
+                className='text-center lg:text-left'
               >
-                We invite you to join us as we explore white identity in the context of racism in the US. Through book stuides and weekly sessions we explore what it means to live an anti-racist life and to do anti-racist work as white people. We do this in a community of white people, all learning, all leaning into discomfort, all making mistakes, and all growing in this work.
-              </p>
-              <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start'>
-                {/* <div className='rounded-md shadow'>
+                <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-10 sm:pt-4 lg:pt-0'>
+                  <span
+                    className='block xl:inline'
+                  >Welcome to
+                  </span>{' '}
+                  <span className='block text-mediumPurple xl:inline'>Racial Equity White Talk</span>
+                </h1>
+                <p
+                  className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 font-nunito'
+                >
+                  We invite you to join us as we explore white identity in the context of racism in the US. Through book stuides and weekly sessions we explore what it means to live an anti-racist life and to do anti-racist work as white people. We do this in a community of white people, all learning, all leaning into discomfort, all making mistakes, and all growing in this work.
+                </p>
+
+                <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start'>
+                  {/* <div className='rounded-md shadow'>
                   <a
                     href='#'
                     className='w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'
@@ -66,8 +72,9 @@ const Home = () => {
                     Live demo
                   </a>
                 </div> */}
+                </div>
               </div>
-            </div>
+            </Animated>
           </main>
         </div>
       </div>

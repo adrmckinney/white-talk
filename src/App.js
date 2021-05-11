@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-// import 'animate.css/animate.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import createPersistedState from 'use-persisted-state'
 import './App.css'
