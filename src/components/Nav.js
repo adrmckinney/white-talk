@@ -26,6 +26,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   const [errors, setErrors] = useState('')
   const dropdownRef = useRef(null)
   const history = useHistory('')
+  const [showOverlay, setShowOverlay] = useState(false)
 
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
@@ -88,7 +89,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   }
   if (isSigningIn === 'login-overlay') {
     return (
-      <LoginOverlay setAuth={setAuth} showModal='login-form' setShowModal={setShowModal} setIsSigningIn={setIsSigningIn} filterLogin={filterLogin} setFilterLogin={setFilterLogin} isLoading={isLoading} setIsLoading={setIsLoading} errors={errors} setErrors={setErrors} />
+      <LoginOverlay setAuth={setAuth} showModal='login-form' setShowModal={setShowModal} setIsSigningIn={setIsSigningIn} filterLogin={filterLogin} setFilterLogin={setFilterLogin} isLoading={isLoading} setIsLoading={setIsLoading} errors={errors} setErrors={setErrors} showOverlay setShowOverlay={setShowOverlay} />
     )
   }
   // ********** LOGIN FEATURES *************
