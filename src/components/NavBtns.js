@@ -13,7 +13,7 @@ const NavBtns = ({ isLoggedIn, navBtnClass }) => {
         Sessions
       </Link>
 
-      <Link to='/about' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
+      <Link to='/about' className={navBtnClass()}>
         About
       </Link>
 
@@ -27,7 +27,7 @@ const NavBtns = ({ isLoggedIn, navBtnClass }) => {
         </Link>}
 
       {/* debugger for window size breakpoints */}
-      {/* <div className='hidden sm:block md:hidden text-red-700'>
+      <div className='hidden sm:block md:hidden text-red-700'>
         small
       </div>
       <div className='hidden md:block lg:hidden text-red-700'>
@@ -35,7 +35,7 @@ const NavBtns = ({ isLoggedIn, navBtnClass }) => {
       </div>
       <div className='hidden lg:block text-red-700'>
         large
-      </div> */}
+      </div>
     </div>
   )
 }
