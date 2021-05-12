@@ -1,5 +1,5 @@
 
-const Connect = () => {
+const About = () => {
   return (
     <div
       className='max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8'
@@ -9,11 +9,11 @@ const Connect = () => {
 
       >
         <div className='h-96 border-4 border-dashed border-gray-200 rounded-lg flex flex-col justify-center'>
-          Connect Page
+          About Page
         </div>
       </div>
     </div>
   )
 }
 
-export default Connect
+export default About
