@@ -6,7 +6,8 @@ import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/
 const FACILITATORS = [
   {
     name: 'Rachael Gigliotti',
-    bio: 'Rachael Gigliotti has been living in Durham since 2010. In 2006, she attributes volunteering in New Orleans after hurricane Katrina as opening her eyes to seeing systematic racism in the US. Once going to an Racial Equity Institutes Phase 1 and 2 workshops in 2014, she found the language to filter and express the honesty around racism that could no longer be denied. She co-founded Durham\'s Organizing Against Racism white caucus and stayed involved until 2020. She helped facilitate racism conversations with community members through Student U in the summer of 2020. She started the Racial Equity white Talk to expand the conversation about racism and privilege with other white folks interested in being a part of a larger and supportive community around racial equity.'
+    bio: 'Rachael Gigliotti has been living in Durham since 2010. In 2006, she attributes volunteering in New Orleans after hurricane Katrina as opening her eyes to seeing systematic racism in the US. Once going to an Racial Equity Institutes Phase 1 and 2 workshops in 2014, she found the language to filter and express the honesty around racism that could no longer be denied. She co-founded Durham\'s Organizing Against Racism white caucus and stayed involved until 2020. She helped facilitate racism conversations with community members through Student U in the summer of 2020. She started the Racial Equity white Talk to expand the conversation about racism and privilege with other white folks interested in being a part of a larger and supportive community around racial equity.',
+    email: 'rachgigliotti@yahoo.com'
   },
   {
     name: 'Natalie Rich',
@@ -103,12 +104,23 @@ const About = () => {
               >
                 <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-10 sm:pt-4 lg:pt-0'>
                   <span className='block xl:inline'>About Us</span>{' '}
-                  <span className='block text-mediumPurple xl:inline'>Who Are the Facilitators?</span>
+                  {/* <span className='block text-mediumPurple xl:inline'>Who Are the Facilitators?</span> */}
                 </h1>
                 <p
                   className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-2xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 font-nunito'
                 >
-                  {FACILITATORS[facilitatorIndex].bio}
+                  <span className=''>
+                    {FACILITATORS[facilitatorIndex].bio}
+                    {FACILITATORS[facilitatorIndex].email &&
+                      <span>&nbsp;Contact Rachael at&nbsp;
+                        <a
+                          href={`mailto:${FACILITATORS[facilitatorIndex].email}`}
+                          rel='noreferrer'
+                          target='_blank'
+                        >{FACILITATORS[facilitatorIndex].email}
+                        </a>
+                      </span>}
+                  </span>
                 </p>
 
                 <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start space-x-2'>
@@ -155,16 +167,7 @@ const About = () => {
             className='text-3xl sm:text-5xl bg-darkerPurple w-full py-6 px-4 flex justify-center lg:justify-end xl:justify-center'
           >
             <p className='w-full sm:w-2/3 lg:w-1/2 xl:w-3/4 font-playFair font-semibold italic'>
-              <Animated
-                animationIn='fadeInRight'
-                // animationInDelay={3000}
-                // animationInDuration={3000}
-                animationOut='fadeOutLeft'
-                isVisible
-                // style={visible ? null : { display: 'none' }}
-              >
-                {FACILITATORS[facilitatorIndex].name}
-              </Animated>
+              {FACILITATORS[facilitatorIndex].name}
             </p>
           </div>
         </section>

@@ -13,13 +13,9 @@ const NavBtns = ({ isLoggedIn, navBtnClass }) => {
         Sessions
       </Link>
 
-<<<<<<< HEAD
       <Link to='/about' className={navBtnClass()}>
-=======
-      {/* <Link to='/about' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
->>>>>>> 881ec4a522854e2b3cad0c5847ce7dcd72d3a7a1
         About
-      </Link> */}
+      </Link>
 
       {/* <Link to='/book-study' className='text-isabelline hover:bg-mediumPurple hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium'>
         Book Study
