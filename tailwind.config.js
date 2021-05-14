@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const { backgroundImage } = require('tailwindcss/defaultTheme')
 
 module.exports = {
   // mode: 'jit',
@@ -23,10 +24,6 @@ module.exports = {
         snow: '#FAF5F7',
         isabelline: '#FCF3EE',
         antiqueWhite: '#FFEEDD'
-        // kobi: '#DB9AC3',
-        // ming: '#28666E',
-        // mellowApricot: '#FEB86C',
-        // lilac: '#7C5585'
       },
       fontFamily: {
         nunito: ['Nunito'],
@@ -43,7 +40,10 @@ module.exports = {
       },
       animation: {
         wiggle: 'wiggle 1s ease-in-out infinite'
-      }
+      },
+      backgroundImage: theme => ({
+        messageGray: "url('./images/messageGray.png')"
+      })
     }
   },
   variants: {

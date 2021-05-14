@@ -1,4 +1,3 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { ChatAltIcon, ChevronDoubleDownIcon } from '@heroicons/react/outline'
 
 const MESSAGES = [
@@ -12,34 +11,23 @@ const MESSAGES = [
 
 export default function HomeMessage () {
   return (
-    <div className='py-12 bg-white'>
+    <div className='py-4 sm:py-12 bg-white mb-10'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='lg:text-center'>
           <div className='w-full flex justify-center'>
             <ChevronDoubleDownIcon className='animate-pulse text-darkerPurple w-auto h-12' />
           </div>
-          {/* <h2 className='text-base  font-semibold tracking-wide'>
-          </h2> */}
-          {/* <p className='mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
+          <p className='mt-10 max-w-2xl text-xl text-gray-500 lg:mx-auto font-nunito'>
             A personal invitation and note from the founder - Rachael Gigliotti
-          </p> */}
-          <p className='mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto'>
-            <ChatAltIcon />
           </p>
         </div>
-
         <div className='mt-10'>
           <dl className='space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10'>
-            <div className='relative grid col-span-full'>
+            <div className='relative grid col-span-full font-nunito'>
               <dt>
-                <div className='absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white'>
-                  <div className='h-6 w-6' aria-hidden='true'>
-                    {MESSAGES[0].icon}
-                  </div>
-                </div>
-                <p className='ml-16 text-base text-gray-500'>{MESSAGES[0].paragraph1}</p>
+                <p className='sm:ml-16 text-base text-gray-500'>{MESSAGES[0].paragraph1}</p>
               </dt>
-              <dd className='mt-2 ml-16 text-base text-gray-500'>{MESSAGES[0].paragraph2}</dd>
+              <dd className='mt-2 sm:ml-16 text-base text-gray-500'>{MESSAGES[0].paragraph2}</dd>
             </div>
           </dl>
         </div>

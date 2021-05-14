@@ -18,9 +18,9 @@ const MobileNavBtns = ({ isLoggedIn, loggedInName, handleLogout, showMenu, setSh
         Sessions
       </Link>
 
-      {/* <Link to='#' className=' hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
-        Connect
-      </Link> */}
+      <Link to='/about' className='hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
+        About
+      </Link>
 
       {/* <Link to='/book-study' className=' hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
         Book Study

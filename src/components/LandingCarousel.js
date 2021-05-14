@@ -32,11 +32,11 @@ const LandingCarousel = () => {
             key={idx}
             className={`${idx === current ? 'block' : 'hidden'} text-3xl sm:text-5xl bg-darkerPurple w-full py-6 px-4 flex justify-center lg:justify-end xl:justify-center`}
           >
-            <p className='w-full sm:w-2/3 lg:w-1/2 xl:w-3/4 font-playFair font-semibold italic'>
+            <div className='w-full sm:w-2/3 lg:w-1/2 xl:w-3/4 font-playFair font-semibold italic'>
               <Animated animationIn='fadeInRight' animationInDuration={2000} animationOut='fadeOutLeft' isVisible>
                 {item}
               </Animated>
-            </p>
+            </div>
           </div>
         ))}
       </section>
