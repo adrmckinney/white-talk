@@ -123,13 +123,14 @@ export const requestChangeUsername = (email) => {
     .then(res => res.data)
 }
 
-export const confirmChangeUsername = (uid, token, username) => {
+export const confirmChangeUsername = (uid, urlToken, newUsername, confirmUsername) => {
   return url
     .post('api/auth/users/reset_username_confirm/',
       {
         uid,
-        token,
-        new_username: username
+        token: urlToken,
+        new_username: newUsername,
+        re_new_username: confirmUsername
       }
     )
     .then(res => res.data)

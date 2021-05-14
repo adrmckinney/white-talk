@@ -7,7 +7,7 @@ import AboutMobile from './AboutMobile'
 const FACILITATORS = [
   {
     name: 'Rachael Gigliotti',
-    bio: 'Rachael Gigliotti has been living in Durham since 2010. In 2006, she attributes volunteering in New Orleans after hurricane Katrina as opening her eyes to seeing systematic racism in the US. Once going to an Racial Equity Institutes Phase 1 and 2 workshops in 2014, she found the language to filter and express the honesty around racism that could no longer be denied. She co-founded Durham\'s Organizing Against Racism white caucus and stayed involved until 2020. She helped facilitate racism conversations with community members through Student U in the summer of 2020. She started the Racial Equity white Talk to expand the conversation about racism and privilege with other white folks interested in being a part of a larger and supportive community around racial equity.',
+    bio: 'Rachael Gigliotti has been living in Durham since 2010. In 2006, she attributes volunteering in New Orleans after hurricane Katrina as opening her eyes to seeing systematic racism in the US. Once going to an Racial Equity Institutes Phase 1 and 2 workshops in 2014, she found the language to filter and express the honesty around racism that could no longer be denied. She co-founded Durham\'s Organizing Against Racism white caucus and stayed involved until 2020. She helped facilitate discussions around systematic racism with community members through Student U in the summer of 2020. She started the Racial Equity white Talk to expand the conversation about racism and privilege with other white folks interested in being a part of a larger and supportive community around racial equity.',
     email: 'rachgigliotti@yahoo.com'
   },
   {
