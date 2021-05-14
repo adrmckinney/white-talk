@@ -17,7 +17,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
   const [sessionToDelete, setSessionToDelete] = useState([])
   const [sessionToEdit, setSessionToEdit] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [sessionsAreLoading, setSessionsAreLoading] = useState(false)
+  const [sessionsAreLoading, setSessionsAreLoading] = useState(true)
 
   // DEBUGGER STATION
   console.log('isRegistering', isRegistering)

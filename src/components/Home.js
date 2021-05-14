@@ -1,15 +1,7 @@
 import { Fragment } from 'react'
 import { Popover } from '@headlessui/react'
-// import { XIcon } from '@heroicons/react/outline'
 import LandingCarousel from './LandingCarousel'
 import { Animated } from 'react-animated-css'
-
-// const navigation = [
-//   { name: 'Product', href: '#' },
-//   { name: 'Features', href: '#' },
-//   { name: 'Marketplace', href: '#' },
-//   { name: 'Company', href: '#' }
-// ]
 
 const Home = () => {
   return (
@@ -54,23 +46,6 @@ const Home = () => {
                 >
                   We invite you to join us as we explore white identity in the context of racism in the US. Through book stuides and weekly sessions we explore what it means to live an anti-racist life and to do anti-racist work as white people. We do this in a community of white people, all learning, all leaning into discomfort, all making mistakes, and all growing in this work.
                 </p>
-
-                {/* <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start'>
-                  <div className='rounded-md shadow'>
-                    <button
-                      className='w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'
-                    >
-                      Get started
-                    </button>
-                  </div>
-                  <div className='mt-3 sm:mt-0 sm:ml-3'>
-                    <button
-                      className='w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10'
-                    >
-                      Live demo
-                    </button>
-                  </div>
-                </div> */}
               </div>
             </Animated>
           </main>
