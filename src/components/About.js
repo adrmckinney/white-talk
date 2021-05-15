@@ -13,11 +13,11 @@ const FACILITATORS = [
   {
     name: 'Natalie Rich',
     bio: 'Natalie Rich lives and works in Durham, North Carolina, where she currently serves as a coordinator and facilitator for the Durham Organizing Against Racism (OAR) white caucus. Natalie has been involved in antiracist organizing since January 2014, when she completed her first Racial Equity Institute Phase I training "Undoing Racism." Since then, she has co-facilitated cross racial conversation circles on race and racism, interactive theater presentations on microaggressions, and white affinity groups. Natalie has completed the Racial Equity Institute Groundwater training, Phase I and Phase II trainings.'
+  },
+  {
+    name: 'Dan McKinney',
+    bio: 'Dan has lived in Durham since 2011 and attended the Racial Equity Institutes (REI) Phase 1 workshop for the first time in 2015. Wanting to take action, he quickly got engaged with Organizing Against Racism\'s (OAR) white caucus only to learn that the action he really needed to take was to address the internalized racial superiority inside himself. He served as a coordinator for the white caucus for 5 years and has been on OAR Durham\'s leadership team since 2016. He has continued his learning by attending REI Phase 2 and Latinx Challenges in Racial Equity workshops. For the past 5 years, he worked with youth through local non-profits to identify and address institutional racism with their high schools. Through OAR Durham, he has organized 5 youth REI workshops. He has had speaking engagements at Duke, DPS, and in the community to discuss power, privilege, white culture, sexism, and adultism. From 2018–2020, he served on the City of Durham\'s Racial Equity Task Force.'
   }
-  // {
-  //   name: 'Dan McKinney',
-  //   bio: 'Dan has lived in Durham since 2011 and attended the Racial Equity Institutes (REI) Phase 1 workshop for the first time in 2015. Wanting to take action, he quickly got engaged with Organizing Against Racism\'s (OAR) white caucus only to learn that the action he really needed to take was to address the internalized racial superiority inside himself. He served as a coordinator for the white caucus for 5 years and has been on OAR Durham\'s leadership team since 2016. He has continued his learning by attending REI Phase 2 and Latinx Challenges in Racial Equity workshops. For the past 5 years, he worked with youth through local non-profits to identify and address institutional racism with their high schools. Through OAR Durham, he has organized 5 youth REI workshops. He has had speaking engagements at Duke, DPS, and in the community to discuss power, privilege, white culture, sexism, and adultism. From 2018–2020, he served on the City of Durham\'s Racial Equity Task Force.'
-  // }
 ]
 
 const FACILITATORS_LENGTH = FACILITATORS.length
