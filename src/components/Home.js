@@ -48,7 +48,7 @@ const Home = () => {
                   <p
                     className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 font-nunito'
                   >
-                    We invite you to join us as we explore white identity in the context of racism in the US. Through book stuides and weekly sessions we explore what it means to live an anti-racist life and to do anti-racist work as white people. We do this in a community of white people, all learning, all leaning into discomfort, all making mistakes, and all growing in this work.
+                    We invite you to join us as we explore white identity in the context of racism in the US. Through book studies and weekly sessions we explore what it means to live an anti-racist life and to do anti-racist work as white people. We do this in a community of white people, all learning, all leaning into discomfort, all making mistakes, and all growing in this work.
                   </p>
                 </div>
               </Animated>
