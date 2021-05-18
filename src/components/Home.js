@@ -3,6 +3,8 @@ import { Popover } from '@headlessui/react'
 import LandingCarousel from './LandingCarousel'
 import { Animated } from 'react-animated-css'
 import HomeMessage from './HomeMessage'
+import HomeAnnouncement from './HomeAnnouncement'
+import HomeDivider from './HomeDivider'
 
 const Home = () => {
   return (
@@ -41,7 +43,7 @@ const Home = () => {
                       className='block xl:inline'
                     >Welcome to
                     </span>{' '}
-                    <span className='block text-mediumPurple xl:inline uppercase font-playFair'>Racial Equity <span className='lowercase'>white</span>  Talk</span>
+                    <span className='block text-mediumPurple xl:inline uppercase font-playFair'>Racial Equity <span className='lowercase'>white</span> Talk</span>
                   </h1>
                   <p
                     className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 font-nunito'
@@ -57,6 +59,12 @@ const Home = () => {
           <LandingCarousel />
         </div>
       </div>
+      {/* <HomeDivider /> */}
+
+      <HomeAnnouncement />
+
+      <HomeDivider />
+
       <HomeMessage />
     </>
   )

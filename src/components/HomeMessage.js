@@ -11,12 +11,12 @@ const MESSAGES = [
 
 export default function HomeMessage () {
   return (
-    <div className='py-4 sm:py-12 bg-white mb-10'>
+    <div className='py-4 sm:py-12 bg-white mb-20'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='lg:text-center'>
-          <div className='w-full flex justify-center'>
+          {/* <div className='w-full flex justify-center'>
             <ChevronDoubleDownIcon className='animate-pulse text-darkerPurple w-auto h-12' />
-          </div>
+          </div> */}
           <p className='mt-10 max-w-2xl text-xl text-gray-500 lg:mx-auto font-nunito'>
             A personal invitation and note from the founder - Rachael Gigliotti
           </p>
