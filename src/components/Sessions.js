@@ -232,7 +232,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
       <HomeDivider />
       <div className='md:mt-8 lg:mt-2 pb-20 sm:pb-10 lg:pb-0'>
         {sessionsAreLoading
-          ? <span><SessionsLoadingAlert /></span>
+          ? <span className='pt-32 pb-10'><SessionsLoadingAlert /></span>
           : <>
             <span className='hidden lg:block'>
               <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
@@ -240,7 +240,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
             <span className='lg:hidden'>
               <MobileUpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
             </span>
-            </>}
+          </>}
 
       </div>
     </>
