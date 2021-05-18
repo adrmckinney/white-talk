@@ -10,7 +10,7 @@ export default function SessionsLoadingAlert () {
         </div>
         <div className='ml-3'>
           <p className='text-sm text-yellow-700'>
-            The sessions are loading. This can take some time. Thanks for your patience and sorry for the day
+            The sessions are loading. This can take some time. Thanks for your patience and sorry for the delay
           </p>
         </div>
       </div>
