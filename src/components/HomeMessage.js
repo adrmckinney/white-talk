@@ -1,4 +1,4 @@
-import { ChatAltIcon, ChevronDoubleDownIcon } from '@heroicons/react/outline'
+import { ChatAltIcon } from '@heroicons/react/outline'
 
 const MESSAGES = [
   {
