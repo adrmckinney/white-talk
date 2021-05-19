@@ -72,7 +72,10 @@ function App () {
             <Route exact path='/password/reset/confirm/:uid/:urlToken'>
               <PasswordResetConfirm token={token} setToken={setToken} setUsername={setUsername} />
             </Route>
-            <Route exact path='/username/reset/confirm/:uid/:token' component={UsernameResetConfirm} />
+            <Route exact path='/username/reset/confirm/:uid/:urlToken'>
+              <UsernameResetConfirm token={token} setToken={setToken} setUsername={setUsername} />
+            </Route>
+
             <Route path='/'>
               <Home />
             </Route>

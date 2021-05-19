@@ -7,6 +7,7 @@ import SelectionElement from './SelectionElement'
 import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
 import RenderRegistrants from './RenderRegistrants'
+import SessionsLoadingAlert from './alerts/SessionsLoadingAlert'
 
 const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister }) => {
   const [sessions, setSessions] = useState([])
@@ -17,6 +18,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   const [registrantToDelete, setRegistrantToDelete] = useState([])
   const [registrantToEdit, setRegistrantToEdit] = useState([])
   const [sessionToUpdate, setSessionToUpdate] = useState([])
+  const [dataIsLoading, setDataIsLoading] = useState(true)
 
   // DEBUGGER STATION
   // console.log('allEmails', allEmails)
@@ -35,6 +37,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
       .then(sessions => {
         setSessions(sessions)
         setDropdownSelectorMode('view-session-registrants')
+        setDataIsLoading(false)
       })
   }, [setDropdownSelectorMode])
 
@@ -193,6 +196,10 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
                   <span className='block text-mediumPurple xl:inline'>See Who's Registered</span>
                 </h1>
                 <SelectionElement sessions={sessions} dropdownSelectorMode={dropdownSelectorMode} setRegistrantsToRender={setRegistrantsToRender} handleAllEmails={handleAllEmails} />
+                {dataIsLoading &&
+                  <span>
+                    <SessionsLoadingAlert />
+                  </span>}
                 <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start' />
               </div>
             </main>

@@ -9,6 +9,7 @@ import SessionRegisterOverlay from './sessionForms/SessionRegisterOverlay'
 import CreateSession from './CreateSession'
 import { PencilIcon } from '@heroicons/react/outline'
 import SessionsLoadingAlert from './alerts/SessionsLoadingAlert'
+import HomeDivider from './HomeDivider'
 
 const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, registered, setRegistered }) => {
   const [isDeleting, setIsDeleting] = useState('')
@@ -169,24 +170,36 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
                 >
                   White talk sessions are opportunities to spend intentional time each week digging deeper into our understanding of racism and whiteness. Each session lasts 5 weeks, with a 1 hour meeting each week.
                 </p>
-                <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start'>
-                  {/* <div className='rounded-md shadow'>
+                <p
+                  className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0'
+                >
+                  For more information about sessions, contact Rachael Gigliotti at&nbsp;
                   <a
-                    href='#'
-                    className='w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'
-                  >
-                    Get started
+                    href='mailto:rachgigliotti@yahoo.com'
+                    rel='noreferrer'
+                    target='_blank'
+                    className='text-blue-500'
+                  >rachgigliotti@yahoo.com
                   </a>
-                </div>
-                <div className='mt-3 sm:mt-0 sm:ml-3'>
-                  <a
-                    href='#'
-                    className='w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10'
-                  >
-                    Live demo
+                </p>
+                {/* <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start'>
+                  <div className='rounded-md shadow'>
+                    <a
+                      href='#'
+                      className='w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'
+                    >
+                      Get started
+                    </a>
+                  </div>
+                  <div className='mt-3 sm:mt-0 sm:ml-3'>
+                    <a
+                      href='#'
+                      className='w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10'
+                    >
+                      Live demo
                   </a>
-                </div> */}
-                </div>
+                  </div> */}
+                {/* </div> */}
               </div>
             </main>
           </div>
@@ -216,9 +229,10 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
           </div>
         </div>
       </div>
-      <div className='md:mt-8 lg:mt-32 pb-20 sm:pb-10 lg:pb-0'>
+      <HomeDivider />
+      <div className='md:mt-8 lg:mt-2 pb-20 sm:pb-10 lg:pb-0'>
         {sessionsAreLoading
-          ? <span><SessionsLoadingAlert /></span>
+          ? <span className='pt-32 pb-10'><SessionsLoadingAlert /></span>
           : <>
             <span className='hidden lg:block'>
               <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
@@ -226,7 +240,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
             <span className='lg:hidden'>
               <MobileUpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
             </span>
-            </>}
+          </>}
 
       </div>
     </>

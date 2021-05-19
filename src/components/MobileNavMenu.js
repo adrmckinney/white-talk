@@ -1,4 +1,4 @@
-const MobileNavMenu = ({ setToken, setUsername, isLoggedIn, setShowMenu, setIsCreatingSession, setIsRegistering, setIsEditingAdmin }) => {
+const MobileNavMenu = ({ setToken, username, setUsername, isLoggedIn, setShowMenu, setIsCreatingSession, setIsRegistering, setIsEditingAdmin }) => {
   return (
     <div className='pt-4 pb-3 border-t border-indigo-700'>
       <div className='px-5 flex items-center'>
@@ -24,6 +24,7 @@ const MobileNavMenu = ({ setToken, setUsername, isLoggedIn, setShowMenu, setIsCr
               type='button'
               className='block rounded-md py-2 px-3 text-base font-medium hover:bg-indigo-500 hover:bg-opacity-75'
               role='menuitem'
+              disabled={username === 'testUser'}
               onClick={() => {
                 setShowMenu(false)
                 setIsRegistering(true)
@@ -35,6 +36,7 @@ const MobileNavMenu = ({ setToken, setUsername, isLoggedIn, setShowMenu, setIsCr
             <button
               className='block rounded-md py-2 px-3 text-base font-medium hover:bg-indigo-500 hover:bg-opacity-75'
               role='menuitem'
+              disabled={username === 'testUser'}
               onClick={() => {
                 setShowMenu(false)
                 setIsEditingAdmin(true)

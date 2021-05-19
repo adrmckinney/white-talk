@@ -9,7 +9,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
 
   return (
     <>
-      <div className='flex flex-col pt-10 bg-white w-full h-screen mt-6 relative -top-16 border-b-4 border-coolGray-500'>
+      <div className='flex flex-col pt-10 bg-white w-full h-screen border-b-4 border-coolGray-500'>
         <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='py-1 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
             <span>

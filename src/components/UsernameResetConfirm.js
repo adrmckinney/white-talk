@@ -4,20 +4,25 @@ import { Dialog, Transition } from '@headlessui/react'
 import { confirmChangeUsername } from '../api'
 import { RefreshIcon } from '@heroicons/react/outline'
 
-export default function UsernameResetConfirm () {
+export default function UsernameResetConfirm ({ token, setToken, setUsername }) {
   const [open, setOpen] = useState(true)
-  const [username, setUsername] = useState('')
+  const [newUsername, setNewUsername] = useState('')
+  const [confirmUsername, setConfirmUsername] = useState('')
   const { uid } = useParams()
-  const { token } = useParams()
+  const { urlToken } = useParams()
   const history = useHistory()
   const [isLoading, setIsLoading] = useState(false)
   const cancelButtonRef = useRef()
 
+  console.log('urlToken', urlToken)
   const handleConfirmChangeUsername = () => {
     setIsLoading(true)
-    confirmChangeUsername(uid, token, username)
+    confirmChangeUsername(uid, urlToken, newUsername, confirmUsername)
       .then(data => {
+        setOpen(false)
         setIsLoading(false)
+        setToken(null)
+        setUsername('')
         history.push('/')
       })
   }
@@ -66,7 +71,7 @@ export default function UsernameResetConfirm () {
                   </Dialog.Title>
                   <div className='rounded-md shadow-sm -space-y-px'>
                     <div>
-                      <label htmlFor='username' className='sr-only'>Username</label>
+                      <label htmlFor='username' className='sr-only'>Change Username</label>
                       <input
                         id='username'
                         name='username'
@@ -74,8 +79,24 @@ export default function UsernameResetConfirm () {
                         autoComplete='current-username'
                         required className='appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                         placeholder='username'
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={newUsername}
+                        onChange={(e) => setNewUsername(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className='rounded-md shadow-sm -space-y-px'>
+                    <div>
+                      <label htmlFor='confirmUsername' className='sr-only'>Confirm Username</label>
+                      <input
+                        id='confirmUsername'
+                        name='confirmUsername'
+                        type='confirmUsername'
+                        autoComplete='current-username'
+                        required className='appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                        placeholder='re-enter username'
+                        value={confirmUsername}
+                        onChange={(e) => setConfirmUsername(e.target.value)}
                       />
                     </div>
                   </div>
@@ -90,17 +111,16 @@ export default function UsernameResetConfirm () {
                     >
                     <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                     Processing
-                    </button>
+                  </button>
                   : <button
                       type='button'
                       className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
                       onClick={() => {
                         handleConfirmChangeUsername()
-                        setOpen(false)
                       }}
                     >
                     Submit
-                    </button>}
+                  </button>}
 
                 <Link
                   to='/'

@@ -32,7 +32,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   // console.log('isCreatingSession', isCreatingSession)
   // console.log('isSigningIn', isSigningIn)
   // console.log('isLoading', isLoading)
-  // console.log('username', username)
+  console.log('username', username)
 
   // scroll on click feature
   const MINIMUM_SCROLL = 0
@@ -221,6 +221,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                           type='button'
                           className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
                           role='menuitem'
+                          disabled={username === 'testUser'}
                           onClick={() => {
                             setShowMenu(false)
                             setIsRegistering(true)
@@ -232,6 +233,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                         <button
                           className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
                           role='menuitem'
+                          disabled={username === 'testUser'}
                           onClick={() => {
                             setShowMenu(false)
                             setIsEditingAdmin(true)
