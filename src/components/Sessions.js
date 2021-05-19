@@ -21,8 +21,8 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
   const [sessionsAreLoading, setSessionsAreLoading] = useState(true)
 
   // DEBUGGER STATION
-  console.log('isRegistering', isRegistering)
-  console.log('sessions', sessions)
+  // console.log('isRegistering', isRegistering)
+  // console.log('sessions', sessions)
 
   useEffect(() => {
     setSessionsAreLoading(true)
@@ -78,6 +78,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
       return (
         <button
           className='w-full sm:w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 table-btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+          data-testid='registerBtn'
           onClick={() => {
             setIsRegistering(mode)
             setSessionToRegister(session)

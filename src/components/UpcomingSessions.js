@@ -89,6 +89,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                               <span className='flex flex-col space-y-4'>
                                 <button
                                   className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                  data-testid='editBtn'
                                   onClick={() => {
                                     setSessionToEdit(session)
                                     setIsEditing('edit-session')
@@ -99,6 +100,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                                 </button>
                                 <button
                                   className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                  data-testid='deleteBtn'
                                   onClick={() => {
                                     setIsDeleting('delete-session')
                                     setSessionToDelete(session)

@@ -1,11 +1,31 @@
 import Sessions from '../Sessions'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
+import UpcomingSessions from '../UpcomingSessions'
 
 const fakeApi = new MockAdapter(axios)
 
-test('ensure session title is present', () => {
+// test('ensure session title is present', () => {
+//   const token = '12343'
+//   const isLoggedIn = false
+//   const sessions = []
+//   const setSessions = jest.fn()
+//   const sessionToRegister = []
+//   const setSessionToRegister = jest.fn()
+//   const showModal = false
+//   const setShowModal = jest.fn()
+//   const setFormToView = jest.fn()
+//   const setSessionToView = jest.fn()
+//   const registered = false
+//   const setRegistered = jest.fn()
+
+//   render(<Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} />)
+
+//   expect(screen.getByText('Get Engaged')).toBeInTheDocument()
+// })
+
+describe('<Sessions />', () => {
   const token = '12343'
   const isLoggedIn = false
   const sessions = []
@@ -18,10 +38,21 @@ test('ensure session title is present', () => {
   const setSessionToView = jest.fn()
   const registered = false
   const setRegistered = jest.fn()
+  it('renders without crashing', () => {
+    render(<Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} />)
+  })
 
-  render(<Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} />)
+  // it('register for session btn clicks', async () => {
+  //   const { getByTestId } = render(<Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} />)
 
-  expect(screen.getByText('Get Engaged')).toBeInTheDocument()
+  //   render(<UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={jest.fn()} setSessionToEdit={jest.fn()} setIsEditing={jest.fn()} setSessionToDelete={jest.fn()} setIsDeleting={jest.fn()} renderSessionStatus={false} getConfirmationCount={0} />)
+
+  //   const registerBtn = getByTestId('registerBtn')
+  //   expect(registerBtn).toBeInTheDocument()
+  // await fireEvent.click(registerBtn)
+
+  // expect(setSessionToRegister).toBeCalled()
+  // })
 })
 
 // test('ensure Sessions render', async () => {
