@@ -2,12 +2,9 @@ import { Fragment } from 'react'
 import { Popover } from '@headlessui/react'
 import LandingCarousel from './LandingCarousel'
 import { Animated } from 'react-animated-css'
-<<<<<<< HEAD
-=======
 import HomeMessage from './HomeMessage'
 import HomeAnnouncement from './HomeAnnouncement'
 import HomeDivider from './HomeDivider'
->>>>>>> 54b3be3c5a7e9097b19a214c53da743101b4af6e
 
 const Home = () => {
   return (
@@ -41,13 +38,6 @@ const Home = () => {
                 <div
                   className='text-center lg:text-left'
                 >
-<<<<<<< HEAD
-                  We invite you to join us as we explore white identity in the context of racism in the US. Through book stuides and weekly sessions we explore what it means to live an anti-racist life and to do anti-racist work as white people. We do this in a community of white people, all learning, all leaning into discomfort, all making mistakes, and all growing in this work.
-                </p>
-              </div>
-            </Animated>
-          </main>
-=======
                   <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-10 sm:pt-4 lg:pt-0'>
                     <span
                       className='block xl:inline'
@@ -67,7 +57,6 @@ const Home = () => {
         </div>
         <div className='lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-mediumPurple flex items-center justify-center lg:justify-end xl:justify-center h-72 sm:h-auto'>
           <LandingCarousel />
->>>>>>> 54b3be3c5a7e9097b19a214c53da743101b4af6e
         </div>
       </div>
       {/* <HomeDivider /> */}
