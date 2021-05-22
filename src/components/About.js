@@ -152,7 +152,6 @@ const About = () => {
                       key={currentProfile.index}
                       in={currentProfile.appearDefault}
                       component={null}
-                      appear
                       timeout={1000}
                       classNames='fade'
                     >
