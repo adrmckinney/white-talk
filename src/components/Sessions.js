@@ -21,8 +21,8 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
   const [sessionsAreLoading, setSessionsAreLoading] = useState(false)
 
   // DEBUGGER STATION
-  console.log('isRegistering', isRegistering)
-  console.log('sessions', sessions)
+  // console.log('isRegistering', isRegistering)
+  // console.log('sessions', sessions)
 
   useEffect(() => {
     setSessionsAreLoading(true)
@@ -59,7 +59,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
           session_status: 'false',
           number_of_registrants_allowed: session.number_of_registrants_allowed
         }
-        console.log('input', input)
+        // console.log('input', input)
         handleEditSession(token, session.pk, input)
       }
     })

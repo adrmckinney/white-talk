@@ -1,5 +1,4 @@
 const colors = require('tailwindcss/colors')
-const { backgroundImage } = require('tailwindcss/defaultTheme')
 
 module.exports = {
   // mode: 'jit',
@@ -43,7 +42,13 @@ module.exports = {
       },
       backgroundImage: theme => ({
         messageGray: "url('./images/messageGray.png')"
-      })
+      }),
+      transitionDuration: {
+        2000: '2000ms',
+        3000: '3000ms',
+        4000: '4000ms',
+        5000: '5000ms'
+      }
     }
   },
   variants: {

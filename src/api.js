@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const url = axios.create({
-  baseURL: process.env.REACT_APP_DEPLOYED_API_URL
-  // baseURL: process.env.REACT_APP_LOCAL_API_URL
+  // baseURL: process.env.REACT_APP_DEPLOYED_API_URL
+  baseURL: process.env.REACT_APP_LOCAL_API_URL
 })
 
 export const register = (filterAdminRegister) => {
@@ -196,7 +196,7 @@ export const deleteSession = (token, pk) => {
 }
 
 export const updateSession = (token, pk, input) => {
-  console.log('update api ran')
+  // console.log('update api ran')
   return url
     .put(`api/update-session/${pk}/`, input,
       {
