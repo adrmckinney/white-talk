@@ -3,6 +3,7 @@ import { Popover } from '@headlessui/react'
 import { Animated } from 'react-animated-css'
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/outline'
 import AboutMobile from './AboutMobile'
+import Contact from './Contact'
 
 const FACILITATORS = [
   {
@@ -24,6 +25,17 @@ const FACILITATORS_LENGTH = FACILITATORS.length
 
 const About = () => {
   const [facilitatorIndex, setFacilitatorIndex] = useState(0)
+  const [isContacting, setIsContacting] = useState(false)
+
+  const handleCloseModal = () => {
+    setIsContacting(false)
+  }
+
+  if (isContacting) {
+    return (
+      <Contact handleCloseModal={handleCloseModal} />
+    )
+  }
 
   const increaseIndexCount = () => {
     if (facilitatorIndex === FACILITATORS_LENGTH - 1) {
@@ -116,14 +128,12 @@ const About = () => {
                       <span className=''>
                         {FACILITATORS[facilitatorIndex].bio}
                         {FACILITATORS[facilitatorIndex].email &&
-                          <span>&nbsp;Contact Rachael at&nbsp;
-                            <a
-                              href={`mailto:${FACILITATORS[facilitatorIndex].email}`}
-                              rel='noreferrer'
-                              target='_blank'
-                            >{FACILITATORS[facilitatorIndex].email}
-                            </a>
-                          </span>}
+                          <button
+                            type='button'
+                            onClick={() => setIsContacting(true)}
+                          >
+                            &nbsp;Contact Rachael
+                          </button>}
                       </span>
                     </p>
                   </span>
