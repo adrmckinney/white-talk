@@ -1,8 +1,9 @@
 import axios from 'axios'
+import * as emailjs from 'emailjs-com'
 
 const url = axios.create({
-  baseURL: process.env.REACT_APP_DEPLOYED_API_URL
-  // baseURL: process.env.REACT_APP_LOCAL_API_URL
+  // baseURL: process.env.REACT_APP_DEPLOYED_API_URL
+  baseURL: process.env.REACT_APP_LOCAL_API_URL
 })
 
 export const register = (filterAdminRegister) => {
@@ -196,7 +197,7 @@ export const deleteSession = (token, pk) => {
 }
 
 export const updateSession = (token, pk, input) => {
-  console.log('update api ran')
+  // console.log('update api ran')
   return url
     .put(`api/update-session/${pk}/`, input,
       {
@@ -227,4 +228,9 @@ export const updateRegistrant = (token, pk, input) => {
         }
       })
     .then(res => res.data)
+}
+
+export const sendEmail = (params) => {
+  return emailjs.send(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, params, process.env.REACT_APP_USER_ID)
+    .then(res => res)
 }

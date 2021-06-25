@@ -3,6 +3,9 @@ import { Popover } from '@headlessui/react'
 import { Animated } from 'react-animated-css'
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/outline'
 import AboutMobile from './AboutMobile'
+import Contact from './Contact'
+import EmailConfirmation from './EmailConfirmation'
+import EmailError from './EmailError'
 
 const FACILITATORS = [
   {
@@ -24,6 +27,45 @@ const FACILITATORS_LENGTH = FACILITATORS.length
 
 const About = () => {
   const [facilitatorIndex, setFacilitatorIndex] = useState(0)
+  const [isContacting, setIsContacting] = useState(false)
+  const [isConfirmingEmail, setIsConfirmingEmail] = useState(false)
+  const [isErrorModal, setIsErrorModal] = useState(false)
+  const [error, setError] = useState([])
+
+  const handleCloseModal = (error) => {
+    if (error) {
+      setError(error)
+      setIsContacting(false)
+      setIsErrorModal(true)
+    } else {
+      setIsContacting(false)
+      setIsConfirmingEmail(true)
+    }
+  }
+
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmingEmail(false)
+  }
+
+  const handleErrorModalClose = () => {
+    setIsErrorModal(false)
+  }
+
+  if (isContacting) {
+    return (
+      <Contact handleCloseModal={handleCloseModal} />
+    )
+  }
+
+  if (isConfirmingEmail) {
+    return (
+      <EmailConfirmation handleCloseConfirmationModal={handleCloseConfirmationModal} />
+    )
+  }
+
+  if (isErrorModal) {
+    return <EmailError error={error} handleErrorModalClose={handleErrorModalClose} />
+  }
 
   const increaseIndexCount = () => {
     if (facilitatorIndex === FACILITATORS_LENGTH - 1) {
@@ -116,14 +158,12 @@ const About = () => {
                       <span className=''>
                         {FACILITATORS[facilitatorIndex].bio}
                         {FACILITATORS[facilitatorIndex].email &&
-                          <span>&nbsp;Contact Rachael at&nbsp;
-                            <a
-                              href={`mailto:${FACILITATORS[facilitatorIndex].email}`}
-                              rel='noreferrer'
-                              target='_blank'
-                            >{FACILITATORS[facilitatorIndex].email}
-                            </a>
-                          </span>}
+                          <button
+                            type='button'
+                            onClick={() => setIsContacting(true)}
+                          >
+                            &nbsp;Contact Rachael
+                          </button>}
                       </span>
                     </p>
                   </span>

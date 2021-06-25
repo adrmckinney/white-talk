@@ -32,7 +32,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   // console.log('isCreatingSession', isCreatingSession)
   // console.log('isSigningIn', isSigningIn)
   // console.log('isLoading', isLoading)
-  console.log('username', username)
+  // console.log('username', username)
 
   // scroll on click feature
   const MINIMUM_SCROLL = 0
