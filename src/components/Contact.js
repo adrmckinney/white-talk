@@ -1,6 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { Transition } from '@headlessui/react'
 import { sendEmail } from '../api'
 
 export default function Contact ({ handleCloseModal }) {
@@ -13,15 +13,18 @@ export default function Contact ({ handleCloseModal }) {
     subject: '',
     message: '',
     to_name: 'Rachael'
+    // reply_to: 'rachgigliotti@yahoo.com'
   })
 
-  const handleEmail = () => {
-    console.log('button clicked')
+  const handleEmail = (e) => {
+    e.preventDefault()
     sendEmail(emailParams)
       .then(res => {
-        console.log('SUCCESS!', res.status, res.text)
-      }, function (err) {
-        console.log('FAILED...', err)
+        console.log('res', res)
+        handleCloseModal()
+      }, function (error) {
+        console.log('FAILED...', error)
+        handleCloseModal(error)
       })
   }
 
@@ -40,7 +43,7 @@ export default function Contact ({ handleCloseModal }) {
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as='div' static className='fixed z-20 inset-0 overflow-y-auto' open={open} onClose={setOpen}>
+      <div className='fixed z-20 inset-0 overflow-y-auto' open={open} onClose={setOpen}>
         <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
           <Transition.Child
             as={Fragment}
@@ -51,7 +54,7 @@ export default function Contact ({ handleCloseModal }) {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <Dialog.Overlay className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+            <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
@@ -70,24 +73,25 @@ export default function Contact ({ handleCloseModal }) {
             <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6'>
               <div>
                 <div className='mt-3 text-center sm:mt-5'>
-                  <Dialog.Title as='h3' className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
-                    Contact
-                  </Dialog.Title>
+                  <h3 className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
+                    Contact Rachael
+                  </h3>
                   <div className='mt-2'>
 
-                    <div className='bg-white py-4 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-4'>
+                    <div className='bg-white py-2 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-2'>
                       <div className='relative max-w-xl mx-auto'>
                         <div className='mt-12'>
                           <form onSubmit={handleEmail} className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8'>
                             <div>
-                              <label htmlFor='first_name' className='block text-sm font-medium text-gray-700'>
-                                First name
+                              <label htmlFor='first_name' className='flex justify-center text-sm font-medium text-gray-700'>
+                                First name <p className='text-red-500 ml-1'>*</p>
                               </label>
                               <div className='mt-1'>
                                 <input
                                   type='text'
                                   name='first_name'
                                   id='first_name'
+                                  required
                                   autoComplete='given-name'
                                   className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
                                   onChange={(e) => handleChange(e.target.name, e.target.value)}
@@ -95,14 +99,15 @@ export default function Contact ({ handleCloseModal }) {
                               </div>
                             </div>
                             <div>
-                              <label htmlFor='last_name' className='block text-sm font-medium text-gray-700'>
-                                Last name
+                              <label htmlFor='last_name' className='flex justify-center text-sm font-medium text-gray-700'>
+                                Last name <p className='text-red-500 ml-1'>*</p>
                               </label>
                               <div className='mt-1'>
                                 <input
                                   type='text'
                                   name='last_name'
                                   id='last_name'
+                                  required
                                   autoComplete='family-name'
                                   className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
                                   onChange={(e) => handleChange(e.target.name, e.target.value)}
@@ -110,14 +115,15 @@ export default function Contact ({ handleCloseModal }) {
                               </div>
                             </div>
                             <div className='sm:col-span-2'>
-                              <label htmlFor='email' className='block text-sm font-medium text-gray-700'>
-                                Email
+                              <label htmlFor='email' className='flex justify-center text-sm font-medium text-gray-700'>
+                                Email <p className='text-red-500 ml-1'>*</p>
                               </label>
                               <div className='mt-1'>
                                 <input
                                   id='email'
                                   name='email'
                                   type='email'
+                                  required
                                   autoComplete='email'
                                   className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
                                   onChange={(e) => handleChange(e.target.name, e.target.value)}
@@ -157,14 +163,15 @@ export default function Contact ({ handleCloseModal }) {
                               </div>
                             </div>
                             <div className='sm:col-span-2'>
-                              <label htmlFor='subject' className='block text-sm font-medium text-gray-700'>
-                                Email Subject
+                              <label htmlFor='subject' className='flex justify-center text-sm font-medium text-gray-700'>
+                                Email Subject <p className='text-red-500 ml-1'>*</p>
                               </label>
                               <div className='mt-1'>
                                 <input
                                   id='subject'
                                   name='subject'
                                   type='text'
+                                  required
                                   autoComplete='subject'
                                   className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
                                   onChange={(e) => handleChange(e.target.name, e.target.value)}
@@ -172,8 +179,8 @@ export default function Contact ({ handleCloseModal }) {
                               </div>
                             </div>
                             <div className='sm:col-span-2'>
-                              <label htmlFor='message' className='block text-sm font-medium text-gray-700'>
-                                Message
+                              <label htmlFor='message' className='flex justify-center text-sm font-medium text-gray-700'>
+                                Message <p className='text-red-500 ml-1'>*</p>
                               </label>
                               <div className='mt-1'>
                                 <textarea
@@ -217,7 +224,7 @@ export default function Contact ({ handleCloseModal }) {
             </div>
           </Transition.Child>
         </div>
-      </Dialog>
+      </div>
     </Transition.Root>
   )
 }

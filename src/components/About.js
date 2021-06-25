@@ -4,6 +4,8 @@ import { Animated } from 'react-animated-css'
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/outline'
 import AboutMobile from './AboutMobile'
 import Contact from './Contact'
+import EmailConfirmation from './EmailConfirmation'
+import EmailError from './EmailError'
 
 const FACILITATORS = [
   {
@@ -26,15 +28,43 @@ const FACILITATORS_LENGTH = FACILITATORS.length
 const About = () => {
   const [facilitatorIndex, setFacilitatorIndex] = useState(0)
   const [isContacting, setIsContacting] = useState(false)
+  const [isConfirmingEmail, setIsConfirmingEmail] = useState(false)
+  const [isErrorModal, setIsErrorModal] = useState(false)
+  const [error, setError] = useState([])
 
-  const handleCloseModal = () => {
-    setIsContacting(false)
+  const handleCloseModal = (error) => {
+    if (error) {
+      setError(error)
+      setIsContacting(false)
+      setIsErrorModal(true)
+    } else {
+      setIsContacting(false)
+      setIsConfirmingEmail(true)
+    }
+  }
+
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmingEmail(false)
+  }
+
+  const handleErrorModalClose = () => {
+    setIsErrorModal(false)
   }
 
   if (isContacting) {
     return (
       <Contact handleCloseModal={handleCloseModal} />
     )
+  }
+
+  if (isConfirmingEmail) {
+    return (
+      <EmailConfirmation handleCloseConfirmationModal={handleCloseConfirmationModal} />
+    )
+  }
+
+  if (isErrorModal) {
+    return <EmailError error={error} handleErrorModalClose={handleErrorModalClose} />
   }
 
   const increaseIndexCount = () => {
