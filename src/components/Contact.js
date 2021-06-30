@@ -8,19 +8,19 @@ export default function Contact ({ handleCloseModal }) {
   const [emailParams, setEmailParams] = useState({
     first_name: '',
     last_name: '',
+    pronouns: '',
     email: '',
     phone: null,
     subject: '',
     message: '',
-    to_name: 'Rachael'
-    // reply_to: 'rachgigliotti@yahoo.com'
+    to_name: 'Rachael',
+    reply_to: ''
   })
 
   const handleEmail = (e) => {
     e.preventDefault()
     sendEmail(emailParams)
       .then(res => {
-        console.log('res', res)
         handleCloseModal()
       }, function (error) {
         console.log('FAILED...', error)
@@ -114,23 +114,24 @@ export default function Contact ({ handleCloseModal }) {
                                 />
                               </div>
                             </div>
-                            <div className='sm:col-span-2'>
-                              <label htmlFor='email' className='flex justify-center text-sm font-medium text-gray-700'>
-                                Email <p className='text-red-500 ml-1'>*</p>
+
+                            <div>
+                              <label htmlFor='pronouns' className='text-sm font-medium text-gray-700'>
+                                Pronouns
                               </label>
                               <div className='mt-1'>
                                 <input
-                                  id='email'
-                                  name='email'
-                                  type='email'
-                                  required
-                                  autoComplete='email'
+                                  type='text'
+                                  name='pronouns'
+                                  id='pronouns'
+                                  placeholder='she/her they/them he/him'
                                   className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
                                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
                               </div>
                             </div>
-                            <div className='sm:col-span-2'>
+
+                            <div>
                               <label htmlFor='phone' className='block text-sm font-medium text-gray-700'>
                                 Phone Number
                               </label>
@@ -162,6 +163,27 @@ export default function Contact ({ handleCloseModal }) {
                                 />
                               </div>
                             </div>
+
+                            <div className='sm:col-span-2'>
+                              <label htmlFor='email' className='flex justify-center text-sm font-medium text-gray-700'>
+                                Email <p className='text-red-500 ml-1'>*</p>
+                              </label>
+                              <div className='mt-1'>
+                                <input
+                                  id='email'
+                                  name='email'
+                                  type='email'
+                                  required
+                                  autoComplete='email'
+                                  className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
+                                  onChange={(e) => {
+                                    handleChange(e.target.name, e.target.value)
+                                    handleChange('reply_to', e.target.value)
+                                  }}
+                                />
+                              </div>
+                            </div>
+
                             <div className='sm:col-span-2'>
                               <label htmlFor='subject' className='flex justify-center text-sm font-medium text-gray-700'>
                                 Email Subject <p className='text-red-500 ml-1'>*</p>

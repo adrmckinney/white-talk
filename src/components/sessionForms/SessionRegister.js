@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
-import { sessionRegister } from '../../api'
+import { sendEmail, sessionRegister } from '../../api'
 import Comments from './Comments'
 import Email from './Email'
 import Name from './Name'
@@ -23,6 +23,16 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
       confirm: false
     }
   )
+  const [emailFacilitatorParams, setEmailFacilitatorParams] = useState({
+    first_name: filterInput.first_name,
+    last_name: filterInput.last_name,
+    pronuns: filterInput.pronouns,
+    email: filterInput.email,
+    comment: filterInput.comment,
+    session: filterInput.session,
+    to_name: 'Rachael',
+    reply_to: ''
+  })
 
   // DEBUGGER STATION
   // console.log('sessions in SessionRegister', sessions)
@@ -51,6 +61,7 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
     } else {
       sessionRegister(filterInput)
         .then(data => {
+          sendEmail(params)
           setIsLoading(false)
           setShowModal('')
           setIsRegistering('')
