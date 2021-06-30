@@ -7,9 +7,9 @@ import { Transition } from '@headlessui/react'
 const LIST_ITEMS = [
   'How can we do anti-racist work without being ‘white saviors’?',
   'What steps can we take to be a better white anti-racist?',
-  'This is a journey, not a destination, therefore everyone is welcomed.',
+  'This is a journey, not a destination and everyone is welcomed.',
   'What do you have to gain in the fight to dismantle racism?',
-  'Talking about racism in a supported space prepares us for all other spaces.'
+  'Talking about racism in a supportive space prepares us for all other spaces.'
 ]
 
 const LandingCarousel = () => {
