@@ -231,7 +231,5 @@ export const updateRegistrant = (token, pk, input) => {
 }
 
 export const sendEmail = (params) => {
-  // return emailjs.send(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, params, process.env.REACT_APP_USER_ID)
-  return emailjs.send('service_csfrxt2', 'template_6fg5rk6', params, 'user_x7yYaw560caoImG7WOD7y')
-    .then(res => res)
+  return emailjs.send(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, params, process.env.REACT_APP_USER_ID)
 }
