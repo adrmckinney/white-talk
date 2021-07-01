@@ -233,6 +233,9 @@ export const updateRegistrant = (token, pk, input) => {
 export const sendEmail = (params) => {
   return emailjs.send(process.env.REACT_APP_LOCAL_SERIVCE_ID || process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_LOCAL_TEMPLATE_ID || process.env.REACT_APP_TEMPLATE_ID, params, process.env.REACT_APP_LOCAL_USER_TOKEN || process.env.REACT_APP_USER_ID)
     .then(res => res)
-  // return emailjs.send(process.env.REACT_APP_LOCAL_SERIVCE_ID, process.env.REACT_APP_LOCAL_TEMPLATE_ID, params, process.env.REACT_APP_LOCAL_USER_TOKEN)
-  //   .then(res => res)
+}
+
+export const sendRegistrationEmail = (params, templateId) => {
+  return emailjs.send(process.env.REACT_APP_LOCAL_SERIVCE_ID_REGISTRATION || process.env.REACT_APP_SERIVCE_ID_REGISTRATION, templateId, params, process.env.REACT_APP_LOCAL_USER_TOKEN_REGISTRATION || process.env.REACT_APP_USER_TOKEN_REGISTRATION)
+    .then(res => res)
 }

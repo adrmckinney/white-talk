@@ -6,6 +6,7 @@ import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionDates from './createSessionForm.js/SessionDates'
 import SessionStatus from './createSessionForm.js/SessionStatus'
+import FacilitatorEmail from './createSessionForm.js/FacilitatorEmail'
 import SessionTime from './createSessionForm.js/SessionTime'
 import NumberOfRegistrants from './createSessionForm.js/NumberOfRegistrants'
 import { RefreshIcon } from '@heroicons/react/outline'
@@ -23,7 +24,8 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
       description: '',
       session_status: false,
       number_of_registrants_allowed: 8,
-      facilitator: ''
+      facilitator: '',
+      facilitator_email: ''
     }
   )
 
@@ -48,7 +50,8 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
         description: sessionToEdit.description,
         session_status: sessionToEdit.session_status,
         number_of_registrants_allowed: sessionToEdit.number_of_registrants_allowed,
-        facilitator: sessionToEdit.facilitator
+        facilitator: sessionToEdit.facilitator,
+        facilitator_email: sessionToEdit.facilitator_email
       })
     }
   }, [isEditing, sessionToEdit])
@@ -127,6 +130,9 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                       </div>
                       <div>
                         <SessionFacilitator handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                      </div>
+                      <div>
+                        <FacilitatorEmail handleFilterSession={handleFilterSession} filterInput={filterInput} />
                       </div>
                       <span className='flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between'>
                         <div>

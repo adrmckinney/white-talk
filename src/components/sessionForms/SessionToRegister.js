@@ -10,7 +10,7 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
 
   // DEBUGGER STATION
   // console.log('sessions', sessions)
-  // console.log('selectedValue', selectedValue)
+  console.log('selectedValue', selectedValue)
   // console.log('sessionToRegister', sessionToRegister)
 
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
@@ -25,6 +25,12 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
     if (!selectedValue.pk) {
       setSelectedValue(sessionToRegister)
       handleFormFilter('session', sessionToRegister.pk, setFilterInput)
+      handleFormFilter('title', sessionToRegister.title, setFilterInput)
+      handleFormFilter('facilitator', sessionToRegister.facilitator, setFilterInput)
+      handleFormFilter('facilitator_email', sessionToRegister.facilitator_email, setFilterInput)
+      handleFormFilter('registrant_cue_number', sessionToRegister.session_registrants.length, setFilterInput)
+      handleFormFilter('number_of_registrants_allowed', sessionToRegister.number_of_registrants_allowed, setFilterInput)
+      handleFormFilter('description', sessionToRegister.description, setFilterInput)
     }
     let options = []
     options = sessions.filter(session => session.pk !== selectedValue.pk && session.session_status === true)
@@ -81,6 +87,10 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
                   onClick={() => {
                     setSelectedValue(session)
                     handleFormFilter('session', session.pk, setFilterInput)
+                    handleFormFilter('title', session.title, setFilterInput)
+                    handleFormFilter('facilitator', session.facilitator, setFilterInput)
+                    handleFormFilter('registrant_cue_number', sessionToRegister.session_registrants.length, setFilterInput)
+                    handleFormFilter('number_of_registrants_allowed', sessionToRegister.number_of_registrants_allowed, setFilterInput)
                     setShowSessions(false)
                   }}
                 >

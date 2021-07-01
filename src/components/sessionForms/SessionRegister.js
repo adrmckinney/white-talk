@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
-import { sendEmail, sessionRegister } from '../../api'
+import { sendRegistrationEmail, sessionRegister } from '../../api'
 import Comments from './Comments'
 import Email from './Email'
 import Name from './Name'
@@ -20,26 +20,47 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
       email: '',
       comment: '',
       session: null,
-      confirm: false
+      confirm: false,
+      // specifically for registration emails
+      title: '',
+      facilitator: '',
+      facilitator_email: '',
+      registrant_cue_number: null,
+      number_of_registrants_allowed: null,
+      description: ''
     }
   )
-  const [emailFacilitatorParams, setEmailFacilitatorParams] = useState({
+  const emailFacilitatorParams = ({
     first_name: filterInput.first_name,
     last_name: filterInput.last_name,
-    pronuns: filterInput.pronouns,
+    pronouns: filterInput.pronouns,
     email: filterInput.email,
     comment: filterInput.comment,
-    session: filterInput.session,
-    to_name: 'Rachael',
-    reply_to: ''
+    session: filterInput.title,
+    to_name: filterInput.facilitator,
+    reply_to: filterInput.email,
+    facilitator: filterInput.facilitator,
+    facilitator_email: filterInput.facilitator_email,
+    registrant_cue_number: filterInput.registrant_cue_number + 1,
+    number_of_registrants_allowed: filterInput.number_of_registrants_allowed
+  })
+  const emailRegistrantParams = ({
+    first_name: filterInput.first_name,
+    last_name: filterInput.last_name,
+    email: filterInput.email,
+    session: filterInput.title,
+    reply_to: filterInput.facilitator_email,
+    facilitator: filterInput.facilitator,
+    description: filterInput.description
   })
 
   // DEBUGGER STATION
   // console.log('sessions in SessionRegister', sessions)
   // console.log('sessionToRegister', sessionToRegister)
   // console.log('registrantToEdit', registrantToEdit)
-  // console.log('filterInput', filterInput)
-  console.log('setEmailFacilitatorParams', setEmailFacilitatorParams)
+  console.log('filterInput', filterInput)
+  console.log('emailFacilitatorParams', emailFacilitatorParams)
+  // console.log('setEmailFacilitatorParams', setEmailFacilitatorParams)
 
   useEffect(() => {
     if (isEditing === 'edit-registrant' && registrantToEdit.pk) {
@@ -62,11 +83,22 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
     } else {
       sessionRegister(filterInput)
         .then(data => {
-          sendEmail(emailFacilitatorParams)
           setIsLoading(false)
           setShowModal('')
           setIsRegistering('')
           setRegistered(true)
+          sendRegistrationEmail(emailRegistrantParams, 'template_jthf4wi')
+            .then(res => {
+              console.log('success')
+            }, function (error) {
+              console.log('FAILED...', error)
+            })
+          sendRegistrationEmail(emailFacilitatorParams, 'template_45evc8x')
+            .then(res => {
+              console.log('success')
+            }, function (error) {
+              console.log('FAILED...', error)
+            })
         })
         .catch()
     }
