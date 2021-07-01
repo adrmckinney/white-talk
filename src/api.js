@@ -3,9 +3,7 @@ import * as emailjs from 'emailjs-com'
 
 const url = axios.create({
   baseURL: process.env.REACT_APP_LOCAL_API_URL || 'https://white-talk-api.herokuapp.com/'
-  // baseURL: process.env.REACT_APP_DEPLOYED_API_URL
-  // baseURL: 'http://127.0.0.1:8000/'
-  // baseURL: process.env.REACT_APP_LOCAL_API_URL
+  // baseURL: 'https://white-talk-api.herokuapp.com/'
 })
 
 export const register = (filterAdminRegister) => {
@@ -233,7 +231,7 @@ export const updateRegistrant = (token, pk, input) => {
 }
 
 export const sendEmail = (params) => {
-  return emailjs.send(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, params, process.env.REACT_APP_USER_ID)
+  return emailjs.send(process.env.REACT_APP_LOCAL_SERIVCE_ID || process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_LOCAL_TEMPLATE_ID || process.env.REACT_APP_TEMPLATE_ID, params, process.env.REACT_APP_LOCAL_USER_TOKEN || process.env.REACT_APP_USER_ID)
     .then(res => res)
   // return emailjs.send(process.env.REACT_APP_LOCAL_SERIVCE_ID, process.env.REACT_APP_LOCAL_TEMPLATE_ID, params, process.env.REACT_APP_LOCAL_USER_TOKEN)
   //   .then(res => res)
