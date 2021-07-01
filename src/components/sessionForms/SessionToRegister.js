@@ -89,8 +89,10 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
                     handleFormFilter('session', session.pk, setFilterInput)
                     handleFormFilter('title', session.title, setFilterInput)
                     handleFormFilter('facilitator', session.facilitator, setFilterInput)
+                    handleFormFilter('facilitator_email', sessionToRegister.facilitator_email, setFilterInput)
                     handleFormFilter('registrant_cue_number', sessionToRegister.session_registrants.length, setFilterInput)
                     handleFormFilter('number_of_registrants_allowed', sessionToRegister.number_of_registrants_allowed, setFilterInput)
+                    handleFormFilter('description', sessionToRegister.description, setFilterInput)
                     setShowSessions(false)
                   }}
                 >
