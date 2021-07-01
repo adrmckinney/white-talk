@@ -2,7 +2,7 @@ import axios from 'axios'
 import * as emailjs from 'emailjs-com'
 
 const url = axios.create({
-  baseURL: 'https://white-talk-api.herokuapp.com/'
+  baseURL: process.env.REACT_APP_LOCAL_API_URL || 'https://white-talk-api.herokuapp.com/'
   // baseURL: process.env.REACT_APP_DEPLOYED_API_URL
   // baseURL: 'http://127.0.0.1:8000/'
   // baseURL: process.env.REACT_APP_LOCAL_API_URL
