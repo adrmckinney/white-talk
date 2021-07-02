@@ -11,7 +11,8 @@ import ViewForm from './components/ViewForm'
 import PasswordResetConfirm from './components/PasswordResetConfirm'
 import UsernameResetConfirm from './components/UsernameResetConfirm'
 import Home from './components/Home'
-import About from './components/About'
+// import About from './components/About'
+import About2 from './components/About2'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -61,7 +62,7 @@ function App () {
               <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} />
             </Route>
             <Route path='/about'>
-              <About />
+              <About2 />
             </Route>
             <Route path='/view-session-registrants'>
               <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} sessions={sessions} />

@@ -160,6 +160,7 @@ const About = () => {
                         {FACILITATORS[facilitatorIndex].email &&
                           <button
                             type='button'
+                            className='text-blue-500'
                             onClick={() => setIsContacting(true)}
                           >
                             &nbsp;Contact Rachael
