@@ -5,6 +5,11 @@ import { Animated } from 'react-animated-css'
 import HomeMessage from './HomeMessage'
 import HomeAnnouncement from './HomeAnnouncement'
 import HomeDivider from './HomeDivider'
+import HeatherHackmanDivider from './dividers/HeatherHackmanDivider'
+import CallToAction from './CallToAction'
+import HomeFooter from './HomeFooter'
+import RachaelDivider from './dividers/RachaelDivider'
+import Announcements from './Announcements'
 
 const Home = () => {
   return (
@@ -61,11 +66,24 @@ const Home = () => {
       </div>
       {/* <HomeDivider /> */}
 
-      <HomeAnnouncement />
+      {/* <HomeAnnouncement /> */}
 
-      <HomeDivider />
+      <section className='relative h-screen preserve3d'>
+        <HeatherHackmanDivider />
+      </section>
 
-      <HomeMessage />
+      <Announcements />
+
+      {/* <HomeDivider /> */}
+
+      {/* <HomeMessage /> */}
+
+      <section className='relative h-screen preserve3d'>
+        <RachaelDivider />
+      </section>
+      <CallToAction />
+
+      <HomeFooter />
     </>
   )
 }

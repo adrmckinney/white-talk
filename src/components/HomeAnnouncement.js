@@ -2,7 +2,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 export default function HomeAnnouncement () {
   return (
-    <div className='bg-silverSand'>
+    <div className='bg-darkBlueGray'>
       <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between'>
         <h2 className='text-3xl font-extrabold tracking-tight text-gray-800 sm:text-4xl space-y-12'>
           <span className='block text-bronze text-left uppercase'>For alumni</span>

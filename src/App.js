@@ -13,6 +13,8 @@ import UsernameResetConfirm from './components/UsernameResetConfirm'
 import Home from './components/Home'
 // import About from './components/About'
 import About2 from './components/About2'
+import RenderAnnouncements from './components/announcements/RenderAnnouncements'
+import ModifyAnnouncements from './components/announcements/ModifyAnnouncements'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -29,6 +31,8 @@ function App () {
   const [showModal, setShowModal] = useState('')
   const [formToView, setFormToView] = useState('')
   const [sessionToView, setSessionToView] = useState([])
+  // const [isEditing, setIsEditing] = useState('')
+  const [isEditingParams, setIsEditingParams] = useState([])
 
   function setAuth (username, token) {
     setUsername(username)
@@ -42,6 +46,13 @@ function App () {
     }
   }, [token, isLoggedIn])
 
+  const handleIsEditing = (value, params) => {
+    if (value === 'edit-announcement') {
+      // setIsEditing(value)
+      setIsEditingParams(params)
+    }
+  }
+
   // DEBUGGER STATION
   // console.log('formToView', formToView)
   // console.log('token', token)
@@ -53,26 +64,41 @@ function App () {
         <div className='bg-mediumPurple pb-32'>
           <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} setFormToView={setFormToView} setSessions={setSessions} />
         </div>
-        <main className='-mt-32'>
+        <main className='-mt-32 h-screen overflow-x-hidden overflow-y-auto perspective'>
           <Switch>
+
             <Route path='/book-study'>
               <BookStudy />
             </Route>
+
             <Route path='/sessions'>
               <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} />
             </Route>
+
             <Route path='/about'>
               <About2 />
             </Route>
+
             <Route path='/view-session-registrants'>
               <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} sessions={sessions} />
             </Route>
+
             <Route path='/view-form'>
               <ViewForm token={token} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} formToView={formToView} setFormToView={setFormToView} sessionToView={sessionToView} />
             </Route>
+
+            <Route path='/render-announcements'>
+              <RenderAnnouncements token={token} handleIsEditing={handleIsEditing} />
+            </Route>
+
+            <Route path='/modify-announcements'>
+              <ModifyAnnouncements token={token} isEditingParams={isEditingParams} />
+            </Route>
+
             <Route exact path='/password/reset/confirm/:uid/:urlToken'>
               <PasswordResetConfirm token={token} setToken={setToken} setUsername={setUsername} />
             </Route>
+
             <Route exact path='/username/reset/confirm/:uid/:urlToken'>
               <UsernameResetConfirm token={token} setToken={setToken} setUsername={setUsername} />
             </Route>

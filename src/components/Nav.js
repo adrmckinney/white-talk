@@ -20,6 +20,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   const [isRegistering, setIsRegistering] = useState(false)
   const [isEditingAdmin, setIsEditingAdmin] = useState(false)
   const [isCreatingSession, setIsCreatingSession] = useState(false)
+  // const [isModifyingAnnouncement, setIsModifyingAnnouncement] = useState(false)
   const [showTransparentNav, setShowTransparentNav] = useState(false)
   const [adminBtn, setAdminBtn] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -110,6 +111,12 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
       <ViewForm token={token} isLoggedIn={isLoggedIn} showModal='view-form' setShowModal={setShowModal} formToView='admin-reg-form' setFormToView={setFormToView} setIsEditingAdmin={setIsEditingAdmin} />
     )
   }
+
+  // if (isModifyingAnnouncement) {
+  //   return (
+  //     <p>something</p>
+  //   )
+  // }
 
   const handleLogout = () => {
     logout(token)
@@ -216,6 +223,18 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                         >
                           Create New Session
                         </button>
+
+                        <Link
+                          to='/render-announcements'
+                          className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
+                          role='menuitem'
+                          onClick={() => {
+                            setShowMenu(false)
+                            // setIsModifyingAnnouncement(true)
+                          }}
+                        >
+                          Modify Announcements
+                        </Link>
 
                         <button
                           type='button'

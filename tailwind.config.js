@@ -23,6 +23,8 @@ module.exports = {
         bluePurple: '#B8B8FF',
         lavenderBlue: '#D8D8FF',
         lavenderWebb: '#E8E8FF',
+        babyBlueEyes: '#A3BCF9',
+        darkBlueGray: '#576490',
         magnolia: '#F0F0FF',
         ghostWhite: '#F8F7FF',
         snow: '#FAF5F7',
