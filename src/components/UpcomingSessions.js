@@ -13,7 +13,7 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
         <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='py-1 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
             <span>
-              <h1 className='text-6xl text-center text-gray-900 font-extrabold font-sans mb-10 rounded-lg'>Upcoming Sessions</h1>
+              <h1 className='text-6xl text-center text-davysGray font-extrabold font-sans mb-10 rounded-lg'>Upcoming Sessions</h1>
               <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mx-8'>
                 <table className='min-w-full divide-y-8 divide-mediumPurple font-nunito'>
                   <thead className='bg-magnolia'>

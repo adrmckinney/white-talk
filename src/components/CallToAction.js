@@ -12,7 +12,7 @@ export default function CallToAction () {
         </p>
         <Link
           to='/sessions'
-          className='mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-snow bg-forestGreen hover:bg-lightGreen sm:w-auto'
+          className='mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-snow bg-forestGreen hover:bg-russianGreen sm:w-auto'
         >
           View Upcoming Sessions
         </Link>

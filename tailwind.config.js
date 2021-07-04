@@ -16,6 +16,7 @@ module.exports = {
         davysGray: '#545454',
         silverSand: '#B8C3CC',
         bronze: '#B1735D',
+        russianGreen: '#599B64',
         forestGreen: '#6BAA75',
         lightGreen: '#84DD63',
         darkerPurple: '#8675E8',
