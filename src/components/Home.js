@@ -14,7 +14,7 @@ import Announcements from './Announcements'
 const Home = () => {
   return (
     <>
-      <div className='relative bg-ghostWhite overflow-hidden'>
+      <div className='relative bg-ghostWhite overflow-hidden h-screen sm:h-auto'>
         <div className='max-w-7xl mx-auto'>
           <div className='relative z-10 pb-8 bg-ghostWhite sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32'>
             <svg
@@ -68,19 +68,18 @@ const Home = () => {
 
       {/* <HomeAnnouncement /> */}
 
+      <Announcements />
       <section className='relative h-screen preserve3d'>
         <HeatherHackmanDivider />
       </section>
 
-      <Announcements />
-
       {/* <HomeDivider /> */}
 
-      {/* <HomeMessage /> */}
+      <HomeMessage />
 
-      <section className='relative h-screen preserve3d'>
+      {/* <section className='relative h-screen preserve3d'>
         <RachaelDivider />
-      </section>
+      </section> */}
       <CallToAction />
 
       <HomeFooter />

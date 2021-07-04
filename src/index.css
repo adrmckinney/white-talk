@@ -11,7 +11,7 @@
 @tailwind utilities;
 
 .btn-color {
-  @apply bg-darkerPurple hover:bg-mediumPurple font-medium text-white;
+  @apply bg-darkerPurple hover:bg-mediumPurple font-medium text-snow;
 }
 
 .table-btn-color {

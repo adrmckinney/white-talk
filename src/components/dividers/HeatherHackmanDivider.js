@@ -2,9 +2,9 @@
 const HeatherHackmanDivider = () => {
   return (
     <>
-      <div className='z-50 mx-auto py-52 px-4 sm:px-6 lg:px-8 h-full w-full bg-davysGray parallax' aria-hidden='true'>
+      <div className='z-50 mx-auto py-24 sm:py-52 px-4 sm:px-6 lg:px-8 h-full w-full bg-davysGray parallax' aria-hidden='true'>
         <blockquote className='mt-10 font-nunito'>
-          <div className='max-w-3xl mx-auto text-center text-2xl leading-9 font-medium text-snow'>
+          <div className='max-w-3xl mx-auto text-center text-lg sm:text-2xl leading-9 font-medium text-snow'>
             <div>
               &ldquo;Lately, I have been paying closer attention to the internal work needed to move from being someone who <span className='italic font-semibold text-bluePurple'>does racial justice work</span> to someone who <span className='italic font-semibold text-bluePurple'>lives a racially just life</span>. This is not semantics nor is it simply a matter of perspective. Moving from <span className='italic font-semibold text-bluePurple'>doing to living</span> is exactly what the system does not want me to do, for once I am on the path of living a racially just life, not only will I be striving to embody racial justice in everything I do, but I will have also made the final connection of racial justice to <span className='italic font-semibold text-bluePurple'>my core humanity</span> . . .&rdquo;
             </div>

@@ -6,12 +6,9 @@ import { sendEmail } from '../api'
 export default function Contact ({ handleCloseModal }) {
   const [open, setOpen] = useState(true)
   const [emailParams, setEmailParams] = useState({
-    first_name: '',
-    last_name: '',
-    pronouns: '',
+    name: '',
     email: '',
     phone: null,
-    subject: '',
     message: '',
     to_name: 'Rachael',
     reply_to: ''
@@ -84,6 +81,23 @@ export default function Contact ({ handleCloseModal }) {
                           <form onSubmit={handleEmail} className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8'>
                             <div>
                               <label htmlFor='first_name' className='flex justify-center text-sm font-medium text-gray-700'>
+                                Name <p className='text-red-500 ml-1'>*</p>
+                              </label>
+                              <div className='mt-1'>
+                                <input
+                                  type='text'
+                                  name='first_name'
+                                  id='first_name'
+                                  required
+                                  autoComplete='given-name'
+                                  className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
+                                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                />
+                              </div>
+                            </div>
+
+                            {/* <div>
+                              <label htmlFor='first_name' className='flex justify-center text-sm font-medium text-gray-700'>
                                 First name <p className='text-red-500 ml-1'>*</p>
                               </label>
                               <div className='mt-1'>
@@ -113,9 +127,9 @@ export default function Contact ({ handleCloseModal }) {
                                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
                               </div>
-                            </div>
+                            </div> */}
 
-                            <div>
+                            {/* <div>
                               <label htmlFor='pronouns' className='text-sm font-medium text-gray-700'>
                                 Pronouns
                               </label>
@@ -129,27 +143,13 @@ export default function Contact ({ handleCloseModal }) {
                                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
                               </div>
-                            </div>
+                            </div> */}
 
                             <div>
                               <label htmlFor='phone' className='block text-sm font-medium text-gray-700'>
                                 Phone Number
                               </label>
                               <div className='mt-1 relative rounded-md shadow-sm'>
-                                {/* <div className='absolute inset-y-0 left-0 flex items-center'>
-                                  <label htmlFor='country' className='sr-only'>
-                                    Country
-                                  </label>
-                                  <select
-                                    id='country'
-                                    name='country'
-                                    className='h-full py-0 pl-4 pr-8 border-transparent bg-transparent text-gray-500 focus:ring-indigo-500 focus:border-indigo-500 rounded-md'
-                                  >
-                                    <option>US</option>
-                                    <option>CA</option>
-                                    <option>EU</option>
-                                  </select>
-                                </div> */}
                                 <input
                                   type='text'
                                   name='phone'
@@ -184,7 +184,7 @@ export default function Contact ({ handleCloseModal }) {
                               </div>
                             </div>
 
-                            <div className='sm:col-span-2'>
+                            {/* <div className='sm:col-span-2'>
                               <label htmlFor='subject' className='flex justify-center text-sm font-medium text-gray-700'>
                                 Email Subject <p className='text-red-500 ml-1'>*</p>
                               </label>
@@ -199,7 +199,8 @@ export default function Contact ({ handleCloseModal }) {
                                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 />
                               </div>
-                            </div>
+                            </div> */}
+
                             <div className='sm:col-span-2'>
                               <label htmlFor='message' className='flex justify-center text-sm font-medium text-gray-700'>
                                 Message <p className='text-red-500 ml-1'>*</p>
