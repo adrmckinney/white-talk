@@ -58,7 +58,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
 
   // DEBUGGER STATION
   // console.log('sessionToEdit', sessionToEdit.pk)
-  // console.log('filterInput', filterInput)
+  console.log('filterInput', filterInput)
   // console.log('isEditing', isEditing)
   // console.log('showModal', showModal)
   // console.log('isLoading', isLoading)

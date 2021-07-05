@@ -1,17 +1,28 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Popover } from '@headlessui/react'
 import LandingCarousel from './LandingCarousel'
 import { Animated } from 'react-animated-css'
 import HomeMessage from './HomeMessage'
-import HomeAnnouncement from './HomeAnnouncement'
-import HomeDivider from './HomeDivider'
+// import HomeAnnouncement from './HomeAnnouncement'
+// import HomeDivider from './HomeDivider'
 import HeatherHackmanDivider from './dividers/HeatherHackmanDivider'
 import CallToAction from './CallToAction'
 import HomeFooter from './HomeFooter'
-import RachaelDivider from './dividers/RachaelDivider'
+// import RachaelDivider from './dividers/RachaelDivider'
 import Announcements from './Announcements'
+import useTriggerNavAnimation from './customComponents/useTriggerNavAnimation'
 
-const Home = () => {
+const Home = ({ changeNavAnimation }) => {
+  const [announcementRef, announcementIsVisible] = useTriggerNavAnimation({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5
+  })
+
+  useEffect(() => {
+    if (announcementIsVisible) changeNavAnimation('false')
+  }, [announcementIsVisible, changeNavAnimation])
+
   return (
     <>
       <div className='relative bg-ghostWhite overflow-hidden h-screen sm:h-auto'>
@@ -67,8 +78,10 @@ const Home = () => {
       {/* <HomeDivider /> */}
 
       {/* <HomeAnnouncement /> */}
+      <span ref={announcementRef}>
+        <Announcements />
+      </span>
 
-      <Announcements />
       <section className='relative h-screen preserve3d'>
         <HeatherHackmanDivider />
       </section>

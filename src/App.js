@@ -32,6 +32,7 @@ function App () {
   const [formToView, setFormToView] = useState('')
   const [sessionToView, setSessionToView] = useState([])
   const [isEditingParams, setIsEditingParams] = useState([])
+  const [showTransparentNav, setShowTransparentNav] = useState(false)
 
   function setAuth (username, token) {
     setUsername(username)
@@ -52,6 +53,11 @@ function App () {
       setIsEditingParams([])
     }
   }
+
+  const changeNavAnimation = (value) => {
+    setShowTransparentNav(value)
+  }
+
   // DEBUGGER STATION
   // console.log('formToView', formToView)
 
@@ -60,7 +66,7 @@ function App () {
       <div className='min-h-screen bg-ghostWhite'>
 
         <div className='bg-mediumPurple pb-32'>
-          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} setFormToView={setFormToView} setSessions={setSessions} />
+          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} setFormToView={setFormToView} setSessions={setSessions} showTransparentNav={showTransparentNav} />
         </div>
         <main className='-mt-32 h-screen overflow-x-hidden overflow-y-auto perspective'>
           <Switch>
@@ -102,7 +108,7 @@ function App () {
             </Route>
 
             <Route path='/'>
-              <Home />
+              <Home changeNavAnimation={changeNavAnimation} />
             </Route>
           </Switch>
         </main>
