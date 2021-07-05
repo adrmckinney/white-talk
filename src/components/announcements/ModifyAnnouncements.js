@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
-
-import { Link } from 'react-router-dom'
 import { authListAnnouncement, listCreateAnnouncement, updateAnnouncement } from '../../api'
 
-export default function ModifyAnnouncements ({ token, isEditingParams }) {
+export default function ModifyAnnouncements ({ token, isEditingParams, handleIsEditing }) {
   const history = useHistory()
   const [announcementParams, setAnnouncementParams] = useState({
     title: '',
@@ -14,9 +12,10 @@ export default function ModifyAnnouncements ({ token, isEditingParams }) {
   const changeParams = (name, value) => {
     setAnnouncementParams(state => ({ ...state, [name]: value }))
   }
+
   // Debugger station
-  console.log('announcementParams', announcementParams)
-  console.log('isEditingParams', isEditingParams)
+  // console.log('announcementParams', announcementParams)
+  // console.log('isEditingParams', isEditingParams)
 
   useEffect(() => {
     if (isEditingParams.pk) {
@@ -35,6 +34,7 @@ export default function ModifyAnnouncements ({ token, isEditingParams }) {
         .then(data => {
           authListAnnouncement(token)
             .then(data => {
+              handleIsEditing('clear-params')
               history.push('/render-announcements')
             })
         })
@@ -142,8 +142,12 @@ export default function ModifyAnnouncements ({ token, isEditingParams }) {
                 {isEditingParams.pk ? 'Update' : 'Create'}
               </button>
               <button
-                type='submit'
+                type='button'
                 className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                onClick={() => {
+                  handleIsEditing('clear-params')
+                  history.push('/render-announcements')
+                }}
               >
                 Cancel
               </button>

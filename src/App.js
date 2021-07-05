@@ -31,7 +31,6 @@ function App () {
   const [showModal, setShowModal] = useState('')
   const [formToView, setFormToView] = useState('')
   const [sessionToView, setSessionToView] = useState([])
-  // const [isEditing, setIsEditing] = useState('')
   const [isEditingParams, setIsEditingParams] = useState([])
 
   function setAuth (username, token) {
@@ -48,14 +47,13 @@ function App () {
 
   const handleIsEditing = (value, params) => {
     if (value === 'edit-announcement') {
-      // setIsEditing(value)
       setIsEditingParams(params)
+    } else if (value === 'clear-params') {
+      setIsEditingParams([])
     }
   }
-
   // DEBUGGER STATION
   // console.log('formToView', formToView)
-  // console.log('token', token)
 
   return (
     <Router>
@@ -92,7 +90,7 @@ function App () {
             </Route>
 
             <Route path='/modify-announcements'>
-              <ModifyAnnouncements token={token} isEditingParams={isEditingParams} />
+              <ModifyAnnouncements token={token} isEditingParams={isEditingParams} handleIsEditing={handleIsEditing} />
             </Route>
 
             <Route exact path='/password/reset/confirm/:uid/:urlToken'>

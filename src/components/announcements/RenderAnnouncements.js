@@ -8,7 +8,7 @@ export default function RenderAnnouncements ({ token, handleIsEditing }) {
   useEffect(() => {
     authListAnnouncement(token)
       .then(data => setAnnouncements(data))
-  }, [])
+  }, [token])
 
   const handleDelete = (pk) => {
     deleteAnnouncement(token, pk)
