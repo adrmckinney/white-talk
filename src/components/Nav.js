@@ -11,7 +11,6 @@ import CreateSession from './CreateSession'
 import Register from './Register'
 import ViewForm from './ViewForm'
 import { logout } from '../api'
-import useDocumentScrollThrottled from './customComponents/useDocumentScrollThrottled'
 import LoginOverlay from './LoginOverlay'
 
 const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, showModal, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView, setSessions, showTransparentNav }) => {

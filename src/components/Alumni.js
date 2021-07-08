@@ -9,14 +9,15 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal }) => {
   const [completedSessions, setCompletedSession] = useState([])
   const [numberOfAlumni, setnumberOfAlumni] = useState()
   const [isEditing, setIsEditing] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [sessionToEdit, setSessionToEdit] = useState([])
+  //   const [isLoading, setIsLoading] = useState(false)
+  //   const [sessionToEdit, setSessionToEdit] = useState([])
   //   const [sessionsAreLoading, setSessionsAreLoading] = useState(false)
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
   console.log('completedSessions', completedSessions)
   console.log('sessions', sessions)
   console.log('numberOfAlumni', numberOfAlumni)
+  console.log('isEditing', isEditing)
 
   useEffect(() => {
     // setSessionsAreLoading(true)
