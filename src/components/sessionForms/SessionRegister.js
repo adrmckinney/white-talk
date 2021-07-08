@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
-import { sendRegistrationEmail, sessionRegister } from '../../api'
+import { sendEmail, sendRegistrationEmail, sessionRegister } from '../../api'
 import Comments from './Comments'
 import Email from './Email'
 import Name from './Name'
@@ -87,13 +87,13 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
           setShowModal('')
           setIsRegistering('')
           setRegistered(true)
-          sendRegistrationEmail(emailRegistrantParams, 'template_jthf4wi')
+          sendEmail(emailRegistrantParams, 'template_jthf4wi')
             .then(res => {
               console.log('success')
             }, function (error) {
               console.log('FAILED...', error)
             })
-          sendRegistrationEmail(emailFacilitatorParams, 'template_45evc8x')
+          sendEmail(emailFacilitatorParams, 'template_45evc8x')
             .then(res => {
               console.log('success')
             }, function (error) {
@@ -169,12 +169,12 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
                     ? <button type='submit' disabled className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
                       <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                       Processing
-                      </button>
+                    </button>
                     : <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
                       {isEditing
                         ? 'Update'
                         : 'Register'}
-                      </button>}
+                    </button>}
                   <button
                     type='button'
                     className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'

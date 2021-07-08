@@ -15,6 +15,8 @@ import Home from './components/Home'
 import About2 from './components/About2'
 import RenderAnnouncements from './components/announcements/RenderAnnouncements'
 import ModifyAnnouncements from './components/announcements/ModifyAnnouncements'
+import PastSessions from './components/PastSessions'
+import Alumni from './components/Alumni'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -85,6 +87,14 @@ function App () {
 
             <Route path='/view-session-registrants'>
               <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} sessions={sessions} />
+            </Route>
+
+            <Route path='/past-sessions'>
+              <PastSessions token={token} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} />
+            </Route>
+
+            <Route path='/alumni'>
+              <Alumni token={token} isLoggedIn={isLoggedIn} />
             </Route>
 
             <Route path='/view-form'>

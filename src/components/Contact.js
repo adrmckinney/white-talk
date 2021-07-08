@@ -16,7 +16,7 @@ export default function Contact ({ handleCloseModal }) {
 
   const handleEmail = (e) => {
     e.preventDefault()
-    sendEmail(emailParams)
+    sendEmail(emailParams, 'template_contact_email')
       .then(res => {
         handleCloseModal()
       }, function (error) {

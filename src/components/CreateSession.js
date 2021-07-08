@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from 'react'
 import { Transition } from '@headlessui/react'
 import moment from 'moment'
-import { createSession, listSessions } from '../api'
+import { createSession, listSessions, updateRegistrant } from '../api'
 import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionDates from './createSessionForm.js/SessionDates'
@@ -11,6 +11,7 @@ import SessionTime from './createSessionForm.js/SessionTime'
 import NumberOfRegistrants from './createSessionForm.js/NumberOfRegistrants'
 import { RefreshIcon } from '@heroicons/react/outline'
 import SessionFacilitator from './createSessionForm.js/SessionFacilitator'
+import SessionComplete from './createSessionForm.js/SessionComplete'
 
 const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession, setIsCreatingSession, setSessions, isLoading, setIsLoading }) => {
   const [filterInput, setFilterInput] = useReducer(
@@ -25,7 +26,8 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
       session_status: false,
       number_of_registrants_allowed: 8,
       facilitator: '',
-      facilitator_email: ''
+      facilitator_email: '',
+      session_complete: false
     }
   )
 
@@ -51,13 +53,14 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
         session_status: sessionToEdit.session_status,
         number_of_registrants_allowed: sessionToEdit.number_of_registrants_allowed,
         facilitator: sessionToEdit.facilitator,
-        facilitator_email: sessionToEdit.facilitator_email
+        facilitator_email: sessionToEdit.facilitator_email,
+        session_complete: sessionToEdit.session_complete
       })
     }
   }, [isEditing, sessionToEdit])
 
   // DEBUGGER STATION
-  // console.log('sessionToEdit', sessionToEdit.pk)
+  console.log('sessionToEdit', sessionToEdit)
   console.log('filterInput', filterInput)
   // console.log('isEditing', isEditing)
   // console.log('showModal', showModal)
@@ -152,6 +155,9 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                       </span>
                       <div>
                         <SessionDescription handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                      </div>
+                      <div>
+                        <SessionComplete handleFilterSession={handleFilterSession} filterInput={filterInput} />
                       </div>
                     </span>
                   </div>
