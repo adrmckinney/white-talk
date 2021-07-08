@@ -132,12 +132,14 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
 
   const navBtnClass = () => {
     return (
-      `${showTransparentNav ? 'text-gray-800 hover:bg-gray-700 hover:text-white' : 'text-white hover:bg-blueGray-100 hover:text-gray-800'} px-3 py-2 rounded-md text-xs lg:text-sm font-medium`
+      // `${showTransparentNav ? 'text-gray-800 hover:bg-gray-700 hover:text-white' : 'text-white hover:bg-blueGray-100 hover:text-gray-800'} px-3 py-2 rounded-md text-xs lg:text-sm font-medium`
+      'text-white hover:bg-blueGray-100 hover:text-gray-800 px-3 py-2 rounded-md text-xs lg:text-sm font-medium'
     )
   }
 
   return (
-    <nav className={`${showTransparentNav ? 'sm:bg-ghostWhite' : 'sm:bg-mediumPurple'} fixed top-0 z-20 w-full`}>
+    // <nav className={`${showTransparentNav ? 'sm:bg-ghostWhite' : 'sm:bg-mediumPurple'} fixed top-0 z-20 w-full`}>
+    <nav className='sm:bg-mediumPurple fixed top-0 z-20 w-full'>
       <div className='max-w-7xl mx-auto px-2 sm:px-4 lg:px-8'>
         <div className='relative h-16 flex items-center justify-between'>
           <div className='px-2 flex items-center lg:px-0'>
@@ -292,7 +294,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
         <RegSuccessfulAlert showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />}
 
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
-      <div className='lg:hidden text-gray-800 border-b-8 border-gray-300' id='mobile-menu'>
+      <div className='lg:hidden text-gray-800' id='mobile-menu'>
         {showMenu &&
           <>
             <MobileNavBtns isLoggedIn={isLoggedIn} loggedInName={loggedInName} handleLogout={handleLogout} showMenu={showMenu} setShowMenu={setShowMenu} setIsSigningIn={setIsSigningIn} />
