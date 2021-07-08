@@ -17,7 +17,6 @@ const Pronouns = ({ filterInput, setFilterInput }) => {
             name='pronouns'
             placeholder='ex. she/her/hers, they/them/their, he/him/his, she/him/they'
             id='pronouns'
-            required
             value={filterInput.pronouns}
             onChange={e => handleFormFilter(e.target.name, e.target.value, setFilterInput)}
           />

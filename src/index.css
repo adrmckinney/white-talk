@@ -11,9 +11,29 @@
 @tailwind utilities;
 
 .btn-color {
-  @apply bg-darkerPurple hover:bg-mediumPurple text-base font-medium text-white;
+  @apply bg-darkerPurple hover:bg-mediumPurple font-medium text-snow;
 }
 
 .table-btn-color {
   @apply bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple;
+}
+
+.perspective {
+  perspective: 2px;
+}
+
+.preserve3d {
+  transform-style: preserve-3d;
+  z-index: -3;
+}
+
+.parallax {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateZ(-1px) scale(1.5);
+  z-index: -2;
 }

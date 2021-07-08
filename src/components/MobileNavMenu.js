@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 const MobileNavMenu = ({ setToken, username, setUsername, isLoggedIn, setShowMenu, setIsCreatingSession, setIsRegistering, setIsEditingAdmin }) => {
   return (
     <div className='pt-4 pb-3 border-t border-indigo-700'>
@@ -19,6 +20,17 @@ const MobileNavMenu = ({ setToken, username, setUsername, isLoggedIn, setShowMen
             >
               Create New Session
             </button>
+
+            <Link
+              to='/render-announcements'
+              className='block rounded-md py-2 px-3 text-base font-medium hover:bg-indigo-500 hover:bg-opacity-75'
+              role='menuitem'
+              onClick={() => {
+                setShowMenu(false)
+              }}
+            >
+              Modify Announcements
+            </Link>
 
             <button
               type='button'

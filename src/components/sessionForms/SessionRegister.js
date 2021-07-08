@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
-import { sendRegistrationEmail, sessionRegister } from '../../api'
+import { sendEmail, sessionRegister } from '../../api'
 import Comments from './Comments'
 import Email from './Email'
 import Name from './Name'
@@ -87,13 +87,13 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
           setShowModal('')
           setIsRegistering('')
           setRegistered(true)
-          sendRegistrationEmail(emailRegistrantParams, 'template_jthf4wi')
+          sendEmail(emailRegistrantParams, 'template_jthf4wi')
             .then(res => {
               console.log('success')
             }, function (error) {
               console.log('FAILED...', error)
             })
-          sendRegistrationEmail(emailFacilitatorParams, 'template_45evc8x')
+          sendEmail(emailFacilitatorParams, 'template_45evc8x')
             .then(res => {
               console.log('success')
             }, function (error) {

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Popover } from '@headlessui/react'
 import UpcomingSessions from './UpcomingSessions'
 import MobileUpcomingSessions from './MobileUpcomingSessions'
 import { listSessions, deleteSession, updateSession } from '../api'
@@ -9,9 +8,9 @@ import SessionRegisterOverlay from './sessionForms/SessionRegisterOverlay'
 import CreateSession from './CreateSession'
 import { PencilIcon } from '@heroicons/react/outline'
 import SessionsLoadingAlert from './alerts/SessionsLoadingAlert'
-import HomeDivider from './HomeDivider'
+// import HomeDivider from './HomeDivider'
 
-const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, registered, setRegistered }) => {
+const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setSessionToView, registered, setRegistered }) => {
   const [isDeleting, setIsDeleting] = useState('')
   const [isRegistering, setIsRegistering] = useState('')
   const [isEditing, setIsEditing] = useState('')
@@ -83,7 +82,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
             setSessionToRegister(session)
           }}
         >
-          <PencilIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+          <PencilIcon className='-ml-3 mr-1 h-4 w-1/4' aria-hidden='true' />
           Sign up
         </button>
       )
@@ -133,11 +132,11 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
 
   return (
     <>
-      <div className='relative bg-white overflow-hidden'>
+      <div className='relative bg-ghostWhite overflow-hidden'>
         <div className='max-w-7xl mx-auto'>
-          <div className='relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32'>
+          <div className='relative z-10 pb-8 bg-ghostWhite sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32'>
             <svg
-              className='hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2'
+              className='hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-ghostWhite transform translate-x-1/2'
               fill='currentColor'
               viewBox='0 0 100 100'
               preserveAspectRatio='none'
@@ -147,13 +146,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
             </svg>
 
             {/* Have to keep this for style */}
-            <Popover>
-              {({ open }) => (
-                <>
-                  <div className='relative pt-6 px-4 sm:px-6 lg:px-8' />
-                </>
-              )}
-            </Popover>
+            <div className='relative pt-6 px-4 sm:px-6 lg:px-8' />
 
             <main
               className='mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28'
@@ -161,7 +154,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
               <div
                 className='text-center lg:text-left'
               >
-                <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-10 sm:pt-4 lg:pt-0'>
+                <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-davysGray sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-10 sm:pt-4 lg:pt-0'>
                   <span className='block xl:inline'>Get Engaged</span>{' '}
                   <span className='block text-mediumPurple xl:inline'>Sign up for a Session</span>
                 </h1>
@@ -182,24 +175,6 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
                   >rachgigliotti@yahoo.com
                   </a>
                 </p>
-                {/* <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start'>
-                  <div className='rounded-md shadow'>
-                    <a
-                      href='#'
-                      className='w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'
-                    >
-                      Get started
-                    </a>
-                  </div>
-                  <div className='mt-3 sm:mt-0 sm:ml-3'>
-                    <a
-                      href='#'
-                      className='w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10'
-                    >
-                      Live demo
-                  </a>
-                  </div> */}
-                {/* </div> */}
               </div>
             </main>
           </div>
@@ -229,16 +204,16 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
           </div>
         </div>
       </div>
-      <HomeDivider />
-      <div className='md:mt-8 lg:mt-2 pb-20 sm:pb-10 lg:pb-0'>
+      {/* <HomeDivider /> */}
+      <div className='pb-20 sm:pb-10 lg:pb-0'>
         {sessionsAreLoading
           ? <span className='pt-32 pb-10'><SessionsLoadingAlert /></span>
           : <>
             <span className='hidden lg:block'>
-              <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
+              <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
             </span>
             <span className='lg:hidden'>
-              <MobileUpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setFormToView={setFormToView} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
+              <MobileUpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
             </span>
           </>}
 

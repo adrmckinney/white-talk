@@ -174,7 +174,6 @@ export const listSessions = () => {
 }
 
 export const createSession = (token, sessionData) => {
-  console.log('create api ran')
   return url
     .post('api/create-session/', sessionData,
       {
@@ -197,7 +196,6 @@ export const deleteSession = (token, pk) => {
 }
 
 export const updateSession = (token, pk, input) => {
-  // console.log('update api ran')
   return url
     .put(`api/update-session/${pk}/`, input,
       {
@@ -205,6 +203,34 @@ export const updateSession = (token, pk, input) => {
           Authorization: `Token ${token}`
         }
       })
+    .then(res => res.data)
+}
+
+// ###############################
+// ######### REGISTRANTS #########
+// ###############################
+
+export const listRegistrants = (token) => {
+  return url
+    .get('api/list-registrants/',
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      }
+    )
+    .then(res => res.data)
+}
+
+export const listAlumni = (token) => {
+  return url
+    .get('api/list-alumni/',
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      }
+    )
     .then(res => res.data)
 }
 
@@ -230,12 +256,67 @@ export const updateRegistrant = (token, pk, input) => {
     .then(res => res.data)
 }
 
-export const sendEmail = (params) => {
-  return emailjs.send(process.env.REACT_APP_LOCAL_SERIVCE_ID || process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_LOCAL_TEMPLATE_ID || process.env.REACT_APP_TEMPLATE_ID, params, process.env.REACT_APP_LOCAL_USER_TOKEN || process.env.REACT_APP_USER_ID)
+export const listCreateAnnouncement = (token, announcementData) => {
+  return url
+    .post('api/create-announcement/', announcementData,
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}
+
+// This is a secure call to get all Announcements.
+// On auth user can do this b/c it is on the edit page.
+// The view on the other side of this endpoint is a
+// ListCreateView. It is poorly named here.
+export const authListAnnouncement = (token) => {
+  return url
+    .get('api/create-announcement/',
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}
+
+export const listAnnouncements = () => {
+  return url
+    .get('api/list-announcement/')
+    .then(res => res.data)
+}
+
+export const updateAnnouncement = (token, pk, announcementData) => {
+  return url
+    .put(`api/retrieve-update-delete-announcement/${pk}/`, announcementData,
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}
+
+export const deleteAnnouncement = (token, pk) => {
+  return url
+    .delete(`api/retrieve-update-delete-announcement/${pk}/`,
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      })
+    .then(res => res.data)
+}
+
+// EMAILJS CALLS
+export const sendEmail = (params, templateId) => {
+  return emailjs.send(process.env.REACT_APP_SERVICE_ID, templateId, params, process.env.REACT_APP_USER_ID)
     .then(res => res)
 }
 
-export const sendRegistrationEmail = (params, templateId) => {
-  return emailjs.send(process.env.REACT_APP_LOCAL_SERIVCE_ID_REGISTRATION || process.env.REACT_APP_SERIVCE_ID_REGISTRATION, templateId, params, process.env.REACT_APP_LOCAL_USER_TOKEN_REGISTRATION || process.env.REACT_APP_USER_TOKEN_REGISTRATION)
-    .then(res => res)
-}
+// export const sendRegistrationEmail = (params, templateId) => {
+//   return emailjs.send(process.env.REACT_APP_LOCAL_SERIVCE_ID || process.env.REACT_APP_SERVICE_ID, templateId, params, process.env.REACT_APP_LOCAL_USER_ID || process.env.REACT_APP_USER_ID)
+//     .then(res => res)
+// }

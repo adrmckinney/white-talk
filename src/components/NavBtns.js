@@ -22,9 +22,19 @@ const NavBtns = ({ isLoggedIn, navBtnClass }) => {
       </Link> */}
 
       {isLoggedIn &&
-        <Link to='/view-session-registrants' className={navBtnClass()}>
-          Session Registrants
-        </Link>}
+        <>
+          <Link to='/view-session-registrants' className={navBtnClass()}>
+            Session Registrants
+          </Link>
+
+          <Link to='/past-sessions' className={navBtnClass()}>
+            Past Sessions
+          </Link>
+
+          <Link to='/alumni' className={navBtnClass()}>
+            Alumni
+          </Link>
+        </>}
 
       {/* debugger for window size breakpoints */}
       {/* <div className='hidden sm:block md:hidden text-red-700'>

@@ -1,19 +1,35 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Popover } from '@headlessui/react'
 import LandingCarousel from './LandingCarousel'
 import { Animated } from 'react-animated-css'
 import HomeMessage from './HomeMessage'
-import HomeAnnouncement from './HomeAnnouncement'
-import HomeDivider from './HomeDivider'
+// import HomeAnnouncement from './HomeAnnouncement'
+// import HomeDivider from './HomeDivider'
+import HeatherHackmanDivider from './dividers/HeatherHackmanDivider'
+import CallToAction from './CallToAction'
+import HomeFooter from './HomeFooter'
+// import RachaelDivider from './dividers/RachaelDivider'
+import Announcements from './Announcements'
+import useTriggerNavAnimation from './customComponents/useTriggerNavAnimation'
 
-const Home = () => {
+const Home = ({ changeNavAnimation }) => {
+  const [announcementRef, announcementIsVisible] = useTriggerNavAnimation({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5
+  })
+
+  useEffect(() => {
+    if (announcementIsVisible) changeNavAnimation('false')
+  }, [announcementIsVisible, changeNavAnimation])
+
   return (
     <>
-      <div className='relative bg-white overflow-hidden'>
+      <div className='relative bg-ghostWhite overflow-hidden h-screen sm:h-auto'>
         <div className='max-w-7xl mx-auto'>
-          <div className='relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32'>
+          <div className='relative z-10 pb-8 bg-ghostWhite sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32'>
             <svg
-              className='hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2'
+              className='hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-ghostWhite transform translate-x-1/2'
               fill='currentColor'
               viewBox='0 0 100 100'
               preserveAspectRatio='none'
@@ -61,11 +77,25 @@ const Home = () => {
       </div>
       {/* <HomeDivider /> */}
 
-      <HomeAnnouncement />
+      {/* <HomeAnnouncement /> */}
+      <span ref={announcementRef}>
+        <Announcements />
+      </span>
 
-      <HomeDivider />
+      <section className='relative h-screen preserve3d'>
+        <HeatherHackmanDivider />
+      </section>
+
+      {/* <HomeDivider /> */}
 
       <HomeMessage />
+
+      {/* <section className='relative h-screen preserve3d'>
+        <RachaelDivider />
+      </section> */}
+      <CallToAction />
+
+      <HomeFooter />
     </>
   )
 }

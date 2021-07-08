@@ -11,16 +11,15 @@ import CreateSession from './CreateSession'
 import Register from './Register'
 import ViewForm from './ViewForm'
 import { logout } from '../api'
-import useDocumentScrollThrottled from './customComponents/useDocumentScrollThrottled'
 import LoginOverlay from './LoginOverlay'
 
-const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, showModal, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView, setSessions }) => {
+const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, showModal, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView, setSessions, showTransparentNav }) => {
   const [showMenu, setShowMenu] = useState(false)
   const [isSigningIn, setIsSigningIn] = useState('')
   const [isRegistering, setIsRegistering] = useState(false)
   const [isEditingAdmin, setIsEditingAdmin] = useState(false)
   const [isCreatingSession, setIsCreatingSession] = useState(false)
-  const [showTransparentNav, setShowTransparentNav] = useState(false)
+  // const [showTransparentNav, setShowTransparentNav] = useState(false)
   const [adminBtn, setAdminBtn] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState('')
@@ -35,20 +34,20 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   // console.log('username', username)
 
   // scroll on click feature
-  const MINIMUM_SCROLL = 0
-  const TIMEOUT_DELAY = 0
+  // const MINIMUM_SCROLL = 0
+  // const TIMEOUT_DELAY = 0
 
-  useDocumentScrollThrottled(callbackData => {
-    const { previousScrollTop, currentScrollTop } = callbackData
-    const isScrolledDown = previousScrollTop < currentScrollTop
-    const isMinimumScrolled = currentScrollTop > MINIMUM_SCROLL
+  // useDocumentScrollThrottled(callbackData => {
+  //   const { previousScrollTop, currentScrollTop } = callbackData
+  //   const isScrolledDown = previousScrollTop < currentScrollTop
+  //   const isMinimumScrolled = currentScrollTop > MINIMUM_SCROLL
 
-    setShowTransparentNav(currentScrollTop > 2)
+  //   setShowTransparentNav(currentScrollTop > 2)
 
-    setTimeout(() => {
-      setShowTransparentNav(isScrolledDown && isMinimumScrolled)
-    }, TIMEOUT_DELAY)
-  })
+  //   setTimeout(() => {
+  //     setShowTransparentNav(isScrolledDown && isMinimumScrolled)
+  //   }, TIMEOUT_DELAY)
+  // })
 
   // close menu on window click feature
   useEffect(() => {
@@ -111,6 +110,12 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
     )
   }
 
+  // if (isModifyingAnnouncement) {
+  //   return (
+  //     <p>something</p>
+  //   )
+  // }
+
   const handleLogout = () => {
     logout(token)
       .then(data => {
@@ -132,7 +137,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   }
 
   return (
-    <nav className={`${showTransparentNav ? 'sm:bg-none' : 'sm:bg-mediumPurple'} bg-ghostWhite fixed top-0 z-20 w-full`}>
+    <nav className={`${showTransparentNav ? 'sm:bg-ghostWhite' : 'sm:bg-mediumPurple'} fixed top-0 z-20 w-full`}>
       <div className='max-w-7xl mx-auto px-2 sm:px-4 lg:px-8'>
         <div className='relative h-16 flex items-center justify-between'>
           <div className='px-2 flex items-center lg:px-0'>
@@ -216,6 +221,18 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                         >
                           Create New Session
                         </button>
+
+                        <Link
+                          to='/render-announcements'
+                          className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
+                          role='menuitem'
+                          onClick={() => {
+                            setShowMenu(false)
+                            // setIsModifyingAnnouncement(true)
+                          }}
+                        >
+                          Modify Announcements
+                        </Link>
 
                         <button
                           type='button'

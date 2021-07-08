@@ -1,6 +1,23 @@
 const FacilitatorEmail = ({ filterInput, handleFilterSession }) => {
   return (
     <>
+      {/* <label htmlFor='facilitator_email' className='block text-sm font-medium text-gray-700'>
+        Email address
+      </label>
+      <div className='mt-1'>
+        <input
+          id='facilitator_email'
+          name='facilitator_email'
+          type='email'
+          required
+          autoComplete='email'
+          className='shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md'
+          placeholder='you@example.com'
+          value={filterInput.facilitator_email}
+          onChange={(e) => handleFilterSession(e.target.name, e.target.value)}
+        />
+      </div> */}
+
       <label
         htmlFor='facilitator_email'
         className='block text-sm sm:text-lg font-medium text-gray-700 text-left mt-2'
