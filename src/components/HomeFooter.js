@@ -13,7 +13,7 @@ export default function HomeFooter () {
 
   const handleEmail = (e) => {
     e.preventDefault()
-    sendEmail(emailParams, 'template_contact_email')
+    sendEmail(emailParams, 'template_contact')
       .then(res => {
         console.log('you did it')
       }, function (error) {

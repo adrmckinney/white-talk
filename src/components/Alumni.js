@@ -1,8 +1,7 @@
 import { PencilAltIcon } from '@heroicons/react/outline'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import Moment from 'react-moment'
-import { listAlumni, listRegistrants, listSessions } from '../api'
-import CreateSession from './CreateSession'
+import { listSessions } from '../api'
 import { sortSessions } from './functions'
 
 const Alumni = ({ token, isLoggedIn, showModal, setShowModal }) => {
