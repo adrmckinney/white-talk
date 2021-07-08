@@ -300,7 +300,7 @@ export const deleteAnnouncement = (token, pk) => {
 
 // EMAILJS CALLS
 export const sendEmail = (params, templateId) => {
-  return emailjs.send(process.env.REACT_APP_SERVICE_ID, templateId, params, process.env.REACT_APP_USER_ID)
+  return emailjs.send(process.env.REACT_APP_LOCAL_SERIVCE_ID || process.env.REACT_APP_SERVICE_ID, templateId, params, process.env.REACT_APP_LOCAL_USER_ID || process.env.REACT_APP_USER_ID)
     .then(res => res)
 }
 

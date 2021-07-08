@@ -1,29 +1,46 @@
 import { useState } from 'react'
 import { sendEmail } from '../api'
+import MessageSentAlert from './alerts/MessageSentAlert'
+import { formatPhoneNumber } from './functions'
 
 export default function HomeFooter () {
+  const [showAlert, setShowAlert] = useState(false)
   const [emailParams, setEmailParams] = useState({
     name: '',
     email: '',
-    phone: null,
+    phone: '',
     message: '',
     to_name: 'Rachael',
-    reply_to: ''
+    reply_to: '',
+    email_to: 'adrmckinney@gmail.com'
   })
+
+  console.log('emailParams', emailParams)
 
   const handleEmail = (e) => {
     e.preventDefault()
     sendEmail(emailParams, 'template_contact')
       .then(res => {
-        console.log('you did it')
+        setEmailParams(state => ({
+          ...state,
+          name: '',
+          email: '',
+          phone: '',
+          message: '',
+          reply_to: ''
+        }))
+        setShowAlert(true)
       }, function (error) {
         console.log('FAILED...', error)
-        console.log('you did it')
       })
   }
 
   const handleChange = (name, value) => {
     setEmailParams(state => ({ ...state, [name]: value }))
+  }
+
+  const closeAlert = () => {
+    setShowAlert(false)
   }
 
   return (
@@ -40,7 +57,7 @@ export default function HomeFooter () {
             </p>
           </div>
         </div>
-        <div className='bg-magnolia sm:mt-20 py-16 px-4 sm:px-6 lg:col-span-3 lg:py-24 lg:px-8 xl:pl-12'>
+        <div className='bg-magnolia sm:mt-20 py-16 px-4 sm:px-6 lg:col-span-3 lg:pt-24 lg:pb-4 lg:px-8 xl:pl-12'>
           <div className='max-w-lg mx-auto lg:max-w-none'>
             <form onSubmit={handleEmail} className='grid grid-cols-1 gap-y-6'>
               <div>
@@ -52,6 +69,7 @@ export default function HomeFooter () {
                   name='name'
                   id='name'
                   autoComplete='name'
+                  value={emailParams.name}
                   className='block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-mediumPurple focus:border-darkerPuring-mediumPurple border-gray-300 rounded-md bg-snow'
                   placeholder='Full name'
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
@@ -65,6 +83,7 @@ export default function HomeFooter () {
                   id='email'
                   name='email'
                   type='email'
+                  value={emailParams.email}
                   autoComplete='email'
                   className='block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-mediumPurple focus:border-darkerPuring-mediumPurple border-gray-300 rounded-md bg-snow'
                   placeholder='Email'
@@ -80,9 +99,11 @@ export default function HomeFooter () {
                   name='phone'
                   id='phone'
                   autoComplete='tel'
+                  value={emailParams.phone || ''}
                   className='block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-mediumPurple focus:border-darkerPuring-mediumPurple border-gray-300 rounded-md bg-snow'
                   placeholder='Phone'
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  onBlur={(e) => handleChange(e.target.name, formatPhoneNumber(e.target.value))}
                 />
               </div>
               <div>
@@ -95,18 +116,22 @@ export default function HomeFooter () {
                   rows={4}
                   className='block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-mediumPurple focus:border-darkerPuring-mediumPurple border border-gray-300 rounded-md bg-snow'
                   placeholder='Message'
-                  defaultValue=''
+                  value={emailParams.message}
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                 />
               </div>
-              <div>
-                <button
-                  type='submit'
-                  className='btn-color inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mediumPurple'
-                >
-                  Send
-                </button>
-              </div>
+              <span className='flex flex-col h-52 space-y-20'>
+                <div>
+                  <button
+                    type='submit'
+                    className='btn-color inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mediumPurple'
+                  >
+                    Send
+                  </button>
+                </div>
+                {showAlert &&
+                  <MessageSentAlert closeAlert={closeAlert} />}
+              </span>
             </form>
           </div>
         </div>

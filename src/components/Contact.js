@@ -2,6 +2,7 @@
 import { Fragment, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { sendEmail } from '../api'
+import { formatPhoneNumber } from './functions'
 
 export default function Contact ({ handleCloseModal }) {
   const [open, setOpen] = useState(true)
@@ -29,14 +30,14 @@ export default function Contact ({ handleCloseModal }) {
     setEmailParams(state => ({ ...state, [name]: value }))
   }
 
-  function formatPhoneNumber (phoneNumberString) {
-    const cleaned = ('' + phoneNumberString).replace(/\D/g, '')
-    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
-    if (match) {
-      handleChange('phone', '(' + match[1] + ') ' + match[2] + '-' + match[3])
-    }
-    return null
-  }
+  // function formatPhoneNumber (phoneNumberString) {
+  //   const cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+  //   const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+  //   if (match) {
+  //     handleChange('phone', '(' + match[1] + ') ' + match[2] + '-' + match[3])
+  //   }
+  //   return null
+  // }
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -159,7 +160,7 @@ export default function Contact ({ handleCloseModal }) {
                                   className='py-3 px-4 block w-full pl-4 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
                                   placeholder='(555) 987-6543'
                                   onChange={(e) => handleChange(e.target.name, e.target.value)}
-                                  onBlur={() => formatPhoneNumber(emailParams.phone)}
+                                  onBlur={(e) => handleChange(e.target.name, formatPhoneNumber(emailParams.phone))}
                                 />
                               </div>
                             </div>

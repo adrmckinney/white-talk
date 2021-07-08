@@ -37,3 +37,12 @@ export const pageClickEvent = (useRefVariable, stateVariable, setStateFunction) 
 export const sortSessions = (sessions) => {
   return sessions.slice().sort((a, b) => new Date(b.start_date) - new Date(a.start_date))
 }
+
+export function formatPhoneNumber (phoneNumberString) {
+  const cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+  if (match) {
+    return ('phone', '(' + match[1] + ') ' + match[2] + '-' + match[3])
+  }
+  return phoneNumberString
+}
