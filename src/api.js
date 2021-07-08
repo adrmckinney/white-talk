@@ -222,18 +222,6 @@ export const listRegistrants = (token) => {
     .then(res => res.data)
 }
 
-export const listAlumni = (token) => {
-  return url
-    .get('api/list-alumni/',
-      {
-        headers: {
-          Authorization: `Token ${token}`
-        }
-      }
-    )
-    .then(res => res.data)
-}
-
 export const deleteRegistrant = (token, pk) => {
   return url
     .delete(`api/delete-registrant/${pk}/`,
