@@ -4,16 +4,16 @@ import Moment from 'react-moment'
 import { listSessions } from '../api'
 import { sortSessions } from './functions'
 
-function arrayUnique (array) {
-  const a = array.concat()
-  for (let i = 0; i < a.length; ++i) {
-    for (let j = i + 1; j < a.length; ++j) {
-      if (a[i] === a[j]) { a.splice(j--, 1) }
-    }
-  }
+// function arrayUnique (array) {
+//   const a = array.concat()
+//   for (let i = 0; i < a.length; ++i) {
+//     for (let j = i + 1; j < a.length; ++j) {
+//       if (a[i] === a[j]) { a.splice(j--, 1) }
+//     }
+//   }
 
-  return a
-}
+//   return a
+// }
 
 const Alumni = ({ token, isLoggedIn, showModal, setShowModal }) => {
   const [sessions, setSessions] = useState([])
