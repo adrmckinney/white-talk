@@ -47,7 +47,7 @@ const LandingCarousel = () => {
         {LIST_ITEMS.map((item, idx) => (
           <div
             key={idx}
-            className={`${idx === current ? 'block' : 'hidden'} text-3xl sm:text-5xl bg-darkerPurple w-full py-6 px-4 flex justify-center lg:justify-end xl:justify-center`}
+            className={`${idx === current ? 'block' : 'hidden'} text-3xl sm:text-5xl bg-darkerPurple w-full py-6 px-4 flex justify-center lg:justify-end items-center xl:justify-center h-40 sm:h-52 lg:h-60 xl:h-52`}
           >
             <Transition
               show={animation}
@@ -59,7 +59,7 @@ const LandingCarousel = () => {
               leaveFrom='opacity-100 translate-x-0'
               leaveTo='opacity-0 -translate-x-3/4'
               // afterLeave={() => setAnimation(true)}
-              className='w-full sm:w-2/3 lg:w-1/2 xl:w-3/4 font-playFair font-semibold italic'
+              className='w-full sm:w-full md:w-2/3 lg:w-3/5 xl:w-3/4 font-playFair font-semibold italic lg:text-4xl xl:text-5xl'
             >
               {/* <Animated animationIn='fadeInRight' animationInDuration={2000} animationOut='fadeOutLeft' isVisible> */}
               {/* <Transition.Child

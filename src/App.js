@@ -11,12 +11,11 @@ import ViewForm from './components/ViewForm'
 import PasswordResetConfirm from './components/PasswordResetConfirm'
 import UsernameResetConfirm from './components/UsernameResetConfirm'
 import Home from './components/Home'
-// import About from './components/About'
-import About2 from './components/About2'
 import RenderAnnouncements from './components/announcements/RenderAnnouncements'
 import ModifyAnnouncements from './components/announcements/ModifyAnnouncements'
 import PastSessions from './components/PastSessions'
 import Alumni from './components/Alumni'
+import About from './components/About'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -82,7 +81,7 @@ function App () {
             </Route>
 
             <Route path='/about'>
-              <About2 />
+              <About />
             </Route>
 
             <Route path='/view-session-registrants'>
