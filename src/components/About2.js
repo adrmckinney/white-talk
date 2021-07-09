@@ -1,29 +1,34 @@
 import danSpeaking from '../images/danSpeaking.jpeg'
+import nataliePortrait from '../images/natalieRichPortrait.jpg'
+import rachaelPortrait from '../images/rachaelGigliottiPortrait.jpeg'
 
 const FACILITATORS = [
   {
+    id: 1,
     name: 'Rachael Gigliotti',
     role: 'Founder',
-    imageUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80',
+    imageUrl: rachaelPortrait,
+    caption: 'Portrait of Rachael Gigliotti',
     bio:
     'Rachael Gigliotti has been living in Durham since 2010. In 2006, she attributes volunteering in New Orleans after hurricane Katrina as opening her eyes to seeing systematic racism in the US. Once going to an Racial Equity Institutes Phase 1 and 2 workshops in 2014, she found the language to filter and express the honesty around racism that could no longer be denied. She co-founded Durham\'s Organizing Against Racism white caucus and stayed involved until 2020. She helped facilitate discussions around systematic racism with community members through Student U in the summer of 2020. She started the Racial Equity white Talk to expand the conversation about racism and privilege with other white folks interested in being a part of a larger and supportive community around racial equity.'
   },
   {
+    id: 2,
     name: 'Natalie Rich',
     role: '',
-    imageUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80',
+    imageUrl: nataliePortrait,
+    caption: 'Portrait of Natalie Rich',
     bio:
     'Natalie Rich lives and works in Durham, North Carolina, where she currently serves as a coordinator and facilitator for the Durham Organizing Against Racism (OAR) white caucus. Natalie has been involved in antiracist organizing since January 2014, when she completed her first Racial Equity Institute Phase I training "Undoing Racism." Since then, she has co-facilitated cross racial conversation circles on race and racism, interactive theater presentations on microaggressions, and white affinity groups. Natalie has completed the Racial Equity Institute Groundwater training, Phase I and Phase II trainings.'
   },
   {
+    id: 3,
     name: 'Dan McKinney',
     role: '',
     imageUrl: danSpeaking,
     caption: 'Dan McKinney speaking to a crowd at the George Floyd Vigil in 2020',
     bio:
-    'Dan has lived in Durham since 2011 and attended the Racial Equity Institutes (REI) Phase 1 workshop for the first time in 2015. Wanting to take action, he quickly got engaged with Organizing Against Racism\'s (OAR) white caucus only to learn that the action he really needed to take was to address his internalized racial superiority. He served as a coordinator for the white caucus for 5 years and has been on OAR Durham\'s leadership team since 2016. He has continued his learning by attending REI Phase 2 and Latinx Challenges in Racial Equity workshops. For the past 5 years, he worked with youth through local non-profits to identify and address institutional racism with their high schools. Through OAR Durham, he has organized 5 youth REI workshops. He has had speaking engagements at Duke, DPS, and in the community to discuss power, privilege, white culture, sexism, and adultism. From 2018–2020, he served on the City of Durham\'s Racial Equity Task Force.'
+    'Dan has lived in Durham since 2011 and attended the Racial Equity Institutes (REI) Phase 1 workshop for the first time in 2015. Wanting to take action, he quickly got engaged with Organizing Against Racism\'s (OAR) white caucus only to learn that the action he really needed to take was to address his internalized racial superiority. He served as a coordinator for the white caucus for 5 years and has been on OAR Durham\'s leadership team since 2016. He has continued his learning by attending REI Phase 2 and Latinx Challenges in Racial Equity workshops. For the past 5 years, he worked with youth through local non-profits to identify and address institutional racism with their high schools. Through OAR Durham, he has organized many youth REI workshops. He has had speaking engagements at Duke, Durham Public Schools, and in the community to discuss power, privilege, white culture, sexism, and adultism. From 2018–2020, he served on the City of Durham\'s Racial Equity Task Force.'
   }
 ]
 

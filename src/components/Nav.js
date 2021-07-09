@@ -155,7 +155,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
             {/* <!-- Mobile menu button --> */}
             <button
               type='button'
-              className='bg-indigo-600 p-2 rounded-md inline-flex items-center justify-center text-indigo-200 hover:text-white hover:bg-indigo-500 hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white'
+              className='bg-mediumPurple p-2 rounded-md inline-flex items-center justify-center text-indigo-200 hover:text-white hover:bg-darkerPurple hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-darkerPurple focus:ring-white'
               aria-controls='mobile-menu'
               aria-expanded='false'
               onClick={() => setShowMenu(showMenu => !showMenu)}
@@ -230,7 +230,6 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                           role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
-                            // setIsModifyingAnnouncement(true)
                           }}
                         >
                           Modify Announcements
@@ -294,7 +293,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
         <RegSuccessfulAlert showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />}
 
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
-      <div className='lg:hidden text-gray-800' id='mobile-menu'>
+      <div className='lg:hidden bg-davysGray text-gray-800' id='mobile-menu'>
         {showMenu &&
           <>
             <MobileNavBtns isLoggedIn={isLoggedIn} loggedInName={loggedInName} handleLogout={handleLogout} showMenu={showMenu} setShowMenu={setShowMenu} setIsSigningIn={setIsSigningIn} />

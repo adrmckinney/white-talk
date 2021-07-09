@@ -1,39 +1,66 @@
-import { PencilAltIcon } from '@heroicons/react/outline'
+import { MailIcon, PencilAltIcon } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
 import Moment from 'react-moment'
 import { listSessions } from '../api'
 import { sortSessions } from './functions'
+
+function arrayUnique (array) {
+  const a = array.concat()
+  for (let i = 0; i < a.length; ++i) {
+    for (let j = i + 1; j < a.length; ++j) {
+      if (a[i] === a[j]) { a.splice(j--, 1) }
+    }
+  }
+
+  return a
+}
 
 const Alumni = ({ token, isLoggedIn, showModal, setShowModal }) => {
   const [sessions, setSessions] = useState([])
   const [completedSessions, setCompletedSession] = useState([])
   const [numberOfAlumni, setnumberOfAlumni] = useState()
   const [isEditing, setIsEditing] = useState('')
+  const [alumniEmails, setAlumniEmails] = useState([])
   //   const [isLoading, setIsLoading] = useState(false)
   //   const [sessionToEdit, setSessionToEdit] = useState([])
   //   const [sessionsAreLoading, setSessionsAreLoading] = useState(false)
+
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
   console.log('completedSessions', completedSessions)
   console.log('sessions', sessions)
   console.log('numberOfAlumni', numberOfAlumni)
   console.log('isEditing', isEditing)
+  console.log('alumniEmails', alumniEmails)
+  console.log('alumniEmails[0]', alumniEmails[0])
+  // setTimeout(() => {
+  //   console.log('...alumniEmails[0]', ...alumniEmails[0])
+  // }, 5000)
+  // setTimeout(() => {
+  //   console.log('...alumniEmails[0], ...alumniEmails[1]', ...alumniEmails[0], ...alumniEmails[1])
+  // }, 5000)
 
   useEffect(() => {
     // setSessionsAreLoading(true)
     listSessions(token)
       .then(sessions => {
         const completeSessions = []
+        const emails = []
+        // const emailsSingleArray = [...emails[0], ...emails[1]]
+
         let alumni = 0
         sessions.forEach(session => {
           if (session.session_complete === true) {
             completeSessions.push(session)
+            emails.push(session.session_registrants.map(reg => reg.email))
             alumni = alumni + session.session_registrants.length
           }
         })
         console.log('completeSessions', completeSessions)
         setCompletedSession(completeSessions)
         setnumberOfAlumni(alumni)
+        setAlumniEmails(emails)
+        // console.log('emailsSingleArray', emailsSingleArray)
         // setSessionsAreLoading(false)
         // setSessions(data)
       })
@@ -101,9 +128,17 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal }) => {
                             <dt className='order-2 mt-2 text-lg leading-6 font-medium text-gray-500'>Alumni</dt>
                             <dd className='order-1 text-5xl font-extrabold text-darkerPurple'>{numberOfAlumni}</dd>
                           </div>
-                          <div className='flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l'>
-                            <dt className='order-2 mt-2 text-lg leading-6 font-medium text-gray-500'>Calories</dt>
-                            <dd className='order-1 text-5xl font-extrabold text-darkerPurple'>100k</dd>
+                          <div className='flex flex-col border-t border-gray-100 p-6 sm:border-0 sm:border-l justify-center items-center'>
+                            <button
+                              type='button'
+                              className='btn-color w-3/4 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                            >
+                              <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                              Email Alumni
+                            </button>
+
+                            {/* <dt className='order-2 mt-2 text-lg leading-6 font-medium text-gray-500'>Calories</dt>
+                            <dd className='order-1 text-5xl font-extrabold text-darkerPurple'>100k</dd> */}
                           </div>
                         </dl>
                       </div>

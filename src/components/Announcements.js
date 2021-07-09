@@ -10,7 +10,7 @@ export default function Announcements () {
   }, [])
 
   return (
-    <div className='relative bg-darkBlueGray py-16 sm:py-24 lg:py-20 h-auto'>
+    <div className='relative bg-darkBlueGray py-16 sm:py-24 lg:py-20 xl:pt-10 xl:pb-20 h-auto'>
       <div className='mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:px-8 lg:max-w-7xl'>
         <p className='mt-2 text-3xl font-extrabold text-snow tracking-tight sm:text-5xl uppercase'>
           Announcements

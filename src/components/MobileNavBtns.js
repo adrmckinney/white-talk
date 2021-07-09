@@ -7,18 +7,18 @@ const MobileNavBtns = ({ isLoggedIn, loggedInName, handleLogout, showMenu, setSh
 
       {isLoggedIn &&
         <div className=''>
-          <div className='block rounded-md py-2 px-3 text-lg  hover:bg-indigo-500 hover:bg-opacity-75 font-bold'>Hello {loggedInName}</div>
+          <div className='block rounded-md py-2 px-3 text-lg text-snow hover:bg-indigo-500 hover:bg-opacity-75 font-bold'>Hello {loggedInName}</div>
         </div>}
 
-      <Link to='/' className=' hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
+      <Link to='/' className='text-snow hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
         Home
       </Link>
 
-      <Link to='/sessions' className=' hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
+      <Link to='/sessions' className='text-snow hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
         Sessions
       </Link>
 
-      <Link to='/about' className='hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
+      <Link to='/about' className='text-snow hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
         About
       </Link>
 
@@ -27,7 +27,7 @@ const MobileNavBtns = ({ isLoggedIn, loggedInName, handleLogout, showMenu, setSh
       </Link> */}
 
       {isLoggedIn &&
-        <Link to='/view-session-registrants' className=' hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
+        <Link to='/view-session-registrants' className='text-snow hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium'>
           Session Registrants
         </Link>}
 
@@ -35,7 +35,7 @@ const MobileNavBtns = ({ isLoggedIn, loggedInName, handleLogout, showMenu, setSh
         ? (
           <Link
             to='/'
-            className='block rounded-md py-2 px-3 text-base font-medium  hover:bg-indigo-500 hover:bg-opacity-75'
+            className='block rounded-md py-2 px-3 text-base font-medium text-snow hover:bg-indigo-500 hover:bg-opacity-75'
             onClick={() => {
               handleLogout()
             }}
@@ -45,7 +45,7 @@ const MobileNavBtns = ({ isLoggedIn, loggedInName, handleLogout, showMenu, setSh
           )
         : (
           <button
-            className='block rounded-md py-2 px-3 text-base font-medium  hover:bg-indigo-500 hover:bg-opacity-75'
+            className='block rounded-md py-2 px-3 text-base font-medium text-snow hover:bg-indigo-500 hover:bg-opacity-75'
             role='menuitem'
             onClick={() => {
               setShowMenu(false)
