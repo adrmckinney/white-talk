@@ -1,15 +1,16 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { ChevronDoubleRightSolid } from '@graywolfai/react-heroicons'
 import StaticMenu from './dropdownMenus/StaticMenu'
 
-const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, allEmails, handleAllEmails, handleDeleteState, handleEditState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing }) => {
+const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, allEmails, handleAllEmails, handleDeleteState, handleEditState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm }) => {
   const [emails, setEmails] = useState([])
   const [selectedAction, setSelectedAction] = useState('')
 
   // DEBUGGER STATION
   // console.log('allEmails', allEmails)
-  // console.log('emails', emails)
+  console.log('emails', emails)
   // console.log('isDeleting', isDeleting)
   // console.log('isEditing', isEditing)
   // console.log('sessions', sessions)
@@ -34,16 +35,27 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
   const handleBtnText = () => {
     if (selectedAction === 'Email All') {
       return (
-        <a
-          href={`mailto:${allEmails}`}
-          rel='noreferrer'
-          target='_blank'
+        <Link
+          to='/alumni-reg-contact'
+          onClick={() => prepEmailForm(allEmails, 'Bill', 'registrants')}
         >
           <span className='flex'>
             <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
             {selectedAction}
+
           </span>
-        </a>
+        </Link>
+
+      // <a
+      //   href={`mailto:${allEmails}`}
+      //   rel='noreferrer'
+      //   target='_blank'
+      // >
+      //   <span className='flex'>
+      //     <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+      //     {selectedAction}
+      //   </span>
+      // </a>
       )
     } else if (selectedAction === 'Email Selected') {
       return (

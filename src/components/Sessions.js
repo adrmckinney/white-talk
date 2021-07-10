@@ -76,13 +76,13 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
     if (session.session_status) {
       return (
         <button
-          className='w-full sm:w-3/4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 table-btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+          className='w-3/4 lg:w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 table-btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
           onClick={() => {
             setIsRegistering(mode)
             setSessionToRegister(session)
           }}
         >
-          <PencilIcon className='-ml-3 mr-1 h-4 w-1/4' aria-hidden='true' />
+          <PencilIcon className='mr-2 h-4 w-4' aria-hidden='true' />
           Sign up
         </button>
       )

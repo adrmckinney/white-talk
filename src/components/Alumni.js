@@ -16,7 +16,7 @@ import { sortSessions } from './functions'
 //   return a
 // }
 
-const Alumni = ({ token, isLoggedIn, showModal, setShowModal, destructureAlumniEmails }) => {
+const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) => {
   const [completedSessions, setCompletedSession] = useState([])
   const [numberOfAlumni, setnumberOfAlumni] = useState()
   const [isEditing, setIsEditing] = useState('')
@@ -125,9 +125,9 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, destructureAlumniE
                           </div>
                           <div className='flex flex-col border-t border-gray-100 p-6 sm:border-0 sm:border-l justify-center items-center'>
                             <Link
-                              to='/alumni-contact'
+                              to='/alumni-reg-contact'
                               className='btn-color w-3/4 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                              onClick={() => destructureAlumniEmails(alumniEmails, alumniNames)}
+                              onClick={() => prepEmailForm(alumniEmails, alumniNames, 'alumni')}
                             >
                               <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
                               Email Alumni

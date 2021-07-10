@@ -16,7 +16,7 @@ import ModifyAnnouncements from './components/announcements/ModifyAnnouncements'
 import PastSessions from './components/PastSessions'
 import Alumni from './components/Alumni'
 import About from './components/About'
-import AlumniContact from './components/AlumniContact'
+import AlumniRegContact from './components/AlumniRegContact'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -35,9 +35,10 @@ function App () {
   const [sessionToView, setSessionToView] = useState([])
   const [isEditingParams, setIsEditingParams] = useState([])
   const [showTransparentNav, setShowTransparentNav] = useState(false)
-  const [newEmailArray, setNewEmailArray] = useState({
+  const [emailFormData, setEmailFormData] = useState({
     emails: [],
-    names: []
+    names: [],
+    origin: ''
   })
 
   function setAuth (username, token) {
@@ -64,25 +65,32 @@ function App () {
     setShowTransparentNav(value)
   }
 
-  const destructureAlumniEmails = (alumniEmails, alumniNames) => {
+  const prepEmailForm = (emails, names, origin) => {
     const newEmailArray = []
     const newNameArray = []
-    for (let i = 0; i < alumniEmails.length; i++) {
-      newEmailArray.push(...alumniEmails[i])
+    if (origin === 'alumni') {
+      for (let i = 0; i < emails.length; i++) {
+        newEmailArray.push(...emails[i])
+      }
+      for (let i = 0; i < names.length; i++) {
+        newNameArray.push(...names[i])
+      }
+    } else if (origin === 'registrants') {
+      newEmailArray.push(emails)
+      newNameArray.push(names)
     }
-    for (let i = 0; i < alumniNames.length; i++) {
-      newNameArray.push(...alumniNames[i])
-    }
-    setNewEmailArray(state => ({
+
+    setEmailFormData(state => ({
       ...state,
       emails: newEmailArray,
-      names: newNameArray
+      names: newNameArray,
+      origin: origin
     }))
   }
 
   // DEBUGGER STATION
   // console.log('formToView', formToView)
-  console.log('newEmailArray', newEmailArray)
+  console.log('emailFormData', emailFormData)
 
   return (
     <Router>
@@ -107,7 +115,7 @@ function App () {
             </Route>
 
             <Route path='/view-session-registrants'>
-              <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} sessions={sessions} />
+              <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} sessions={sessions} prepEmailForm={prepEmailForm} />
             </Route>
 
             <Route path='/past-sessions'>
@@ -115,11 +123,11 @@ function App () {
             </Route>
 
             <Route path='/alumni'>
-              <Alumni token={token} isLoggedIn={isLoggedIn} destructureAlumniEmails={destructureAlumniEmails} />
+              <Alumni token={token} isLoggedIn={isLoggedIn} prepEmailForm={prepEmailForm} />
             </Route>
 
-            <Route path='/alumni-contact'>
-              <AlumniContact destructureAlumniEmails={destructureAlumniEmails} newEmailArray={newEmailArray} />
+            <Route path='/alumni-reg-contact'>
+              <AlumniRegContact prepEmailForm={prepEmailForm} emailFormData={emailFormData} />
             </Route>
 
             <Route path='/view-form'>

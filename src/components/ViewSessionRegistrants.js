@@ -9,7 +9,7 @@ import SessionRegister from './sessionForms/SessionRegister'
 import RenderRegistrants from './RenderRegistrants'
 import SessionsLoadingAlert from './alerts/SessionsLoadingAlert'
 
-const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister }) => {
+const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, prepEmailForm }) => {
   const [sessions, setSessions] = useState([])
   const [registrantsToRender, setRegistrantsToRender] = useState([])
   const [allEmails, setAllEmails] = useState([])
@@ -21,7 +21,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   const [dataIsLoading, setDataIsLoading] = useState(true)
 
   // DEBUGGER STATION
-  // console.log('allEmails', allEmails)
+  console.log('allEmails', allEmails)
   // console.log('emails', emails)
   // console.log('isDeleting', isDeleting)
   // console.log('isEditing', isEditing)
@@ -243,7 +243,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
         </div>
       </div>
       <div className=''>
-        <RenderRegistrants token={token} isLoggedIn={isLoggedIn} sessions={sessions} setShowModal={setShowModal} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} registrantsToRender={registrantsToRender} setRegistrantsToRender={setRegistrantsToRender} allEmails={allEmails} handleAllEmails={handleAllEmails} handleDeleteState={handleDeleteState} handleEditState={handleEditState} handleSessionToEdit={handleSessionToEdit} handleDelete={handleDelete} handleRegistrantUpdate={handleRegistrantUpdate} handleRefreshAfterEdit={handleRefreshAfterEdit} setIsDeleting={setIsDeleting} setIsEditing={setIsEditing} />
+        <RenderRegistrants token={token} isLoggedIn={isLoggedIn} sessions={sessions} setShowModal={setShowModal} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} registrantsToRender={registrantsToRender} setRegistrantsToRender={setRegistrantsToRender} allEmails={allEmails} handleAllEmails={handleAllEmails} handleDeleteState={handleDeleteState} handleEditState={handleEditState} handleSessionToEdit={handleSessionToEdit} handleDelete={handleDelete} handleRegistrantUpdate={handleRegistrantUpdate} handleRefreshAfterEdit={handleRefreshAfterEdit} setIsDeleting={setIsDeleting} setIsEditing={setIsEditing} prepEmailForm={prepEmailForm} />
       </div>
     </>
   )
