@@ -16,6 +16,7 @@ import ModifyAnnouncements from './components/announcements/ModifyAnnouncements'
 import PastSessions from './components/PastSessions'
 import Alumni from './components/Alumni'
 import About from './components/About'
+import AlumniContact from './components/AlumniContact'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -34,6 +35,10 @@ function App () {
   const [sessionToView, setSessionToView] = useState([])
   const [isEditingParams, setIsEditingParams] = useState([])
   const [showTransparentNav, setShowTransparentNav] = useState(false)
+  const [newEmailArray, setNewEmailArray] = useState({
+    emails: [],
+    names: []
+  })
 
   function setAuth (username, token) {
     setUsername(username)
@@ -59,8 +64,25 @@ function App () {
     setShowTransparentNav(value)
   }
 
+  const destructureAlumniEmails = (alumniEmails, alumniNames) => {
+    const newEmailArray = []
+    const newNameArray = []
+    for (let i = 0; i < alumniEmails.length; i++) {
+      newEmailArray.push(...alumniEmails[i])
+    }
+    for (let i = 0; i < alumniNames.length; i++) {
+      newNameArray.push(...alumniNames[i])
+    }
+    setNewEmailArray(state => ({
+      ...state,
+      emails: newEmailArray,
+      names: newNameArray
+    }))
+  }
+
   // DEBUGGER STATION
   // console.log('formToView', formToView)
+  console.log('newEmailArray', newEmailArray)
 
   return (
     <Router>
@@ -93,7 +115,11 @@ function App () {
             </Route>
 
             <Route path='/alumni'>
-              <Alumni token={token} isLoggedIn={isLoggedIn} />
+              <Alumni token={token} isLoggedIn={isLoggedIn} destructureAlumniEmails={destructureAlumniEmails} />
+            </Route>
+
+            <Route path='/alumni-contact'>
+              <AlumniContact destructureAlumniEmails={destructureAlumniEmails} newEmailArray={newEmailArray} />
             </Route>
 
             <Route path='/view-form'>

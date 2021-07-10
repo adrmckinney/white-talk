@@ -1,5 +1,6 @@
 import { MailIcon, PencilAltIcon } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import Moment from 'react-moment'
 import { listSessions } from '../api'
 import { sortSessions } from './functions'
@@ -15,30 +16,24 @@ import { sortSessions } from './functions'
 //   return a
 // }
 
-const Alumni = ({ token, isLoggedIn, showModal, setShowModal }) => {
-  const [sessions, setSessions] = useState([])
+const Alumni = ({ token, isLoggedIn, showModal, setShowModal, destructureAlumniEmails }) => {
   const [completedSessions, setCompletedSession] = useState([])
   const [numberOfAlumni, setnumberOfAlumni] = useState()
   const [isEditing, setIsEditing] = useState('')
   const [alumniEmails, setAlumniEmails] = useState([])
+  const [alumniNames, setAlumniNames] = useState([])
   //   const [isLoading, setIsLoading] = useState(false)
   //   const [sessionToEdit, setSessionToEdit] = useState([])
   //   const [sessionsAreLoading, setSessionsAreLoading] = useState(false)
 
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
-  console.log('completedSessions', completedSessions)
-  console.log('sessions', sessions)
-  console.log('numberOfAlumni', numberOfAlumni)
+  // console.log('completedSessions', completedSessions)
+  // console.log('sessions', sessions)
+  // console.log('numberOfAlumni', numberOfAlumni)
   console.log('isEditing', isEditing)
   console.log('alumniEmails', alumniEmails)
-  console.log('alumniEmails[0]', alumniEmails[0])
-  // setTimeout(() => {
-  //   console.log('...alumniEmails[0]', ...alumniEmails[0])
-  // }, 5000)
-  // setTimeout(() => {
-  //   console.log('...alumniEmails[0], ...alumniEmails[1]', ...alumniEmails[0], ...alumniEmails[1])
-  // }, 5000)
+  console.log('alumniNames', alumniNames)
 
   useEffect(() => {
     // setSessionsAreLoading(true)
@@ -46,13 +41,13 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal }) => {
       .then(sessions => {
         const completeSessions = []
         const emails = []
-        // const emailsSingleArray = [...emails[0], ...emails[1]]
-
+        const names = []
         let alumni = 0
         sessions.forEach(session => {
           if (session.session_complete === true) {
             completeSessions.push(session)
             emails.push(session.session_registrants.map(reg => reg.email))
+            names.push(session.session_registrants.map(reg => `${reg.first_name} ${reg.last_name}`))
             alumni = alumni + session.session_registrants.length
           }
         })
@@ -60,11 +55,11 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal }) => {
         setCompletedSession(completeSessions)
         setnumberOfAlumni(alumni)
         setAlumniEmails(emails)
-        // console.log('emailsSingleArray', emailsSingleArray)
+        setAlumniNames(names)
         // setSessionsAreLoading(false)
         // setSessions(data)
       })
-  }, [setSessions, token])
+  }, [token])
 
   //   useEffect(() => {
   //     sessions.forEach(session => {
@@ -129,13 +124,14 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal }) => {
                             <dd className='order-1 text-5xl font-extrabold text-darkerPurple'>{numberOfAlumni}</dd>
                           </div>
                           <div className='flex flex-col border-t border-gray-100 p-6 sm:border-0 sm:border-l justify-center items-center'>
-                            <button
-                              type='button'
+                            <Link
+                              to='/alumni-contact'
                               className='btn-color w-3/4 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                              onClick={() => destructureAlumniEmails(alumniEmails, alumniNames)}
                             >
                               <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
                               Email Alumni
-                            </button>
+                            </Link>
 
                             {/* <dt className='order-2 mt-2 text-lg leading-6 font-medium text-gray-500'>Calories</dt>
                             <dd className='order-1 text-5xl font-extrabold text-darkerPurple'>100k</dd> */}

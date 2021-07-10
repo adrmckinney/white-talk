@@ -1,9 +1,12 @@
+import { RefreshIcon } from '@heroicons/react/outline'
+import { MailIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
 import { sendEmail } from '../api'
 import MessageSentAlert from './alerts/MessageSentAlert'
 import { formatPhoneNumber } from './functions'
 
 export default function HomeFooter () {
+  const [isLoading, setIsLoading] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
   const [emailParams, setEmailParams] = useState({
     name: '',
@@ -19,6 +22,7 @@ export default function HomeFooter () {
 
   const handleEmail = (e) => {
     e.preventDefault()
+    setIsLoading(true)
     sendEmail(emailParams, 'template_contact')
       .then(res => {
         setEmailParams(state => ({
@@ -30,6 +34,7 @@ export default function HomeFooter () {
           reply_to: ''
         }))
         setShowAlert(true)
+        setIsLoading(false)
       }, function (error) {
         console.log('FAILED...', error)
       })
@@ -69,6 +74,7 @@ export default function HomeFooter () {
                   name='name'
                   id='name'
                   autoComplete='name'
+                  required
                   value={emailParams.name}
                   className='block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-mediumPurple focus:border-darkerPuring-mediumPurple border-gray-300 rounded-md bg-snow'
                   placeholder='Full name'
@@ -83,6 +89,7 @@ export default function HomeFooter () {
                   id='email'
                   name='email'
                   type='email'
+                  required
                   value={emailParams.email}
                   autoComplete='email'
                   className='block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-mediumPurple focus:border-darkerPuring-mediumPurple border-gray-300 rounded-md bg-snow'
@@ -114,6 +121,7 @@ export default function HomeFooter () {
                   id='message'
                   name='message'
                   rows={4}
+                  required
                   className='block w-full shadow-sm py-3 px-4 placeholder-gray-500 focus:ring-mediumPurple focus:border-darkerPuring-mediumPurple border border-gray-300 rounded-md bg-snow'
                   placeholder='Message'
                   value={emailParams.message}
@@ -122,12 +130,15 @@ export default function HomeFooter () {
               </div>
               <span className='flex flex-col h-52 space-y-20'>
                 <div>
-                  <button
-                    type='submit'
-                    className='btn-color inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mediumPurple'
-                  >
-                    Send
-                  </button>
+                  {isLoading
+                    ? <button type='button' className='btn-color inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mediumPurple'>
+                      <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
+                      Sending Email...
+                    </button>
+                    : <button type='submit' className='btn-color inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mediumPurple'>
+                      <MailIcon className='h-4 w-4 mr-4 self-center' />
+                      Send Email
+                    </button>}
                 </div>
                 {showAlert &&
                   <MessageSentAlert closeAlert={closeAlert} />}
