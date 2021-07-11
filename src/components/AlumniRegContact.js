@@ -1,6 +1,6 @@
 import { MailIcon, RefreshIcon } from '@heroicons/react/outline'
 import { CheckIcon, PencilIcon, XIcon } from '@heroicons/react/solid'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { sendEmail } from '../api'
 
 export default function AlumniRegContact ({ emailFormData }) {
@@ -8,7 +8,7 @@ export default function AlumniRegContact ({ emailFormData }) {
   const [isLoading, setIsLoading] = useState(false)
   const [emailParams, setEmailParams] = useState(
     {
-      mail_to: emailFormData.emails,
+      mail_to: [],
       subject: '',
       message: '',
       facilitator_name: '',
@@ -16,16 +16,40 @@ export default function AlumniRegContact ({ emailFormData }) {
     }
   )
 
-  //   console.log('emailParams', emailParams)
+  console.log('emailParams', emailParams)
+
+  useEffect(() => {
+    if (emailFormData.origin === 'registrants') {
+      setEmailParams(state => ({
+        ...state,
+        mail_to: emailFormData.emails,
+        facilitator_name: emailFormData.facilitator_name,
+        reply_to: emailFormData.facilitator_email
+      }))
+    } else if (emailFormData.origin === 'alumni') {
+      setEmailParams(state => ({
+        ...state,
+        mail_to: emailFormData.emails
+      }))
+    }
+  }, [emailFormData])
 
   const handleChange = (name, value) => {
     setEmailParams(state => ({ ...state, [name]: value }))
   }
 
+  const getEmailTemplate = () => {
+    if (emailFormData.origin === 'registrants') {
+      return 'temp_email_registrants'
+    } else if (emailFormData.origin === 'alumni') {
+      return 'temp_email_alumni'
+    }
+  }
+
   const handleEmail = (e) => {
     e.preventDefault()
     setIsLoading(true)
-    sendEmail(emailParams, 'temp_email_alumni')
+    sendEmail(emailParams, getEmailTemplate())
       .then(res => {
         setEmailParams(state => ({
           ...state,
@@ -137,7 +161,7 @@ export default function AlumniRegContact ({ emailFormData }) {
                       rows={4}
                       name='company'
                       id='company'
-                      value={emailFormData.emails.join(', ')}
+                      value={emailParams.mail_to}
                       autoComplete='organization'
                       className='py-3 px-4 block w-full shadow-sm focus:ring-darkerPurple focus:border-darkerPurple border-gray-300 rounded-md'
                       onChange={(e) => handleChange(e.target.name, e.target.value)}
@@ -146,7 +170,7 @@ export default function AlumniRegContact ({ emailFormData }) {
                       rows={4}
                       name='company'
                       id='company'
-                      value={emailFormData.names.join(', ')}
+                      value={emailFormData.names}
                       autoComplete='organization'
                       className='py-3 px-4 block w-full shadow-sm focus:ring-darkerPurple focus:border-darkerPurple border-gray-300 rounded-md'
                       onChange={(e) => handleChange(e.target.name, e.target.value)}
@@ -157,7 +181,7 @@ export default function AlumniRegContact ({ emailFormData }) {
 
             <div className='sm:col-span-2'>
               <label htmlFor='facilitator_name' className='block text-sm font-medium text-gray-700'>
-                Facilitator's Name
+                {emailFormData.origin === 'alumni' ? 'Sender\'s Name' : 'Facilitator\'s Name'}
               </label>
               <div className='mt-1'>
                 <input
@@ -173,7 +197,7 @@ export default function AlumniRegContact ({ emailFormData }) {
 
             <div className='sm:col-span-2'>
               <label htmlFor='reply_to' className='block text-sm font-medium text-gray-700'>
-                Facilitator's Email
+                {emailFormData.origin === 'alumni' ? 'Sender\'s Email' : 'Facilitator\'s Email'}
               </label>
               <div className='mt-1'>
                 <input
@@ -187,7 +211,7 @@ export default function AlumniRegContact ({ emailFormData }) {
                 />
               </div>
               <p className='mt-2 text-sm text-gray-500' id='email-description'>
-                This email will be the one recipients will reply to and is automatically set up in the email.
+                This email will be the one recipients will reply to.
               </p>
             </div>
 

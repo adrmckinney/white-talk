@@ -38,7 +38,9 @@ function App () {
   const [emailFormData, setEmailFormData] = useState({
     emails: [],
     names: [],
-    origin: ''
+    origin: '',
+    facilitator_name: '',
+    facilitator_email: ''
   })
 
   function setAuth (username, token) {
@@ -65,26 +67,32 @@ function App () {
     setShowTransparentNav(value)
   }
 
-  const prepEmailForm = (emails, names, origin) => {
+  const prepEmailForm = (emailData, origin) => {
     const newEmailArray = []
     const newNameArray = []
+    let facilitatorName = ''
+    let facilitatorEmail = ''
     if (origin === 'alumni') {
-      for (let i = 0; i < emails.length; i++) {
-        newEmailArray.push(...emails[i])
+      for (let i = 0; i < emailData.emails.length; i++) {
+        newEmailArray.push(...emailData.emails[i])
       }
-      for (let i = 0; i < names.length; i++) {
-        newNameArray.push(...names[i])
+      for (let i = 0; i < emailData.names.length; i++) {
+        newNameArray.push(...emailData.names[i])
       }
     } else if (origin === 'registrants') {
-      newEmailArray.push(emails)
-      newNameArray.push(names)
+      newEmailArray.push(emailData.emails)
+      newNameArray.push(emailData.names)
+      facilitatorName = emailData.session_facilitator
+      facilitatorEmail = emailData.facilitator_email
     }
 
     setEmailFormData(state => ({
       ...state,
       emails: newEmailArray,
       names: newNameArray,
-      origin: origin
+      origin: origin,
+      facilitator_name: facilitatorName,
+      facilitator_email: facilitatorEmail
     }))
   }
 

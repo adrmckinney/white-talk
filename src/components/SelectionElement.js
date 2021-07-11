@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 // import Moment from 'react-moment'
 import { formatSelectedSession, pageClickEvent } from './functions'
 
-const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRender, handleAllEmails }) => {
+const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRender, extractConfirmedEmailData }) => {
   const [showSessions, setShowSessions] = useState(false)
   const [selectedValue, setSelectedValue] = useState([])
   const dropdownRef = useRef(null)
@@ -83,7 +83,7 @@ const SelectionElement = ({ sessions, dropdownSelectorMode, setRegistrantsToRend
                     setShowSessions(false)
                     if (dropdownSelectorMode === 'view-session-registrants') {
                       setRegistrantsToRender(session)
-                      handleAllEmails(session)
+                      extractConfirmedEmailData(session)
                     }
                   }}
 

@@ -20,8 +20,12 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
   const [completedSessions, setCompletedSession] = useState([])
   const [numberOfAlumni, setnumberOfAlumni] = useState()
   const [isEditing, setIsEditing] = useState('')
-  const [alumniEmails, setAlumniEmails] = useState([])
-  const [alumniNames, setAlumniNames] = useState([])
+  const [alumniEmailData, setAlumniEmailData] = useState({
+    emails: [],
+    names: [],
+    session_facilitator: '',
+    facilitator_email: ''
+  })
   //   const [isLoading, setIsLoading] = useState(false)
   //   const [sessionToEdit, setSessionToEdit] = useState([])
   //   const [sessionsAreLoading, setSessionsAreLoading] = useState(false)
@@ -32,8 +36,7 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
   // console.log('sessions', sessions)
   // console.log('numberOfAlumni', numberOfAlumni)
   console.log('isEditing', isEditing)
-  console.log('alumniEmails', alumniEmails)
-  console.log('alumniNames', alumniNames)
+  // console.log('alumniEmailData', alumniEmailData)
 
   useEffect(() => {
     // setSessionsAreLoading(true)
@@ -51,11 +54,13 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
             alumni = alumni + session.session_registrants.length
           }
         })
-        console.log('completeSessions', completeSessions)
         setCompletedSession(completeSessions)
         setnumberOfAlumni(alumni)
-        setAlumniEmails(emails)
-        setAlumniNames(names)
+        setAlumniEmailData(state => ({
+          ...state,
+          emails: emails,
+          names: names
+        }))
         // setSessionsAreLoading(false)
         // setSessions(data)
       })
@@ -127,7 +132,7 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
                             <Link
                               to='/alumni-reg-contact'
                               className='btn-color w-3/4 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                              onClick={() => prepEmailForm(alumniEmails, alumniNames, 'alumni')}
+                              onClick={() => prepEmailForm(alumniEmailData, 'alumni')}
                             >
                               <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
                               Email Alumni

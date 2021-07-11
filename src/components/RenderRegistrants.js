@@ -4,13 +4,13 @@ import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { ChevronDoubleRightSolid } from '@graywolfai/react-heroicons'
 import StaticMenu from './dropdownMenus/StaticMenu'
 
-const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, allEmails, handleAllEmails, handleDeleteState, handleEditState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm }) => {
+const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, confirmedEmailData, handleDeleteState, handleEditState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm }) => {
   const [emails, setEmails] = useState([])
   const [selectedAction, setSelectedAction] = useState('')
 
   // DEBUGGER STATION
-  // console.log('allEmails', allEmails)
-  console.log('emails', emails)
+  // console.log('confirmedEmails', confirmedEmails)
+  // console.log('emails', emails)
   // console.log('isDeleting', isDeleting)
   // console.log('isEditing', isEditing)
   // console.log('sessions', sessions)
@@ -37,7 +37,7 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
       return (
         <Link
           to='/alumni-reg-contact'
-          onClick={() => prepEmailForm(allEmails, 'Bill', 'registrants')}
+          onClick={() => prepEmailForm(confirmedEmailData, 'registrants')}
         >
           <span className='flex'>
             <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
@@ -47,7 +47,7 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
         </Link>
 
       // <a
-      //   href={`mailto:${allEmails}`}
+      //   href={`mailto:${confirmedEmails}`}
       //   rel='noreferrer'
       //   target='_blank'
       // >
