@@ -38,6 +38,7 @@ function App () {
   const [emailFormData, setEmailFormData] = useState({
     emails: [],
     names: [],
+    names_emails: [],
     origin: '',
     facilitator_name: '',
     facilitator_email: ''
@@ -68,20 +69,22 @@ function App () {
   }
 
   const prepEmailForm = (emailData, origin) => {
+    console.log('EMAIL DATA', emailData)
     const newEmailArray = []
     const newNameArray = []
+    const nameEmailArray = []
     let facilitatorName = ''
     let facilitatorEmail = ''
     if (origin === 'alumni') {
       for (let i = 0; i < emailData.emails.length; i++) {
         newEmailArray.push(...emailData.emails[i])
-      }
-      for (let i = 0; i < emailData.names.length; i++) {
         newNameArray.push(...emailData.names[i])
+        nameEmailArray.push(...emailData.names_emails[i])
       }
     } else if (origin === 'registrants') {
-      newEmailArray.push(emailData.emails)
-      newNameArray.push(emailData.names)
+      newEmailArray.push(...emailData.emails)
+      newNameArray.push(...emailData.names)
+      nameEmailArray.push(...emailData.names_emails)
       facilitatorName = emailData.session_facilitator
       facilitatorEmail = emailData.facilitator_email
     }
@@ -92,13 +95,14 @@ function App () {
       names: newNameArray,
       origin: origin,
       facilitator_name: facilitatorName,
-      facilitator_email: facilitatorEmail
+      facilitator_email: facilitatorEmail,
+      names_emails: nameEmailArray
     }))
   }
 
   // DEBUGGER STATION
   // console.log('formToView', formToView)
-  console.log('emailFormData', emailFormData)
+  // console.log('emailFormData', emailFormData)
 
   return (
     <Router>

@@ -23,6 +23,7 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
   const [alumniEmailData, setAlumniEmailData] = useState({
     emails: [],
     names: [],
+    names_emails: [],
     session_facilitator: '',
     facilitator_email: ''
   })
@@ -36,7 +37,7 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
   // console.log('sessions', sessions)
   // console.log('numberOfAlumni', numberOfAlumni)
   console.log('isEditing', isEditing)
-  // console.log('alumniEmailData', alumniEmailData)
+  console.log('alumniEmailData', alumniEmailData)
 
   useEffect(() => {
     // setSessionsAreLoading(true)
@@ -45,21 +46,25 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
         const completeSessions = []
         const emails = []
         const names = []
+        const namesEmails = []
         let alumni = 0
         sessions.forEach(session => {
           if (session.session_complete === true) {
             completeSessions.push(session)
             emails.push(session.session_registrants.map(reg => reg.email))
             names.push(session.session_registrants.map(reg => `${reg.first_name} ${reg.last_name}`))
+            namesEmails.push(session.session_registrants.map(reg => `${reg.first_name} ${reg.last_name} <${reg.email}>`))
             alumni = alumni + session.session_registrants.length
           }
         })
+        console.log('namesEmails', namesEmails)
         setCompletedSession(completeSessions)
         setnumberOfAlumni(alumni)
         setAlumniEmailData(state => ({
           ...state,
           emails: emails,
-          names: names
+          names: names,
+          names_emails: namesEmails
         }))
         // setSessionsAreLoading(false)
         // setSessions(data)

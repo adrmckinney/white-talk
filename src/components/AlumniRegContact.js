@@ -1,11 +1,16 @@
 import { MailIcon, RefreshIcon } from '@heroicons/react/outline'
-import { CheckIcon, PencilIcon, XIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
 import { sendEmail } from '../api'
 
 export default function AlumniRegContact ({ emailFormData }) {
-  const [isEditing, setIsEditing] = useState(false)
+  // const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  // const [nameEmails, setNameEmails] = useState([])
+  // const [deletedEmails, setDeletedEmails] = useState({
+  //   names_emails: [],
+  //   names: [],
+  //   emails: []
+  // })
   const [emailParams, setEmailParams] = useState(
     {
       mail_to: [],
@@ -16,7 +21,8 @@ export default function AlumniRegContact ({ emailFormData }) {
     }
   )
 
-  console.log('emailParams', emailParams)
+  // console.log('emailParams', emailParams)
+  // console.log('emailFormData', emailFormData)
 
   useEffect(() => {
     if (emailFormData.origin === 'registrants') {
@@ -27,11 +33,9 @@ export default function AlumniRegContact ({ emailFormData }) {
         reply_to: emailFormData.facilitator_email
       }))
     } else if (emailFormData.origin === 'alumni') {
-      setEmailParams(state => ({
-        ...state,
-        mail_to: emailFormData.emails
-      }))
+      setEmailParams(state => ({ ...state, mail_to: emailFormData.emails }))
     }
+    // setNameEmails(emailFormData.names_emails)
   }, [emailFormData])
 
   const handleChange = (name, value) => {
@@ -45,6 +49,27 @@ export default function AlumniRegContact ({ emailFormData }) {
       return 'temp_email_alumni'
     }
   }
+
+  // functions for editing the email list
+  // const editEmailList = () => {
+  //   setEmailParams(state => ({ ...state, mail_to: emailFormData.names_emails.join(', ') }))
+  // }
+
+  // const removeNameEmail = (nameEmail, idx) => {
+  //   const newEmails = [...nameEmails]
+  //   newEmails.splice(idx, 1)
+  //   setNameEmails(newEmails)
+  //   setDeletedEmails(state => ({ ...state, names_emails: nameEmail }))
+  // }
+
+  // const handleEmailEditCancel = () => {
+  //   setIsEditing(false)
+  //   nameEmails.push(deletedEmails.names_emails)
+  // }
+
+  // const handleEmailEditSave = () => {
+
+  // }
 
   const handleEmail = (e) => {
     e.preventDefault()
@@ -126,12 +151,13 @@ export default function AlumniRegContact ({ emailFormData }) {
             <div className='sm:col-span-2'>
               <label htmlFor='company' className='flex justify-between text-sm font-medium text-gray-700'>
                 Recipients
-                {isEditing
+                {/* the following is for editing the email recipient list. It doesn't work at the moment */}
+                {/* {isEditing
                   ? <span className='space-x-2'>
                     <button
                       type='button'
                       className='btn-color inline-flex items-center px-1 py-0.5 border border-transparent shadow-sm text-xs leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
-                      onClick={() => setIsEditing(false)}
+                      onClick={() => handleEmailEditCancel()}
                     >
                       <XIcon className='-ml-0.5 mr-2 h-3 w-3' aria-hidden='true' />
                       Cancel
@@ -148,33 +174,40 @@ export default function AlumniRegContact ({ emailFormData }) {
                   : <button
                       type='button'
                       className='btn-color inline-flex items-center px-1 py-0.5 border border-transparent shadow-sm text-xs leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
-                      onClick={() => setIsEditing(true)}
+                      onClick={() => {
+                        setIsEditing(true)
+                        editEmailList()
+                      }}
                     >
                     <PencilIcon className='-ml-0.5 mr-2 h-3 w-3' aria-hidden='true' />
                     Edit Recipients
-                    </button>}
+                    </button>} */}
 
               </label>
               <div className='mt-1'>
-                {isEditing
-                  ? <textarea
-                      rows={4}
-                      name='company'
-                      id='company'
-                      value={emailParams.mail_to}
-                      autoComplete='organization'
-                      className='py-3 px-4 block w-full shadow-sm focus:ring-darkerPurple focus:border-darkerPurple border-gray-300 rounded-md'
-                      onChange={(e) => handleChange(e.target.name, e.target.value)}
-                    />
-                  : <textarea
-                      rows={4}
-                      name='company'
-                      id='company'
-                      value={emailFormData.names}
-                      autoComplete='organization'
-                      className='py-3 px-4 block w-full shadow-sm focus:ring-darkerPurple focus:border-darkerPurple border-gray-300 rounded-md'
-                      onChange={(e) => handleChange(e.target.name, e.target.value)}
-                    />}
+                {/* {isEditing
+                  ? <div className='py-3 px-4 block w-full shadow-sm focus:ring-darkerPurple focus:border-darkerPurple rounded-md border-2 border-mediumPurple h-40 overflow-y-auto space-y-2'>
+                    {nameEmails.map((nameEmail, idx) => (
+                      <div
+                        key={idx}
+                        className='py-0 px-4 flex items-center justify-between w-full shadow-sm focus:ring-darkerPurple focus:border-darkerPurple rounded-md border-2 border-mediumPurple h-6 hover:border-red-500'
+                      >
+                        <p>{nameEmail}</p>
+                        <XIcon className='h-4 w-4 text-red-500' onClick={() => removeNameEmail(nameEmail, idx)} />
+                      </div>
+                    ))}
+                    </div>
+                  :  */}
+                <textarea
+                  rows={4}
+                  name='company'
+                  id='company'
+                  value={emailFormData.names.join(', ')}
+                  autoComplete='organization'
+                  className='py-3 px-4 block w-full shadow-sm focus:ring-darkerPurple focus:border-darkerPurple border-gray-300 rounded-md'
+                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                />
+                {/* } */}
 
               </div>
             </div>

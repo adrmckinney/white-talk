@@ -21,13 +21,13 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   const [confirmedEmailData, setConfirmedEmailData] = useState({
     emails: [],
     names: [],
+    names_emails: [],
     session_facilitator: '',
     facilitator_email: ''
   })
 
   // DEBUGGER STATION
-  // console.log('confirmedEmails', confirmedEmails)
-  // console.log('confirmedEmailNames', confirmedEmailNames)
+  console.log('confirmedEmailData', confirmedEmailData)
   // console.log('emails', emails)
   // console.log('isDeleting', isDeleting)
   // console.log('isEditing', isEditing)
@@ -67,15 +67,18 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   const extractConfirmedEmailData = (session) => {
     const extractedConfirmedEmails = []
     const extractedConfirmedNames = []
+    const namesEmails = []
     session.session_registrants.forEach(reg => {
       if (reg.confirm === true) {
         extractedConfirmedEmails.push(reg.email)
         extractedConfirmedNames.push(`${reg.first_name} ${reg.last_name}`)
+        namesEmails.push(`${reg.first_name} ${reg.last_name} <${reg.email}>`)
       }
       setConfirmedEmailData(state => ({
         ...state,
         emails: extractedConfirmedEmails,
         names: extractedConfirmedNames,
+        names_emails: namesEmails,
         session_facilitator: session.facilitator,
         facilitator_email: session.facilitator_email
       }))
