@@ -19,8 +19,8 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   const [sessionToUpdate, setSessionToUpdate] = useState([])
   const [dataIsLoading, setDataIsLoading] = useState(true)
   const [confirmedEmailData, setConfirmedEmailData] = useState({
-    emails: [],
-    names: [],
+    // emails: [],
+    // names: [],
     names_emails: [],
     session_facilitator: '',
     facilitator_email: ''
@@ -65,20 +65,16 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   }
 
   const extractConfirmedEmailData = (session) => {
-    const extractedConfirmedEmails = []
-    const extractedConfirmedNames = []
-    const namesEmails = []
+    const emailObjects = []
     session.session_registrants.forEach(reg => {
       if (reg.confirm === true) {
-        extractedConfirmedEmails.push(reg.email)
-        extractedConfirmedNames.push(`${reg.first_name} ${reg.last_name}`)
-        namesEmails.push(`${reg.first_name} ${reg.last_name} <${reg.email}>`)
+        const name = `${reg.first_name} ${reg.last_name}`
+        const email = reg.email
+        emailObjects.push({ name: name, email: email })
       }
       setConfirmedEmailData(state => ({
         ...state,
-        emails: extractedConfirmedEmails,
-        names: extractedConfirmedNames,
-        names_emails: namesEmails,
+        names_emails: emailObjects,
         session_facilitator: session.facilitator,
         facilitator_email: session.facilitator_email
       }))

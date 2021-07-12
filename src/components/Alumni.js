@@ -31,11 +31,11 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
 
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
-  console.log('completedSessions', completedSessions)
+  // console.log('completedSessions', completedSessions)
   // console.log('sessions', sessions)
   // console.log('numberOfAlumni', numberOfAlumni)
   console.log('isEditing', isEditing)
-  console.log('alumniEmailData', alumniEmailData)
+  // console.log('alumniEmailData', alumniEmailData)
 
   useEffect(() => {
     // setSessionsAreLoading(true)

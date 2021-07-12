@@ -36,8 +36,6 @@ function App () {
   const [isEditingParams, setIsEditingParams] = useState([])
   const [showTransparentNav, setShowTransparentNav] = useState(false)
   const [emailFormData, setEmailFormData] = useState({
-    emails: [],
-    names: [],
     names_emails: [],
     origin: '',
     facilitator_name: '',
@@ -69,28 +67,6 @@ function App () {
   }
 
   const prepEmailForm = (emailData, origin) => {
-    // console.log('EMAIL DATA', emailData)
-    // const newEmailArray = []
-    // const newNameArray = []
-    // const nameEmailArray = []
-    // const namesEmailObjects = []
-    // let facilitatorName = ''
-    // let facilitatorEmail = ''
-    // if (origin === 'alumni') {
-    //   for (let i = 0; i < emailData.emails.length; i++) {
-    //     newEmailArray.push(...emailData.emails[i])
-    //     newNameArray.push(...emailData.names[i])
-    //     // nameEmailArray.push(...emailData.names_emails[i])
-    //     // namesEmailObjects.push(...namesEmailObjects, { name: emailData.names[i], email: emailData.emails[i] })
-    //   }
-    // } else if (origin === 'registrants') {
-    //   newEmailArray.push(...emailData.emails)
-    //   newNameArray.push(...emailData.names)
-    //   // nameEmailArray.push(...emailData.names_emails)
-    //   facilitatorName = emailData.session_facilitator
-    //   facilitatorEmail = emailData.facilitator_email
-    // }
-    // console.log('namesEmailObjects', namesEmailObjects)
     setEmailFormData(state => ({
       ...state,
       origin: origin,

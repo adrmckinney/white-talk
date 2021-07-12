@@ -57,7 +57,7 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
   // DEBUGGER STATION
   // console.log('sessions in SessionRegister', sessions)
   // console.log('sessionToRegister', sessionToRegister)
-  // console.log('registrantToEdit', registrantToEdit)
+  console.log('registrantToEdit', registrantToEdit)
   console.log('filterInput', filterInput)
   console.log('emailFacilitatorParams', emailFacilitatorParams)
   console.log('emailRegistrantParams', emailRegistrantParams)
@@ -70,7 +70,8 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
         pronouns: registrantToEdit.pronouns,
         email: registrantToEdit.email,
         comment: registrantToEdit.comment,
-        session: registrantToEdit.session
+        session: registrantToEdit.session,
+        confirm: registrantToEdit.confirm
       })
     }
   }, [isEditing, registrantToEdit])
