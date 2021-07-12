@@ -21,8 +21,6 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
   const [numberOfAlumni, setnumberOfAlumni] = useState()
   const [isEditing, setIsEditing] = useState('')
   const [alumniEmailData, setAlumniEmailData] = useState({
-    emails: [],
-    names: [],
     names_emails: [],
     session_facilitator: '',
     facilitator_email: ''
@@ -33,7 +31,7 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
 
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
-  // console.log('completedSessions', completedSessions)
+  console.log('completedSessions', completedSessions)
   // console.log('sessions', sessions)
   // console.log('numberOfAlumni', numberOfAlumni)
   console.log('isEditing', isEditing)
@@ -44,28 +42,24 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
     listSessions(token)
       .then(sessions => {
         const completeSessions = []
-        const emails = []
-        const names = []
-        const namesEmails = []
+        const emailObjects = []
         let alumni = 0
         sessions.forEach(session => {
           if (session.session_complete === true) {
             completeSessions.push(session)
-            emails.push(session.session_registrants.map(reg => reg.email))
-            names.push(session.session_registrants.map(reg => `${reg.first_name} ${reg.last_name}`))
-            namesEmails.push(session.session_registrants.map(reg => `${reg.first_name} ${reg.last_name} <${reg.email}>`))
             alumni = alumni + session.session_registrants.length
+
+            session.session_registrants.forEach(reg => {
+              const name = `${reg.first_name} ${reg.last_name}`
+              const email = reg.email
+              emailObjects.push({ name: name, email: email })
+            })
           }
         })
-        console.log('namesEmails', namesEmails)
+
         setCompletedSession(completeSessions)
         setnumberOfAlumni(alumni)
-        setAlumniEmailData(state => ({
-          ...state,
-          emails: emails,
-          names: names,
-          names_emails: namesEmails
-        }))
+        setAlumniEmailData(state => ({ ...state, names_emails: emailObjects }))
         // setSessionsAreLoading(false)
         // setSessions(data)
       })
@@ -106,17 +100,12 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
         <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='py-1 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
             <span>
-              {/* <h1 className='text-6xl text-center text-davysGray font-extrabold font-sans mb-10 rounded-lg'>Alumni</h1> */}
-
               <div className='bg-gray-50 pt-12 sm:pt-16'>
                 <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
                   <div className='max-w-4xl mx-auto text-center'>
                     <h2 className='text-3xl font-extrabold text-gray-900 sm:text-4xl'>
                       Alumni
                     </h2>
-                    {/* <p className='mt-3 text-xl text-gray-500 sm:mt-4'>
-                      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellendus repellat laudantium.
-                    </p> */}
                   </div>
                 </div>
                 <div className='mt-10 pb-12 bg-white sm:pb-16'>
