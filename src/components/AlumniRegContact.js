@@ -20,7 +20,7 @@ export default function AlumniRegContact ({ emailFormData }) {
   console.log('emailParams', emailParams)
   console.log('emailFormData', emailFormData)
   console.log('nameEmailObjects', nameEmailObjects)
-  console.log('deletedEmailObjects', deletedEmailObjects)
+  // console.log('deletedEmailObjects', deletedEmailObjects)
 
   useEffect(() => {
     setNameEmailObjects(emailFormData.names_emails)
@@ -164,7 +164,7 @@ export default function AlumniRegContact ({ emailFormData }) {
                       <CheckIcon className='ml-2 mr-2 h-3 w-3' aria-hidden='true' />
                       Save Changes
                     </button>
-                    </span>
+                  </span>
                   : <button
                       type='button'
                       className='btn-color inline-flex items-center px-1 py-0.5 border border-transparent shadow-sm text-xs leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
@@ -174,7 +174,7 @@ export default function AlumniRegContact ({ emailFormData }) {
                     >
                     <PencilIcon className='ml-2 mr-2 h-3 w-3' aria-hidden='true' />
                     Edit Recipients
-                    </button>}
+                  </button>}
 
               </label>
               <div className='mt-1'>
@@ -189,7 +189,7 @@ export default function AlumniRegContact ({ emailFormData }) {
                         <XIcon className='h-6 w-6 text-red-500 transform hover:scale-125 ease-linear' onClick={() => removeNameEmailObject(nameEmail, idx)} />
                       </div>
                     ))}
-                    </div>
+                  </div>
                   : <div className='py-3 px-4 block w-full shadow-sm border-2 border-gray-300 rounded-md overflow-y-auto h-32 text-sm font-nunito'>
                     {nameEmailObjects.map((nameEmail, idx) => (
                       <span key={`${nameEmail.name}-${idx}`} className='inline-flex flex-wrap'>
@@ -198,7 +198,7 @@ export default function AlumniRegContact ({ emailFormData }) {
                         </p>
                         <p>{`<${nameEmail.email}>`}&nbsp;</p>
                       </span>))}
-                    </div>}
+                  </div>}
               </div>
             </div>
 
@@ -275,14 +275,14 @@ export default function AlumniRegContact ({ emailFormData }) {
                 ? <button type='button' className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'>
                   <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                   Sending Email...
-                  </button>
+                </button>
                 : <button
                     type='submit'
                     className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
                   >
                   <MailIcon className='h-4 w-4 mr-4 self-center' />
                   Send Email
-                </button>}
+                  </button>}
             </div>
           </form>
         </div>

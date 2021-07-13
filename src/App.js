@@ -66,14 +66,24 @@ function App () {
     setShowTransparentNav(value)
   }
 
-  const prepEmailForm = (emailData, origin) => {
-    setEmailFormData(state => ({
-      ...state,
-      origin: origin,
-      names_emails: emailData.names_emails,
-      facilitator_name: emailData.session_facilitator,
-      facilitator_email: emailData.facilitator_email
-    }))
+  const prepEmailForm = (emailData, origin, selectedEmails) => {
+    if (selectedEmails) {
+      setEmailFormData(state => ({
+        ...state,
+        origin: origin,
+        names_emails: selectedEmails,
+        facilitator_name: emailData.session_facilitator,
+        facilitator_email: emailData.facilitator_email
+      }))
+    } else {
+      setEmailFormData(state => ({
+        ...state,
+        origin: origin,
+        names_emails: emailData.names_emails,
+        facilitator_name: emailData.session_facilitator,
+        facilitator_email: emailData.facilitator_email
+      }))
+    }
   }
 
   // DEBUGGER STATION

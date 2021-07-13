@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 
-const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, confirmedEmailData, handleDeleteState, handleEditState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm }) => {
+const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, confirmedEmailData, handleDeleteState, handleEditState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm, handleSelectedEmails }) => {
   const [selectedEmails, setSelectedEmails] = useState([])
 
   // DEBUGGER STATION
@@ -61,7 +61,8 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
                         <Link
                           to='/alumni-reg-contact'
                           className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
-                          onClick={() => prepEmailForm(confirmedEmailData, 'registrants')}
+                          // onClick={() => handleSelectedEmails(selectedEmails)}
+                          onClick={() => prepEmailForm(confirmedEmailData, 'registrants', selectedEmails)}
                         >
                           <span className='flex'>
                             <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
