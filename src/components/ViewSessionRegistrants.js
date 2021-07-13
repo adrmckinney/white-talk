@@ -33,7 +33,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   // console.log('isEditing', isEditing)
   // console.log('sessions', sessions)
   // console.log('registrantsToRender', registrantsToRender)
-  // console.log('registrantToEdit', registrantToEdit)
+  console.log('registrantToEdit', registrantToEdit)
   // console.log('registrantToDelete', registrantToDelete)
   // console.log('sessions in ViewSessionReg', sessions)
   // console.log('sessionToUpate', sessionToUpdate)
@@ -81,20 +81,25 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     })
   }
 
-  const handleDeleteState = (e, registrant) => {
-    if (!e.target.checked) {
-      setRegistrantToDelete([])
-    } else {
-      setRegistrantToDelete(registrant)
-    }
+  const handleDeleteState = (registrant) => {
+    setRegistrantToDelete(registrant)
+    setIsEditing('')
+    setIsDeleting('delete-registrant')
   }
 
-  const handleEditState = (e, registrant) => {
-    if (!e.target.checked) {
-      setRegistrantToEdit([])
-    } else {
-      setRegistrantToEdit(registrant)
-    }
+  const handleEditState = (registrant) => {
+    sessions.forEach(session => {
+      if (session.pk === registrant.session) {
+        setSessionToUpdate(session)
+      }
+    })
+    setRegistrantToEdit(registrant)
+    setIsDeleting('')
+    setIsEditing('edit-registrant')
+    // if (!e.target.checked) {
+    //   setRegistrantToEdit([])
+    // } else {
+    // }
   }
 
   // This function handles getting the session ready to

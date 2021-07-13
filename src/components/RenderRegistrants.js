@@ -1,16 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
-import { ChevronDoubleRightSolid } from '@graywolfai/react-heroicons'
-import StaticMenu from './dropdownMenus/StaticMenu'
 
 const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, confirmedEmailData, handleDeleteState, handleEditState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm }) => {
-  const [emails, setEmails] = useState([])
-  const [selectedAction, setSelectedAction] = useState('')
+  const [selectedEmails, setSelectedEmails] = useState([])
 
   // DEBUGGER STATION
   // console.log('confirmedEmails', confirmedEmails)
-  // console.log('emails', emails)
+  console.log('selectedEmails', selectedEmails)
   // console.log('isDeleting', isDeleting)
   // console.log('isEditing', isEditing)
   // console.log('sessions', sessions)
@@ -20,70 +17,21 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
   // console.log('sessions in ViewSessionReg', sessions)
   // console.log('sessionToUpate', sessionToUpdate)
 
-  const handleEmails = (email) => {
-    const checkEmails = [...emails]
-    if (checkEmails.includes(email)) {
-      setEmails(emails.filter(em => em !== email))
+  const handleEmails = (e, registrant) => {
+    const pk = registrant.pk
+    const name = `${registrant.first_name} ${registrant.last_name}`
+    const email = registrant.email
+
+    const { checked } = e.currentTarget
+
+    if (checked) {
+      setSelectedEmails([...selectedEmails, { pk: pk, name: name, email: email }])
     } else {
-      const newEmails = [...emails, email]
-      setEmails(newEmails)
-    }
-  }
-
-  // This function handles how the btn text and mail functions
-  // are implemented based on the action dropdown selection
-  const handleBtnText = () => {
-    if (selectedAction === 'Email All') {
-      return (
-        <Link
-          to='/alumni-reg-contact'
-          onClick={() => prepEmailForm(confirmedEmailData, 'registrants')}
-        >
-          <span className='flex'>
-            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-            {selectedAction}
-
-          </span>
-        </Link>
-
-      // <a
-      //   href={`mailto:${confirmedEmails}`}
-      //   rel='noreferrer'
-      //   target='_blank'
-      // >
-      //   <span className='flex'>
-      //     <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-      //     {selectedAction}
-      //   </span>
-      // </a>
-      )
-    } else if (selectedAction === 'Email Selected') {
-      return (
-        <a
-          href={`mailto:${emails}`}
-          rel='noreferrer'
-          target='_blank'
-        >
-          <span className='flex'>
-            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-            {selectedAction}
-          </span>
-        </a>
-      )
-    } else if (selectedAction === 'Update') {
-      return (
-        <span className='flex'>
-          <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-          {selectedAction}
-        </span>
-      )
-    } else if (selectedAction === 'Delete') {
-      return (
-        <span className='flex'>
-          <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-          {selectedAction}
-        </span>
-      )
+      selectedEmails.forEach(obj => {
+        if (obj.pk === parseInt(e.currentTarget.id)) {
+          setSelectedEmails(selectedEmails.filter(obj => obj.pk !== parseInt(e.currentTarget.id)))
+        }
+      })
     }
   }
 
@@ -97,32 +45,32 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
               <span>
                 <span className='flex items-start justify-end pt-10'>
                   {registrantsToRender.pk &&
-                    <div className='flex flex-row space-x-2 mb-2'>
-                      <div className={`flex justify-center ${selectedAction && 'transform -translate-x-2 duration-700'}`}>
-                        <StaticMenu dropdownSelectorMode='action' selectedAction={selectedAction} setSelectedAction={setSelectedAction} />
+                    <div className='flex flex-row space-x-2 mb-6'>
+                      <div className='flex justify-center space-x-4'>
+                        <Link
+                          to='/alumni-reg-contact'
+                          className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
+                          onClick={() => prepEmailForm(confirmedEmailData, 'registrants')}
+                        >
+                          <span className='flex'>
+                            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                            Email All
+
+                          </span>
+                        </Link>
+                        <Link
+                          to='/alumni-reg-contact'
+                          className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
+                          onClick={() => prepEmailForm(confirmedEmailData, 'registrants')}
+                        >
+                          <span className='flex'>
+                            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                            Email Selected
+
+                          </span>
+                        </Link>
                       </div>
-                      {selectedAction &&
-                        <div className='flex items-center'>
-                          <ChevronDoubleRightSolid className='-ml-0.5 mr-2 h-4 w-4 transition delay-1000 animate-pulse' aria-hidden='true' />
-                        </div>}
-                      {selectedAction &&
-                        <span className='flex transition-all delay-1000 duration-500 ease-in-out'>
-                          <button
-                            type='button'
-                            className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                            onClick={() => {
-                              if (selectedAction === 'Delete') {
-                                setIsEditing('')
-                                setIsDeleting('delete-registrant')
-                              } else if (selectedAction === 'Update') {
-                                setIsDeleting('')
-                                setIsEditing('edit-registrant')
-                              }
-                            }}
-                          >
-                            {handleBtnText()}
-                          </button>
-                        </span>}
+
                     </div>}
                 </span>
                 <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
@@ -156,9 +104,11 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
                     <tbody className='bg-white divide-y-8 divide-lavenderWebb font-nunito'>
                       {!registrantsToRender.pk || registrantsToRender.session_registrants.map((registrant, idx) => (
                         <tr key={`${registrant.pk}-index-${idx}`}>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 space-x-1 flex'>
-                            <p>{registrant.first_name}</p>
-                            <p>{registrant.last_name}</p>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                            <span className='flex space-x-1'>
+                              <p className=''>{registrant.first_name}</p>
+                              <p>{registrant.last_name}</p>
+                            </span>
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
                             {registrant.pronouns}
@@ -175,20 +125,18 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
                           <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                             <span className='flex flex-col space-y-4'>
                               <button
-                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple sm:col-start-2 sm:text-sm'
                                 onClick={() => {
-                                  // setSessionToEdit(session)
-                                  setIsEditing('edit-session')
+                                  handleEditState(registrant)
                                 }}
                               >
                                 <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                                Edit
+                                Update
                               </button>
                               <button
-                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple sm:col-start-2 sm:text-sm'
                                 onClick={() => {
-                                  setIsDeleting('delete-session')
-                                  // setSessionToDelete(session)
+                                  handleDeleteState(registrant)
                                 }}
                               >
                                 <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
@@ -198,15 +146,10 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-center text-sm font-medium'>
                             <input
-                              name={idx}
-                              id={registrant.email}
+                              id={registrant.pk}
                               type='checkbox'
-                              value={registrant.email}
                               onChange={(e) => {
-                                handleEmails(registrant.email)
-                                handleSessionToEdit(registrant)
-                                handleEditState(e, registrant)
-                                handleDeleteState(e, registrant)
+                                handleEmails(e, registrant)
                               }}
                             />
                           </td>

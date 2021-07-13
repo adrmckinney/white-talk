@@ -10,7 +10,7 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
 
   // DEBUGGER STATION
   // console.log('sessions', sessions)
-  console.log('selectedValue', selectedValue)
+  // console.log('selectedValue', selectedValue)
   // console.log('sessionToRegister', sessionToRegister)
 
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
@@ -28,11 +28,12 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
       handleFormFilter('title', sessionToRegister.title, setFilterInput)
       handleFormFilter('facilitator', sessionToRegister.facilitator, setFilterInput)
       handleFormFilter('facilitator_email', sessionToRegister.facilitator_email, setFilterInput)
-      handleFormFilter('registrant_cue_number', sessionToRegister.session_registrants.length, setFilterInput)
+      // handleFormFilter('registrant_cue_number', sessionToRegister.session_registrants.length, setFilterInput)
       handleFormFilter('number_of_registrants_allowed', sessionToRegister.number_of_registrants_allowed, setFilterInput)
       handleFormFilter('description', sessionToRegister.description, setFilterInput)
     }
     let options = []
+    console.log('selectedValue', selectedValue)
     options = sessions.filter(session => session.pk !== selectedValue.pk && session.session_status === true)
     return options
   }
@@ -47,7 +48,7 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
       </label>
       <div className='mt-1 relative'>
         <button
-          type='button' id='sessions' aria-haspopup='listbox' aria-expanded='true' aria-labelledby='listbox-label' className='bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+          type='button' id='sessions' aria-haspopup='listbox' aria-expanded='true' aria-labelledby='listbox-label' className='bg-white relative w-full border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-darkerPurple focus:border-darkerPurple sm:text-sm'
           onClick={() => setShowSessions(!showSessions)}
         >
           <span className='flex truncate justify-center text-sm sm:text-md'>
