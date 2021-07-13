@@ -70,7 +70,9 @@ function App () {
     setEmailFormData(state => ({
       ...state,
       origin: origin,
-      names_emails: emailData.names_emails
+      names_emails: emailData.names_emails,
+      facilitator_name: emailData.session_facilitator,
+      facilitator_email: emailData.facilitator_email
     }))
   }
 

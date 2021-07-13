@@ -9,7 +9,7 @@ export default function AlumniRegContact ({ emailFormData }) {
   const [deletedEmailObjects, setDeletedEmailObjects] = useState([])
   const [emailParams, setEmailParams] = useState(
     {
-      mail_to: nameEmailObjects.email,
+      mail_to: [],
       subject: '',
       message: '',
       facilitator_name: '',
@@ -18,22 +18,18 @@ export default function AlumniRegContact ({ emailFormData }) {
   )
 
   console.log('emailParams', emailParams)
-  // console.log('emailFormData', emailFormData)
+  console.log('emailFormData', emailFormData)
   console.log('nameEmailObjects', nameEmailObjects)
   console.log('deletedEmailObjects', deletedEmailObjects)
 
   useEffect(() => {
     setNameEmailObjects(emailFormData.names_emails)
-    if (emailFormData.origin === 'registrants') {
-      setEmailParams(state => ({
-        ...state,
-        // mail_to: emailFormData.names_emails.email,
-        facilitator_name: emailFormData.facilitator_name,
-        reply_to: emailFormData.facilitator_email
-      }))
-    } else if (emailFormData.origin === 'alumni') {
-      setEmailParams(state => ({ ...state, mail_to: emailFormData.emails }))
-    }
+    setEmailParams(state => ({
+      ...state,
+      mail_to: emailFormData.names_emails.map(obj => obj.email),
+      facilitator_name: emailFormData.facilitator_name,
+      reply_to: emailFormData.facilitator_email
+    }))
   }, [emailFormData])
 
   const handleChange = (name, value) => {
@@ -53,7 +49,6 @@ export default function AlumniRegContact ({ emailFormData }) {
     const newObjects = [...nameEmailObjects]
     newObjects.splice(idx, 1)
     setNameEmailObjects(newObjects)
-    // setDeletedEmailObjects(state => ({ ...state, names_emails: nameEmail }))
     deletedEmailObjects.push(nameEmail)
   }
 
@@ -61,11 +56,12 @@ export default function AlumniRegContact ({ emailFormData }) {
     setIsEditing(false)
     nameEmailObjects.push(...deletedEmailObjects)
     setDeletedEmailObjects([])
+    setEmailParams(state => ({ ...state, mail_to: nameEmailObjects.map(obj => obj.email) }))
   }
 
   const handleEmailEditSave = () => {
     setIsEditing(false)
-    setEmailParams(state => ({ ...state, mail_to: emailFormData.emails }))
+    setEmailParams(state => ({ ...state, mail_to: nameEmailObjects.map(obj => obj.email) }))
   }
 
   const handleEmail = (e) => {
@@ -168,18 +164,17 @@ export default function AlumniRegContact ({ emailFormData }) {
                       <CheckIcon className='ml-2 mr-2 h-3 w-3' aria-hidden='true' />
                       Save Changes
                     </button>
-                  </span>
+                    </span>
                   : <button
                       type='button'
                       className='btn-color inline-flex items-center px-1 py-0.5 border border-transparent shadow-sm text-xs leading-4 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
                       onClick={() => {
                         setIsEditing(true)
-                        // editEmailList()
                       }}
                     >
                     <PencilIcon className='ml-2 mr-2 h-3 w-3' aria-hidden='true' />
                     Edit Recipients
-                  </button>}
+                    </button>}
 
               </label>
               <div className='mt-1'>
@@ -194,7 +189,7 @@ export default function AlumniRegContact ({ emailFormData }) {
                         <XIcon className='h-6 w-6 text-red-500 transform hover:scale-125 ease-linear' onClick={() => removeNameEmailObject(nameEmail, idx)} />
                       </div>
                     ))}
-                  </div>
+                    </div>
                   : <div className='py-3 px-4 block w-full shadow-sm border-2 border-gray-300 rounded-md overflow-y-auto h-32 text-sm font-nunito'>
                     {nameEmailObjects.map((nameEmail, idx) => (
                       <span key={`${nameEmail.name}-${idx}`} className='inline-flex flex-wrap'>
@@ -203,7 +198,7 @@ export default function AlumniRegContact ({ emailFormData }) {
                         </p>
                         <p>{`<${nameEmail.email}>`}&nbsp;</p>
                       </span>))}
-                  </div>}
+                    </div>}
               </div>
             </div>
 
@@ -280,11 +275,14 @@ export default function AlumniRegContact ({ emailFormData }) {
                 ? <button type='button' className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'>
                   <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                   Sending Email...
-                </button>
-                : <button type='submit' className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'>
+                  </button>
+                : <button
+                    type='submit'
+                    className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
+                  >
                   <MailIcon className='h-4 w-4 mr-4 self-center' />
                   Send Email
-                  </button>}
+                </button>}
             </div>
           </form>
         </div>

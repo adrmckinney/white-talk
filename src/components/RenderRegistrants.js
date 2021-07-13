@@ -144,6 +144,9 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
                         <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
                           Confirmed
                         </th>
+                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          Update/Delete
+                        </th>
                         <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
                           Action
                         </th>
@@ -168,6 +171,30 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center'>
                             {registrant.confirm ? 'Yes' : 'No'}
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
+                            <span className='flex flex-col space-y-4'>
+                              <button
+                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                onClick={() => {
+                                  // setSessionToEdit(session)
+                                  setIsEditing('edit-session')
+                                }}
+                              >
+                                <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                                Edit
+                              </button>
+                              <button
+                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                onClick={() => {
+                                  setIsDeleting('delete-session')
+                                  // setSessionToDelete(session)
+                                }}
+                              >
+                                <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
+                                Delete
+                              </button>
+                            </span>
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-center text-sm font-medium'>
                             <input
