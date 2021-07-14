@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { pageClickEvent } from '../functions'
 
-const RegSuccessfulAlert = ({ showRegSuccessfulAlert, setShowRegSuccessfulAlert }) => {
+const RegSuccessfulAlert = ({ showRegSuccessfulAlert, setShowRegSuccessfulAlert, toggleAlert }) => {
   const dropdownRef = useRef(null)
 
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
@@ -29,7 +29,10 @@ const RegSuccessfulAlert = ({ showRegSuccessfulAlert, setShowRegSuccessfulAlert 
             <div className='-mx-1.5 -my-1.5'>
               <button
                 className='inline-flex bg-green-50 rounded-md p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600'
-                onClick={() => setShowRegSuccessfulAlert(false)}
+                onClick={() => {
+                  toggleAlert()
+                  // setShowRegSuccessfulAlert(false)
+                }}
               >
                 <span className='sr-only'>Dismiss</span>
                 {/* <!-- Heroicon name: solid/x --> */}

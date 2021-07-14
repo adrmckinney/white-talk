@@ -9,13 +9,12 @@ import SessionRegister from './sessionForms/SessionRegister'
 import RenderRegistrants from './RenderRegistrants'
 import SessionsLoadingAlert from './alerts/SessionsLoadingAlert'
 
-const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, prepEmailForm }) => {
+const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, prepEmailForm, prepSessionRegistrationForm }) => {
   const [sessions, setSessions] = useState([])
   const [registrantsToRender, setRegistrantsToRender] = useState([])
   const [isDeleting, setIsDeleting] = useState('')
   const [isEditing, setIsEditing] = useState('')
   const [registrantToDelete, setRegistrantToDelete] = useState([])
-  const [registrantToEdit, setRegistrantToEdit] = useState([])
   const [sessionToUpdate, setSessionToUpdate] = useState([])
   const [dataIsLoading, setDataIsLoading] = useState(true)
   const [confirmedEmailData, setConfirmedEmailData] = useState({
@@ -25,7 +24,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   })
 
   // DEBUGGER STATION
-  console.log('confirmedEmailData', confirmedEmailData)
+  // console.log('confirmedEmailData', confirmedEmailData)
   // console.log('emails', emails)
   // console.log('isDeleting', isDeleting)
   // console.log('isEditing', isEditing)
@@ -58,7 +57,6 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
 
   const handleClearAllActionState = () => {
     setSessionToUpdate([])
-    setRegistrantToEdit([])
     setRegistrantToDelete([])
   }
 
@@ -91,20 +89,20 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     setIsDeleting('delete-registrant')
   }
 
-  const handleEditState = (registrant) => {
-    sessions.forEach(session => {
-      if (session.pk === registrant.session) {
-        setSessionToUpdate(session)
-      }
-    })
-    setRegistrantToEdit(registrant)
-    setIsDeleting('')
-    setIsEditing('edit-registrant')
-    // if (!e.target.checked) {
-    //   setRegistrantToEdit([])
-    // } else {
-    // }
-  }
+  // const handleEditState = (registrant) => {
+  //   sessions.forEach(session => {
+  //     if (session.pk === registrant.session) {
+  //       setSessionToUpdate(session)
+  //     }
+  //   })
+  //   setRegistrantToEdit(registrant)
+  //   setIsDeleting('')
+  //   setIsEditing('edit-registrant')
+  // if (!e.target.checked) {
+  //   setRegistrantToEdit([])
+  // } else {
+  // }
+  // }
 
   // This function handles getting the session ready to
   // be passed to SessionRegister.js. It is passed as
@@ -158,13 +156,13 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     )
   }
 
-  if (isEditing === 'edit-registrant' && registrantToEdit.pk) {
-    return (
-      <SessionRegister
-        token={token} registrantToEdit={registrantToEdit} isEditing={isEditing} sessions={sessions} setIsEditing={setIsEditing} showModal='session-registration-form' setShowModal={setShowModal} sessionToRegister={sessionToUpdate} handleRegistrantUpdate={handleRegistrantUpdate}
-      />
-    )
-  }
+  // if (isEditing === 'edit-registrant' && registrantToEdit.pk) {
+  //   return (
+  //     <SessionRegister
+  //       token={token} registrantToEdit={registrantToEdit} isEditing={isEditing} sessions={sessions} setIsEditing={setIsEditing} showModal='session-registration-form' setShowModal={setShowModal} sessionToRegister={sessionToUpdate} handleRegistrantUpdate={handleRegistrantUpdate}
+  //     />
+  //   )
+  // }
 
   // USE THIS WHEN MOBILE VIEW REGISTRANTS IS WORKING
   // if (isEditing === 'edit-registrant-overlay' && registrantToEdit.pk) {
@@ -271,7 +269,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
         </div>
       </div>
       <div className=''>
-        <RenderRegistrants token={token} isLoggedIn={isLoggedIn} sessions={sessions} setShowModal={setShowModal} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} registrantsToRender={registrantsToRender} setRegistrantsToRender={setRegistrantsToRender} confirmedEmailData={confirmedEmailData} handleDeleteState={handleDeleteState} handleEditState={handleEditState} handleSessionToEdit={handleSessionToEdit} handleDelete={handleDelete} handleRegistrantUpdate={handleRegistrantUpdate} handleRefreshAfterEdit={handleRefreshAfterEdit} setIsDeleting={setIsDeleting} setIsEditing={setIsEditing} prepEmailForm={prepEmailForm} handleSelectedEmails={handleSelectedEmails} />
+        <RenderRegistrants token={token} isLoggedIn={isLoggedIn} sessions={sessions} setShowModal={setShowModal} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} registrantsToRender={registrantsToRender} setRegistrantsToRender={setRegistrantsToRender} confirmedEmailData={confirmedEmailData} handleDeleteState={handleDeleteState} handleSessionToEdit={handleSessionToEdit} handleDelete={handleDelete} handleRegistrantUpdate={handleRegistrantUpdate} handleRefreshAfterEdit={handleRefreshAfterEdit} setIsDeleting={setIsDeleting} setIsEditing={setIsEditing} prepEmailForm={prepEmailForm} handleSelectedEmails={handleSelectedEmails} prepSessionRegistrationForm={prepSessionRegistrationForm} />
       </div>
     </>
   )

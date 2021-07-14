@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 
-const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, confirmedEmailData, handleDeleteState, handleEditState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm, handleSelectedEmails }) => {
+const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, confirmedEmailData, handleDeleteState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm, handleSelectedEmails, prepSessionRegistrationForm }) => {
   const [selectedEmails, setSelectedEmails] = useState([])
 
   // DEBUGGER STATION
   // console.log('confirmedEmails', confirmedEmails)
-  console.log('selectedEmails', selectedEmails)
+  // console.log('selectedEmails', selectedEmails)
   // console.log('isDeleting', isDeleting)
   // console.log('isEditing', isEditing)
   // console.log('sessions', sessions)
@@ -125,15 +125,16 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                             <span className='flex flex-col space-y-4'>
-                              <button
+                              <Link
+                                to='/session-register'
                                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple sm:col-start-2 sm:text-sm'
                                 onClick={() => {
-                                  handleEditState(registrant)
+                                  prepSessionRegistrationForm('', registrant)
                                 }}
                               >
                                 <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                                Update
-                              </button>
+                                Edit
+                              </Link>
                               <button
                                 className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple sm:col-start-2 sm:text-sm'
                                 onClick={() => {

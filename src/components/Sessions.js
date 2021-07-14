@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import UpcomingSessions from './UpcomingSessions'
 import MobileUpcomingSessions from './MobileUpcomingSessions'
 import { listSessions, deleteSession, updateSession } from '../api'
@@ -10,7 +11,7 @@ import { PencilIcon } from '@heroicons/react/outline'
 import SessionsLoadingAlert from './alerts/SessionsLoadingAlert'
 // import HomeDivider from './HomeDivider'
 
-const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setSessionToView, registered, setRegistered }) => {
+const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setSessionToView, registered, setRegistered, prepSessionRegistrationForm }) => {
   const [isDeleting, setIsDeleting] = useState('')
   const [isRegistering, setIsRegistering] = useState('')
   const [isEditing, setIsEditing] = useState('')
@@ -75,16 +76,18 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
   const renderSessionStatus = (session, mode) => {
     if (session.session_status) {
       return (
-        <button
+        <Link
+          to='/session-register'
           className='w-3/4 lg:w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 table-btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
           onClick={() => {
             setIsRegistering(mode)
-            setSessionToRegister(session)
+
+            prepSessionRegistrationForm(session)
           }}
         >
           <PencilIcon className='mr-2 h-4 w-4' aria-hidden='true' />
           Sign up
-        </button>
+        </Link>
       )
     } else {
       return (
@@ -215,7 +218,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
             <span className='lg:hidden'>
               <MobileUpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
             </span>
-          </>}
+            </>}
 
       </div>
     </>

@@ -18,8 +18,6 @@ export default function HomeFooter () {
     email_to: 'adrmckinney@gmail.com'
   })
 
-  console.log('emailParams', emailParams)
-
   const handleEmail = (e) => {
     e.preventDefault()
     setIsLoading(true)
@@ -134,11 +132,11 @@ export default function HomeFooter () {
                     ? <button type='button' className='btn-color inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mediumPurple'>
                       <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                       Sending Email...
-                    </button>
+                      </button>
                     : <button type='submit' className='btn-color inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mediumPurple'>
                       <MailIcon className='h-4 w-4 mr-4 self-center' />
                       Send Email
-                    </button>}
+                      </button>}
                 </div>
                 {showAlert &&
                   <MessageSentAlert closeAlert={closeAlert} />}

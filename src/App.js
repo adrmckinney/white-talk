@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import createPersistedState from 'use-persisted-state'
 import './App.css'
-import { getUser } from './api'
+import { getUser, listSessions } from './api'
 import Nav from './components/Nav'
 import BookStudy from './components/BookStudy'
 import Sessions from './components/Sessions'
@@ -17,6 +17,7 @@ import PastSessions from './components/PastSessions'
 import Alumni from './components/Alumni'
 import About from './components/About'
 import AlumniRegContact from './components/AlumniRegContact'
+import SessionRegisterEditor from './components/sessionForms/SessionRegisterEditor'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -28,12 +29,19 @@ function App () {
   const isLoggedIn = (username && token)
   const [registered, setRegistered] = useState(false)
   const [sessions, setSessions] = useState([])
+  const [sessionRegistrationData, setSessionRegistrationData] = useState({
+    sessions: [], // the editor's dropdown menu needs all sessions (SessionToRegister.js)
+    session: [], // for new reg and editing registrant info
+    registrant: [] // for editing registrants info
+  })
   const [sessionToRegister, setSessionToRegister] = useState([])
   const [dropdownSelectorMode, setDropdownSelectorMode] = useState('')
   const [showModal, setShowModal] = useState('')
   const [formToView, setFormToView] = useState('')
   const [sessionToView, setSessionToView] = useState([])
   const [isEditingParams, setIsEditingParams] = useState([])
+  const [registrantToEdit, setRegistrantToEdit] = useState([])
+  const [isEditing, setIsEditing] = useState('')
   const [showTransparentNav, setShowTransparentNav] = useState(false)
   const [emailFormData, setEmailFormData] = useState({
     names_emails: [],
@@ -64,6 +72,31 @@ function App () {
 
   const changeNavAnimation = (value) => {
     setShowTransparentNav(value)
+  }
+
+  const prepSessionRegistrationForm = (session, registrant) => {
+    listSessions()
+      .then(sessions => {
+        if (registrant) {
+          sessions.forEach(sessionForEdit => {
+            if (sessionForEdit.pk === registrant.session) {
+              setSessionRegistrationData(state => ({
+                ...state,
+                sessions: sessions,
+                session: sessionForEdit,
+                registrant: registrant
+              }))
+            }
+          })
+        } else {
+          setSessionRegistrationData(state => ({
+            ...state,
+            sessions: sessions,
+            session: session,
+            registrant: ''
+          }))
+        }
+      })
   }
 
   const prepEmailForm = (emailData, origin, selectedEmails) => {
@@ -105,7 +138,11 @@ function App () {
             </Route>
 
             <Route path='/sessions'>
-              <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} />
+              <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} prepSessionRegistrationForm={prepSessionRegistrationForm} />
+            </Route>
+
+            <Route path='/session-register'>
+              <SessionRegisterEditor token={token} isEditing={isEditing} sessionToRegister={sessionToRegister} registrantToEdit={registrantToEdit} sessionRegistrationData={sessionRegistrationData} />
             </Route>
 
             <Route path='/about'>
@@ -113,7 +150,7 @@ function App () {
             </Route>
 
             <Route path='/view-session-registrants'>
-              <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} sessions={sessions} prepEmailForm={prepEmailForm} />
+              <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} sessions={sessions} prepEmailForm={prepEmailForm} prepSessionRegistrationForm={prepSessionRegistrationForm} />
             </Route>
 
             <Route path='/past-sessions'>

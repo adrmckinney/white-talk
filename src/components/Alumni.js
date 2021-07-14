@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Moment from 'react-moment'
 import { listSessions } from '../api'
 import { sortSessions } from './functions'
+import SessionRegister from './sessionForms/SessionRegister'
 
 // function arrayUnique (array) {
 //   const a = array.concat()
@@ -31,7 +32,7 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
 
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
-  // console.log('completedSessions', completedSessions)
+  console.log('completedSessions', completedSessions)
   // console.log('sessions', sessions)
   // console.log('numberOfAlumni', numberOfAlumni)
   console.log('isEditing', isEditing)
@@ -64,6 +65,12 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
         // setSessions(data)
       })
   }, [token])
+
+  if (isEditing === 'edit-alum') {
+    return (
+      <SessionRegister token={token} isEditing={isEditing} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} />
+    )
+  }
 
   //   useEffect(() => {
   //     sessions.forEach(session => {

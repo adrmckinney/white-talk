@@ -1,9 +1,9 @@
 import { Transition } from '@headlessui/react'
 import Moment from 'react-moment'
 import { useState, useEffect, useRef } from 'react'
-import { formatSelectedSession, handleFormFilter, pageClickEvent } from '../functions'
+import { formatSelectedSession, pageClickEvent } from '../functions'
 
-const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilterInput, handleSessionToEdit }) => {
+const SessionToRegister = ({ sessionRegistrationData, handleChange, token }) => {
   const [showSessions, setShowSessions] = useState(false)
   const [selectedValue, setSelectedValue] = useState([])
   const dropdownRef = useRef(null)
@@ -11,7 +11,6 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
   // DEBUGGER STATION
   // console.log('sessions', sessions)
   // console.log('selectedValue', selectedValue)
-  // console.log('sessionToRegister', sessionToRegister)
 
   // This useEffect calls the function (inside functions.js) that hides menues on window click.
   // It needs the useRef Variable, menu state variable, and the menu setState function.
@@ -19,21 +18,30 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
     pageClickEvent(dropdownRef, showSessions, setShowSessions)
   }, [showSessions])
 
+  if (sessionRegistrationData.sessions.length < 1) {
+    if (token) {
+      return <div className='text-red-500'>An error occured, please go back and edit registrant again...</div>
+    } else {
+      return <div className='text-red-500'>An error occured, please go back and sign up again...</div>
+    }
+  }
+
   // This function filters out the session that has been selected so that duplicates don't render on
   // the options. It also filters out any session that is closed (that is, set to session_status: false).
   const filterSessions = (sessions) => {
     if (!selectedValue.pk) {
-      setSelectedValue(sessionToRegister)
-      handleFormFilter('session', sessionToRegister.pk, setFilterInput)
-      handleFormFilter('title', sessionToRegister.title, setFilterInput)
-      handleFormFilter('facilitator', sessionToRegister.facilitator, setFilterInput)
-      handleFormFilter('facilitator_email', sessionToRegister.facilitator_email, setFilterInput)
-      // handleFormFilter('registrant_cue_number', sessionToRegister.session_registrants.length, setFilterInput)
-      handleFormFilter('number_of_registrants_allowed', sessionToRegister.number_of_registrants_allowed, setFilterInput)
-      handleFormFilter('description', sessionToRegister.description, setFilterInput)
+      setSelectedValue(sessionRegistrationData.session)
+      // handleFormFilter('session', sessionRegistrationData.session.pk, setFilterInput)
+      handleChange('session', sessionRegistrationData.session.pk)
+      handleChange('title', sessionRegistrationData.session.title)
+      handleChange('facilitator', sessionRegistrationData.session.facilitator)
+      handleChange('facilitator_email', sessionRegistrationData.session.facilitator_email)
+      // handleChange('registrant_cue_number', sessionRegistrationData.session.session_registrants.length)
+      handleChange('number_of_registrants_allowed', sessionRegistrationData.session.number_of_registrants_allowed)
+      handleChange('description', sessionRegistrationData.session.description)
     }
+
     let options = []
-    console.log('selectedValue', selectedValue)
     options = sessions.filter(session => session.pk !== selectedValue.pk && session.session_status === true)
     return options
   }
@@ -44,7 +52,7 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
         className='block text-sm sm:text-lg font-medium text-gray-700 text-left mt-4'
         htmlFor='sessions'
       >
-        Sessions
+        Session
       </label>
       <div className='mt-1 relative'>
         <button
@@ -55,7 +63,7 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
 
             {selectedValue.pk
               ? formatSelectedSession(selectedValue)
-              : formatSelectedSession(sessionToRegister)}
+              : formatSelectedSession(sessionRegistrationData.session)}
 
           </span>
           <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
@@ -78,22 +86,22 @@ const SessionToRegister = ({ sessions, sessionToRegister, filterInput, setFilter
             ref={dropdownRef}
           >
             <ul tabIndex='-1' role='listbox' aria-labelledby='listbox-label' aria-activedescendant='listbox-item-3' className='max-h-40 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm'>
-              {filterSessions(sessions).map((session, idx) => (
+              {filterSessions(sessionRegistrationData.sessions).map((session, idx) => (
                 <li
                   key={`session-${idx}`}
                   id={`session-${session}`}
                   data-idx={idx}
                   value={session.title}
-                  className='hover:text-white hover:bg-indigo-600 text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9'
+                  className='hover:text-white hover:bg-darkerPurple text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9'
                   onClick={() => {
                     setSelectedValue(session)
-                    handleFormFilter('session', session.pk, setFilterInput)
-                    handleFormFilter('title', session.title, setFilterInput)
-                    handleFormFilter('facilitator', session.facilitator, setFilterInput)
-                    handleFormFilter('facilitator_email', sessionToRegister.facilitator_email, setFilterInput)
-                    handleFormFilter('registrant_cue_number', sessionToRegister.session_registrants.length, setFilterInput)
-                    handleFormFilter('number_of_registrants_allowed', sessionToRegister.number_of_registrants_allowed, setFilterInput)
-                    handleFormFilter('description', sessionToRegister.description, setFilterInput)
+                    handleChange('session', session.pk)
+                    handleChange('title', session.title)
+                    handleChange('facilitator', session.facilitator)
+                    handleChange('facilitator_email', sessionRegistrationData.session.facilitator_email)
+                    handleChange('registrant_cue_number', sessionRegistrationData.session.session_registrants.length)
+                    handleChange('number_of_registrants_allowed', sessionRegistrationData.session.number_of_registrants_allowed)
+                    handleChange('description', sessionRegistrationData.session.description)
                     setShowSessions(false)
                   }}
                 >
