@@ -147,7 +147,7 @@ function App () {
             </Route>
 
             <Route path='/view-session-registrants'>
-              <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} setShowModal={setShowModal} sessions={sessions} prepEmailForm={prepEmailForm} prepSessionRegistrationForm={prepSessionRegistrationForm} />
+              <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setShowModal={setShowModal} sessions={sessions} prepEmailForm={prepEmailForm} prepSessionRegistrationForm={prepSessionRegistrationForm} />
             </Route>
 
             <Route path='/past-sessions'>
