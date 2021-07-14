@@ -287,7 +287,7 @@ export default function SessionRegisterEditor ({ token, sessionRegistrationData 
                 ? <button type='button' className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'>
                   <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                   Processing...
-                </button>
+                  </button>
                 : <button
                     type='submit'
                     className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
@@ -296,7 +296,7 @@ export default function SessionRegisterEditor ({ token, sessionRegistrationData 
                   {isEditing
                     ? 'Update'
                     : 'Register'}
-                  </button>}
+                </button>}
               <button
                 type='submit'
                 className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'

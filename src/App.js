@@ -31,17 +31,14 @@ function App () {
   const [sessions, setSessions] = useState([])
   const [sessionRegistrationData, setSessionRegistrationData] = useState({
     sessions: [], // the editor's dropdown menu needs all sessions (SessionToRegister.js)
-    session: [], // for new reg and editing registrant info
+    session: [], // for new registration and editing registrant info
     registrant: [] // for editing registrants info
   })
-  const [sessionToRegister, setSessionToRegister] = useState([])
   const [dropdownSelectorMode, setDropdownSelectorMode] = useState('')
   const [showModal, setShowModal] = useState('')
   const [formToView, setFormToView] = useState('')
   const [sessionToView, setSessionToView] = useState([])
   const [isEditingParams, setIsEditingParams] = useState([])
-  const [registrantToEdit, setRegistrantToEdit] = useState([])
-  const [isEditing, setIsEditing] = useState('')
   const [showTransparentNav, setShowTransparentNav] = useState(false)
   const [emailFormData, setEmailFormData] = useState({
     names_emails: [],
@@ -138,11 +135,11 @@ function App () {
             </Route>
 
             <Route path='/sessions'>
-              <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} prepSessionRegistrationForm={prepSessionRegistrationForm} />
+              <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} prepSessionRegistrationForm={prepSessionRegistrationForm} />
             </Route>
 
             <Route path='/session-register'>
-              <SessionRegisterEditor token={token} isEditing={isEditing} sessionToRegister={sessionToRegister} registrantToEdit={registrantToEdit} sessionRegistrationData={sessionRegistrationData} />
+              <SessionRegisterEditor token={token} sessionRegistrationData={sessionRegistrationData} />
             </Route>
 
             <Route path='/about'>
