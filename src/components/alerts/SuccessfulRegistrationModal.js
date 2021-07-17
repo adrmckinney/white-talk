@@ -60,7 +60,7 @@ export default function SuccessfulRegistrationModal ({ toggleAlert }) {
                     setOpen(false)
                   }}
                 >
-                  Go back to dashboard
+                  Go back to sessions
                 </button>
               </div>
             </div>

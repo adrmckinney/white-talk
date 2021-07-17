@@ -48,9 +48,6 @@ module.exports = {
       animation: {
         wiggle: 'wiggle 1s ease-in-out infinite'
       },
-      backgroundImage: theme => ({
-        messageGray: "url('./images/messageGray.png')"
-      }),
       transitionDuration: {
         2000: '2000ms',
         3000: '3000ms',
