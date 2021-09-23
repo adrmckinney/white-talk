@@ -5,6 +5,7 @@ import ForgotPasswordRequest from './ForgotPasswordRequest'
 import { EyeIcon, EyeOffIcon, RefreshIcon } from '@heroicons/react/outline'
 import { handleFormFilter } from './functions'
 import { login } from '../api'
+import Button from './customComponents/Button'
 
 const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLogin, setFilterLogin, isLoading, setIsLoading, errors, setErrors }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false)
@@ -32,6 +33,16 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
         setErrors(error.message)
         setIsLoading(false)
       })
+  }
+
+  const handleCancel = () => {
+    setIsSigningIn('')
+    setShowModal('')
+    setIsLoading(false)
+    setFilterLogin({
+      username: '',
+      password: ''
+    })
   }
 
   return (
@@ -140,30 +151,21 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
 
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                  {isLoading
-                    ? <button type='submit' disabled className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                      <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
-                      Processing
-                      </button>
-                    : <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                      Login
-                      </button>}
-
-                  <button
-                    type='button'
-                    className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
-                    onClick={() => {
-                      setIsSigningIn('')
-                      setShowModal('')
-                      setIsLoading(false)
-                      setFilterLogin({
-                        username: '',
-                        password: ''
-                      })
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  <Button
+                    type={'button'}
+                    buttonLabel={'Cancel'}
+                    buttonSize={'small'}
+                    buttonStatus={'cancel'}
+                    onClick={() => handleCancel()} 
+                  />
+                  <Button
+                    type={isLoading ? 'button' : 'submit'}
+                    disabled={isLoading ? true : false}
+                    buttonLabel={isLoading ? 'Logging in...' : 'Login'}
+                    buttonSize={'small'}
+                    buttonStatus={'primary'}
+                    icon={isLoading ? 'refresh' : ''}
+                  />
                 </div>
               </div>
             </form>

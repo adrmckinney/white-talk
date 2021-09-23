@@ -1,8 +1,10 @@
 import { RefreshIcon } from '@heroicons/react/outline'
 import { MailIcon } from '@heroicons/react/solid'
+import { EmailJSResponseStatus } from 'emailjs-com'
 import { useState } from 'react'
 import { sendEmail } from '../api'
 import MessageSentAlert from './alerts/MessageSentAlert'
+import Button from './customComponents/Button'
 import { formatPhoneNumber } from './functions'
 
 export default function HomeFooter () {
@@ -128,15 +130,14 @@ export default function HomeFooter () {
               </div>
               <span className='flex flex-col h-52 space-y-20'>
                 <div>
-                  {isLoading
-                    ? <button type='button' className='btn-color inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mediumPurple'>
-                      <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
-                      Sending Email...
-                      </button>
-                    : <button type='submit' className='btn-color inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mediumPurple'>
-                      <MailIcon className='h-4 w-4 mr-4 self-center' />
-                      Send Email
-                      </button>}
+                  <Button 
+                    type={isLoading ? 'button' : 'submit'} 
+                    buttonSize={'medium'} 
+                    buttonLabel={isLoading ? 'Sending Email...' : 'Send Email'} 
+                    buttonStatus={'primary'}
+                    icon={isLoading ? 'refresh' : 'mail'}
+                    disabled={isLoading ? true : false}
+                  />
                 </div>
                 {showAlert &&
                   <MessageSentAlert closeAlert={closeAlert} />}
