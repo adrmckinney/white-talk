@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MailIcon, PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
+import { MailIcon } from '@heroicons/react/solid'
+import Button from './customComponents/Button'
 
 const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, confirmedEmailData, handleDeleteState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm, handleSelectedEmails, prepSessionRegistrationForm }) => {
   const [selectedEmails, setSelectedEmails] = useState([])
@@ -125,25 +126,23 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                             <span className='flex flex-col space-y-4'>
-                              <Link
-                                to='/session-register'
-                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple sm:col-start-2 sm:text-sm'
-                                onClick={() => {
-                                  prepSessionRegistrationForm('', registrant)
-                                }}
-                              >
-                                <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                                Edit
-                              </Link>
-                              <button
-                                className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple sm:col-start-2 sm:text-sm'
-                                onClick={() => {
-                                  handleDeleteState(registrant)
-                                }}
-                              >
-                                <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                                Delete
-                              </button>
+                              <Button 
+                                type={'link'}
+                                to={'/session-register'}
+                                buttonLabel={'Edit'}
+                                buttonSize={'small'}
+                                buttonStatus={'secondary'}
+                                icon={'edit'}
+                                onClick={() => prepSessionRegistrationForm('', registrant)}
+                              />
+                              <Button 
+                                type={'button'}
+                                buttonLabel={'Delete'}
+                                buttonSize={'small'}
+                                buttonStatus={'secondary'}
+                                icon={'delete'}
+                                onClick={() => handleDeleteState(registrant)}
+                              />
                             </span>
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-center text-sm font-medium'>

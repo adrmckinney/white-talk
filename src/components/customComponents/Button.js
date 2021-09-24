@@ -1,5 +1,6 @@
-import { MailIcon } from '@heroicons/react/solid'
-import { RefreshIcon } from '@heroicons/react/outline'
+import { MailIcon, TrashIcon } from '@heroicons/react/solid'
+import { RefreshIcon, PencilAltIcon } from '@heroicons/react/outline'
+import { Link } from 'react-router-dom'
 
 const SIZES = {
     small: 'px-3 py-2 text-sm leading-4 items-center',
@@ -27,11 +28,33 @@ const Button = ({
     disabled,
     icon,
     onClick,
+    to
 }) => {
     const ICONS = {
         mail: <MailIcon className={`${ICON_SIZES[buttonSize]} mr-4 self-center`}/>,
-        refresh: <RefreshIcon className={`${ICON_SIZES[buttonSize]} mr-4 self-center animate-spin transform rotate-180`}/>
+        refresh: <RefreshIcon className={`${ICON_SIZES[buttonSize]} mr-4 self-center animate-spin transform rotate-180`}/>,
+        edit: <PencilAltIcon className={`${ICON_SIZES[buttonSize]} -ml-0.5 mr-2`} aria-hidden='true' />,
+        delete: <TrashIcon className={`${ICON_SIZES[buttonSize]} -ml-0.5 mr-2`} aria-hidden='true' />
     }
+
+  if (type === 'link') {
+      return (
+        <Link
+            to={to}
+            disabled={disabled ?? false}
+            onClick={onClick}
+            className={`
+                    inline-flex justify-center rounded-md shadow-sm
+                    ${SIZES[buttonSize] ?? SIZES['medium']} 
+                    ${STATUSES[buttonStatus] ?? STATUSES['primary']}
+                    
+                `}
+            >
+            {ICONS[icon]}
+            {buttonLabel}
+        </Link>
+      )
+  }
 
   return (
     <>
