@@ -19,17 +19,6 @@ const ICON_SIZES = {
     large: 'h-8 w-8'
 }
 
-const getIcon = (icon, buttonSize) => {
-    switch (icon) {
-        case 'mail':
-            return <MailIcon className={`${ICON_SIZES[buttonSize]} mr-4 self-center`}/>
-        case 'refresh':
-            return <RefreshIcon className={`${ICON_SIZES[buttonSize]} mr-4 self-center animate-spin transform rotate-180`}/>
-        default:
-            break
-    }
-}
-
 const Button = ({
     type,
     buttonLabel,
@@ -37,8 +26,13 @@ const Button = ({
     buttonStatus,
     disabled,
     icon,
-    onClick
+    onClick,
 }) => {
+    const ICONS = {
+        mail: <MailIcon className={`${ICON_SIZES[buttonSize]} mr-4 self-center`}/>,
+        refresh: <RefreshIcon className={`${ICON_SIZES[buttonSize]} mr-4 self-center animate-spin transform rotate-180`}/>
+    }
+
   return (
     <>
       <button 
@@ -49,8 +43,9 @@ const Button = ({
             inline-flex justify-center rounded-md shadow-sm
             ${SIZES[buttonSize] ?? SIZES['medium']} 
             ${STATUSES[buttonStatus] ?? STATUSES['primary']}
+            
         `}>
-        {getIcon(icon, buttonSize)}
+        {ICONS[icon]}
         {buttonLabel}
       </button>
     </>

@@ -6,8 +6,9 @@ import AdminName from './registerAdminForm/AdminName'
 import AdminEmail from './registerAdminForm/AdminEmail'
 import AdminUsername from './registerAdminForm/AdminUsername'
 import AdminPassword from './registerAdminForm/AdminPassword'
+import Button from './customComponents/Button'
 
-const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, loginProfile, setIsRegistering, setIsEditingAdmin }) => {
+const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, loginProfile, setIsRegistering, setIsEditingAdmin, isLoading, setIsLoading }) => {
   const [errors, setErrors] = useState('')
   const [enableBtn, setEnableBtn] = useState(0)
 
@@ -43,16 +44,18 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
 
   const handleRegister = (e) => {
     e.preventDefault()
+    setIsLoading(true)
     if (isEditing === 'register') {
       updateAdmin(token, filterAdminRegister, loginProfile.id)
         .then(data => {
-          console.log('data', data)
+          setIsLoading(false)
           setShowModal('')
           setIsEditing('')
         })
     } else {
       register(filterAdminRegister)
         .then(data => {
+          setIsLoading(false)
           setShowModal('')
           setIsRegistering(false)
         })
@@ -60,6 +63,17 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
           console.log('error', error)
           setErrors(error.message)
         })
+    }
+  }
+
+  const handleCancel = () => {
+    if (isEditing) {
+      setIsEditing('')
+      setShowModal('')
+      setIsEditingAdmin(false)
+    } else {
+      setIsRegistering(false)
+      setShowModal('')
     }
   }
 
@@ -132,31 +146,21 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                  <button
-                    type='submit'
-                    disabled={enableBtn > 0}
-                    className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-darkerPurple text-base font-medium text-white hover:bg-mediumPurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                  >
-                    {isEditing === 'register'
-                      ? 'Update'
-                      : 'Register'}
-                  </button>
-                  <button
-                    type='button'
-                    className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
-                    onClick={() => {
-                      if (isEditing) {
-                        setIsEditing('')
-                        setShowModal('')
-                        setIsEditingAdmin(false)
-                      } else {
-                        setIsRegistering(false)
-                        setShowModal('')
-                      }
-                    }}
-                  >
-                    Cancel
-                  </button>
+                  <Button
+                    type={'button'} 
+                    buttonLabel={'Cancel'}
+                    buttonSize={'medium'}
+                    buttonStatus={'cancel'}
+                    onClick={() => handleCancel()}
+                  />
+                  <Button 
+                    type={isLoading ? 'button' : 'submit'}
+                    buttonLabel={isEditing === 'register' ? 'Update' : 'Register'}
+                    buttonSize={'medium'}
+                    buttonStatus={'primary'}
+                    disabled={enableBtn > 0 ? true : false}
+                    icon={isLoading ? 'refresh' : ''}
+                  />
                 </div>
               </div>
             </form>
