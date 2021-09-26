@@ -1,21 +1,18 @@
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { authListAnnouncement, deleteAnnouncement } from '../../api'
+import Button from '../customComponents/Button'
 
-export default function RenderAnnouncements ({ token, handleIsEditing }) {
+export default function RenderAnnouncements({ token, handleIsEditing }) {
   const [announcements, setAnnouncements] = useState([])
 
   useEffect(() => {
-    authListAnnouncement(token)
-      .then(data => setAnnouncements(data))
+    authListAnnouncement(token).then(data => setAnnouncements(data))
   }, [token])
 
-  const handleDelete = (pk) => {
-    deleteAnnouncement(token, pk)
-      .then(data => {
-        authListAnnouncement(token)
-          .then(data => setAnnouncements(data))
-      })
+  const handleDelete = pk => {
+    deleteAnnouncement(token, pk).then(data => {
+      authListAnnouncement(token).then(data => setAnnouncements(data))
+    })
   }
 
   return (
@@ -27,37 +24,45 @@ export default function RenderAnnouncements ({ token, handleIsEditing }) {
           </p>
           <p className='mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto flex justify-center'>
             Update current announcements or
-            <Link
-              to='/modify-announcements'
-              className='btn-color ml-2 inline-flex self-start items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-            >
-              create a new one
-            </Link>
+            <Button
+              type={'link'}
+              to={'/modify-announcements'}
+              buttonLabel={'create a new one'}
+              buttonSize={'extraSmall'}
+              buttonStatus={'primary'}
+              customButtonStyle={'ml-2 self-start'}
+              overrideButtonStyle={{ padding: '0.375rem 0.625rem' }}
+            />
           </p>
         </div>
 
         <div className='mt-10'>
           <dl className='space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10'>
-            {announcements.map((announcement) => (
+            {announcements.map(announcement => (
               <div key={announcement.pk} className='relative'>
                 <dt>
                   <div className='absolute flex flex-col items-center justify-around h-full'>
-                    <Link
-                      to='/modify-announcements'
-                      className='btn-color inline-flex items-center px-1.5 py-0.5 border border-transparent text-xs font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                    <Button
+                      type={'link'}
+                      to={'/modify-announcements'}
+                      buttonLabel={'Edit'}
+                      buttonSize={'extraSmall'}
+                      buttonStatus={'primary'}
                       onClick={() => handleIsEditing('edit-announcement', announcement)}
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      type='button'
-                      className='btn-color inline-flex items-center px-1.5 py-0.5 border border-transparent text-xs font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                      overrideButtonStyle={{ paddingRight: '0.375rem', paddingLeft: '0.375rem' }}
+                    />
+                    <Button
+                      type={'button'}
+                      buttonLabel={'Delete'}
+                      buttonSize={'extraSmall'}
+                      buttonStatus={'primary'}
                       onClick={() => handleDelete(announcement.pk)}
-                    >
-                      Delete
-                    </button>
+                      overrideButtonStyle={{ paddingRight: '0.375rem', paddingLeft: '0.375rem' }}
+                    />
                   </div>
-                  <p className='ml-16 text-lg leading-6 font-medium text-gray-900'>{announcement.title}</p>
+                  <p className='ml-16 text-lg leading-6 font-medium text-gray-900'>
+                    {announcement.title}
+                  </p>
                 </dt>
                 <dd className='mt-2 ml-16 text-base text-gray-500'>{announcement.body}</dd>
               </div>

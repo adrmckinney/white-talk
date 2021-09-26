@@ -1,13 +1,26 @@
-import { RefreshIcon } from '@heroicons/react/outline'
 import { useEffect } from 'react'
 import { getUser } from '../../api'
+import Button from '../customComponents/Button'
 
-const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, isEditing, setIsEditing, loginProfile, setLoginProfile, setIsEditingAdmin, handleRequestChangeUsername, handleRequestChangePassword, isLoading, isLoadingUsername }) => {
+const ViewAdminRegForm = ({
+  token,
+  showModal,
+  setShowModal,
+  setFormToView,
+  isEditing,
+  setIsEditing,
+  loginProfile,
+  setLoginProfile,
+  setIsEditingAdmin,
+  handleRequestChangeUsername,
+  handleRequestChangePassword,
+  isLoading,
+  isLoadingUsername,
+}) => {
   // console.log('showModal', showModal)
 
   useEffect(() => {
-    getUser(token)
-      .then(data => setLoginProfile(data))
+    getUser(token).then(data => setLoginProfile(data))
   }, [token, setLoginProfile])
 
   //   const handleEmailField = () => {
@@ -28,112 +41,89 @@ const ViewAdminRegForm = ({ token, showModal, setShowModal, setFormToView, isEdi
           <div className='flex justify-between'>
             <span className='w-3/5'>
               <div className='text-coolGray-800 text-xl'>Name</div>
-              <div
-                className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'
-              >
-                <p>
-                  {loginProfile.first_name}
-                </p>
-                <p>
-                  {loginProfile.last_name}
-                </p>
+              <div className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'>
+                <p>{loginProfile.first_name}</p>
+                <p>{loginProfile.last_name}</p>
               </div>
             </span>
-            <button
-              type='button'
-              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+            <Button
+              type={'button'}
+              buttonLabel={'Edit Name'}
+              buttonSize={'medium'}
+              buttonStatus={'primary'}
               onClick={() => setIsEditing('register')}
-            >
-              Edit Name
-            </button>
+              customButtonStyle={'w-1/3 self-end sm:col-start-2 sm:text-sm'}
+            />
           </div>
           <div className='flex justify-between'>
             <span className='w-3/5'>
               <div className='text-coolGray-800 text-xl'>Email</div>
               <div
-                required className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'
-              >{loginProfile.email}
+                required
+                className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'
+              >
+                {loginProfile.email}
               </div>
             </span>
-            <button
-              type='button'
-              className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
+            <Button
+              type={'button'}
+              buttonLabel={'Edit Email'}
+              buttonSize={'medium'}
+              buttonStatus={'primary'}
               onClick={() => setIsEditing('register')}
-            >
-              Edit Email
-            </button>
+              customButtonStyle={'w-1/3 self-end sm:col-start-2 sm:text-sm'}
+            />
           </div>
           <div className='flex justify-between'>
             <span className='w-3/5'>
               <div className='text-coolGray-800 text-xl'>Username</div>
-              <div
-                className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'
-              >{loginProfile.username}
+              <div className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'>
+                {loginProfile.username}
               </div>
             </span>
-            {isLoadingUsername
-              ? <button
-                  type='button'
-                  disabled
-                  className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
-                >
-                <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
-                Processing
-              </button>
-              : <button
-                  type='button'
-                  className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
-                  onClick={() => {
-                    handleRequestChangeUsername(loginProfile.email)
-                  }}
-                >
-                Edit Username
-              </button>}
-
+            <Button
+              type={'button'}
+              buttonLabel={isLoadingUsername ? 'Processing' : 'Edit Username'}
+              buttonSize={'medium'}
+              buttonStatus={'primary'}
+              icon={isLoadingUsername ? 'refresh' : ''}
+              onClick={() => handleRequestChangeUsername(loginProfile.email)}
+              customButtonStyle={'w-1/3 self-end sm:col-start-2 sm:text-sm'}
+            />
           </div>
           <div className='flex justify-between'>
             <span className='w-3/5'>
               <div className='text-coolGray-800 text-xl'>Password</div>
-              <div
-                className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'
-              >**********
+              <div className='flex relative space-x-1 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm'>
+                **********
               </div>
             </span>
-            {isLoading
-              ? <button
-                  type='button'
-                  disabled
-                  className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
-                >
-                <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
-                Processing
-              </button>
-              : <button
-                  type='submit'
-                  className='w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm self-end'
-                  onClick={() => {
-                    handleRequestChangePassword(loginProfile.email)
-                  }}
-                >
-                Change Password
-              </button>}
-
+            <Button
+              type={'button'}
+              buttonLabel={isLoading ? 'Processing' : 'Change Password'}
+              buttonSize={'medium'}
+              buttonStatus={'primary'}
+              icon={isLoading ? 'refresh' : ''}
+              onClick={() => handleRequestChangePassword(loginProfile.email)}
+              customButtonStyle={'w-1/3 self-end sm:col-start-2 sm:text-sm'}
+            />
           </div>
         </div>
       </div>
       <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-        <button
-          type='button'
-          className='mt-3 w-full col-span-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
+        <Button
+          type={'button'}
+          buttonLabel={'Cancel'}
+          buttonSize={'medium'}
+          buttonStatus={'cancel'}
           onClick={() => {
             setShowModal('')
             setIsEditing('')
             setFormToView('')
             setIsEditingAdmin(false)
           }}
-        >
-          Cancel
-        </button>
+          customButtonStyle={'w-full col-span-full self-end sm:col-start-1 sm:text-sm'}
+        />
       </div>
     </>
   )

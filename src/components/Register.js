@@ -8,7 +8,18 @@ import AdminUsername from './registerAdminForm/AdminUsername'
 import AdminPassword from './registerAdminForm/AdminPassword'
 import Button from './customComponents/Button'
 
-const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, loginProfile, setIsRegistering, setIsEditingAdmin, isLoading, setIsLoading }) => {
+const Register = ({
+  token,
+  isEditing,
+  setIsEditing,
+  showModal,
+  setShowModal,
+  loginProfile,
+  setIsRegistering,
+  setIsEditingAdmin,
+  isLoading,
+  setIsLoading,
+}) => {
   const [errors, setErrors] = useState('')
   const [enableBtn, setEnableBtn] = useState(0)
 
@@ -20,7 +31,7 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
       username: '',
       email: '',
       password: '',
-      re_password: ''
+      re_password: '',
     }
   )
 
@@ -29,7 +40,7 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
       setFilterAdminRegister({
         first_name: loginProfile.first_name,
         last_name: loginProfile.last_name,
-        email: loginProfile.email
+        email: loginProfile.email,
       })
     }
   }, [isEditing, loginProfile])
@@ -39,19 +50,18 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
   // console.log('showModal REGISTER', showModal)
   // console.log('loginProfile', loginProfile)
   // console.log('filterAdminRegister', filterAdminRegister)
-
+  console.log('isLoading', isLoading)
   console.log('enableBtn', enableBtn)
 
-  const handleRegister = (e) => {
+  const handleRegister = e => {
     e.preventDefault()
     setIsLoading(true)
     if (isEditing === 'register') {
-      updateAdmin(token, filterAdminRegister, loginProfile.id)
-        .then(data => {
-          setIsLoading(false)
-          setShowModal('')
-          setIsEditing('')
-        })
+      updateAdmin(token, filterAdminRegister, loginProfile.id).then(data => {
+        setIsLoading(false)
+        setShowModal('')
+        setIsEditing('')
+      })
     } else {
       register(filterAdminRegister)
         .then(data => {
@@ -80,7 +90,6 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
   return (
     <div className='fixed z-20 inset-0 overflow-y-auto'>
       <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
-
         {/* Background overlay, show/hide based on modal state. */}
         <Transition
           show={showModal === 'admin-registration-form'}
@@ -96,8 +105,8 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
           </div>
         </Transition>
         {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-        <span className='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden='true'>&#8203;
-
+        <span className='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden='true'>
+          &#8203;
           {/* Modal panel, show/hide based on modal state. */}
           <Transition
             show={showModal === 'admin-registration-form'}
@@ -108,17 +117,17 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
             leaveFrom='opacity-100 translate-y-0 sm:scale-100'
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
-            <form
-              className='mt-8 space-y-6'
-              onSubmit={handleRegister}
-            >
-              <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6' role='dialog' aria-modal='true' aria-labelledby='modal-headline'>
+            <form className='mt-8 space-y-6' onSubmit={handleRegister}>
+              <div
+                className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6'
+                role='dialog'
+                aria-modal='true'
+                aria-labelledby='modal-headline'
+              >
                 <div>
                   <div className='mt-2 mb-5 text-center'>
                     <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
-                      {isEditing === 'register'
-                        ? 'Update Admin Info'
-                        : 'Register New Admin'}
+                      {isEditing === 'register' ? 'Update Admin Info' : 'Register New Admin'}
                     </h3>
                   </div>
 
@@ -130,30 +139,46 @@ const Register = ({ token, isEditing, setIsEditing, showModal, setShowModal, log
                   <input type='hidden' name='remember' value='true' />
                   <div className='rounded-md shadow-sm space-y-4'>
                     <div>
-                      <AdminName filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} loginProfile={loginProfile} />
+                      <AdminName
+                        filterAdminRegister={filterAdminRegister}
+                        setFilterAdminRegister={setFilterAdminRegister}
+                        loginProfile={loginProfile}
+                      />
                     </div>
                     <div>
-                      <AdminEmail filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
+                      <AdminEmail
+                        filterAdminRegister={filterAdminRegister}
+                        setFilterAdminRegister={setFilterAdminRegister}
+                      />
                     </div>
-                    {isEditing !== 'register' &&
+                    {isEditing !== 'register' && (
                       <div>
-                        <AdminUsername filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} />
-                      </div>}
-                    {isEditing !== 'register' &&
+                        <AdminUsername
+                          filterAdminRegister={filterAdminRegister}
+                          setFilterAdminRegister={setFilterAdminRegister}
+                        />
+                      </div>
+                    )}
+                    {isEditing !== 'register' && (
                       <div>
-                        <AdminPassword filterAdminRegister={filterAdminRegister} setFilterAdminRegister={setFilterAdminRegister} setEnableBtn={setEnableBtn} />
-                      </div>}
+                        <AdminPassword
+                          filterAdminRegister={filterAdminRegister}
+                          setFilterAdminRegister={setFilterAdminRegister}
+                          setEnableBtn={setEnableBtn}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
                   <Button
-                    type={'button'} 
+                    type={'button'}
                     buttonLabel={'Cancel'}
                     buttonSize={'medium'}
                     buttonStatus={'cancel'}
                     onClick={() => handleCancel()}
                   />
-                  <Button 
+                  <Button
                     type={isLoading ? 'button' : 'submit'}
                     buttonLabel={isEditing === 'register' ? 'Update' : 'Register'}
                     buttonSize={'medium'}

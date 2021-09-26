@@ -150,6 +150,7 @@ const Alumni = ({ token, isLoggedIn, showModal, setShowModal, prepEmailForm }) =
                               buttonStatus={'primary'}
                               icon={'mail'}
                               customButtonStyle={'w-3/4'}
+                              onClick={() => prepEmailForm(alumniEmailData, 'alumni')}
                             />
 
                             {/* <dt className='order-2 mt-2 text-lg leading-6 font-medium text-gray-500'>Calories</dt>

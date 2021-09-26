@@ -1,9 +1,28 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { MailIcon } from '@heroicons/react/solid'
 import Button from './customComponents/Button'
 
-const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, registrantsToRender, setRegistrantsToRender, confirmedEmailData, handleDeleteState, handleSessionToEdit, handleDelete, handleRegistrantUpdate, handleRefreshAfterEdit, setIsDeleting, setIsEditing, prepEmailForm, handleSelectedEmails, prepSessionRegistrationForm }) => {
+const RenderRegistrants = ({
+  token,
+  sessions,
+  isLoggedIn,
+  setShowModal,
+  dropdownSelectorMode,
+  setDropdownSelectorMode,
+  setSessionToRegister,
+  registrantsToRender,
+  setRegistrantsToRender,
+  confirmedEmailData,
+  handleDeleteState,
+  handleSessionToEdit,
+  handleDelete,
+  handleRegistrantUpdate,
+  handleRefreshAfterEdit,
+  setIsDeleting,
+  setIsEditing,
+  prepEmailForm,
+  handleSelectedEmails,
+  prepSessionRegistrationForm,
+}) => {
   const [selectedEmails, setSelectedEmails] = useState([])
 
   // DEBUGGER STATION
@@ -45,117 +64,136 @@ const RenderRegistrants = ({ token, sessions, isLoggedIn, setShowModal, dropdown
             <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
               <span>
                 <span className='flex items-start justify-end pt-10'>
-                  {registrantsToRender.pk &&
+                  {registrantsToRender.pk && (
                     <div className='flex flex-row space-x-2 mb-6'>
                       <div className='flex justify-center space-x-4'>
-                        <Link
-                          to='/alumni-reg-contact'
-                          className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
+                        <Button
+                          type={'link'}
+                          to={'/alumni-reg-contact'}
+                          buttonLabel={'Email All'}
+                          buttonSize={'small'}
+                          buttonStatus={'secondary'}
+                          icon={'mailSolid'}
                           onClick={() => prepEmailForm(confirmedEmailData, 'registrants')}
-                        >
-                          <span className='flex'>
-                            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                            Email All
-
-                          </span>
-                        </Link>
-                        <Link
-                          to='/alumni-reg-contact'
-                          className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-coolGray-600 bg-lavenderBlue hover:bg-bluePurple hover:text-ghostWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
-                          // onClick={() => handleSelectedEmails(selectedEmails)}
-                          onClick={() => prepEmailForm(confirmedEmailData, 'registrants', selectedEmails)}
-                        >
-                          <span className='flex'>
-                            <MailIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                            Email Selected
-
-                          </span>
-                        </Link>
+                        />
+                        <Button
+                          type={'link'}
+                          to={'/alumni-reg-contact'}
+                          buttonLabel={'Email Selected'}
+                          buttonSize={'small'}
+                          buttonStatus={'secondary'}
+                          icon={'mailSolid'}
+                          onClick={() =>
+                            prepEmailForm(confirmedEmailData, 'registrants', selectedEmails)
+                          }
+                        />
                       </div>
-
-                    </div>}
+                    </div>
+                  )}
                 </span>
                 <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
                   <table className='min-w-full divide-y-8 divide-mediumPurple font-nunito'>
                     <thead className='bg-gray-50'>
                       <tr>
-                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        <th
+                          scope='col'
+                          className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        >
                           Name
                         </th>
-                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        <th
+                          scope='col'
+                          className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        >
                           Pronouns
                         </th>
-                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        <th
+                          scope='col'
+                          className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        >
                           Email
                         </th>
-                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        <th
+                          scope='col'
+                          className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        >
                           Comment
                         </th>
-                        <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        <th
+                          scope='col'
+                          className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        >
                           Confirmed
                         </th>
-                        <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        <th
+                          scope='col'
+                          className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        >
                           Update/Delete
                         </th>
-                        <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        <th
+                          scope='col'
+                          className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        >
                           Action
                         </th>
                       </tr>
                     </thead>
 
                     <tbody className='bg-white divide-y-8 divide-lavenderWebb font-nunito'>
-                      {!registrantsToRender.pk || registrantsToRender.session_registrants.map((registrant, idx) => (
-                        <tr key={`${registrant.pk}-index-${idx}`}>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                            <span className='flex space-x-1'>
-                              <p className=''>{registrant.first_name}</p>
-                              <p>{registrant.last_name}</p>
-                            </span>
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                            {registrant.pronouns}
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
-                            {registrant.email}
-                          </td>
-                          <td className='px-6 py-4 break-words text-sm text-gray-500'>
-                            {registrant.comment}
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center'>
-                            {registrant.confirm ? 'Yes' : 'No'}
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
-                            <span className='flex flex-col space-y-4'>
-                              <Button 
-                                type={'link'}
-                                to={'/session-register'}
-                                buttonLabel={'Edit'}
-                                buttonSize={'small'}
-                                buttonStatus={'secondary'}
-                                icon={'edit'}
-                                onClick={() => prepSessionRegistrationForm('', registrant)}
+                      {!registrantsToRender.pk ||
+                        registrantsToRender.session_registrants.map((registrant, idx) => (
+                          <tr key={`${registrant.pk}-index-${idx}`}>
+                            <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                              <span className='flex space-x-1'>
+                                <p className=''>{registrant.first_name}</p>
+                                <p>{registrant.last_name}</p>
+                              </span>
+                            </td>
+                            <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                              {registrant.pronouns}
+                            </td>
+                            <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500'>
+                              {registrant.email}
+                            </td>
+                            <td className='px-6 py-4 break-words text-sm text-gray-500'>
+                              {registrant.comment}
+                            </td>
+                            <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center'>
+                              {registrant.confirm ? 'Yes' : 'No'}
+                            </td>
+                            <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
+                              <span className='flex flex-col space-y-4'>
+                                <Button
+                                  type={'link'}
+                                  to={'/session-register'}
+                                  buttonLabel={'Edit'}
+                                  buttonSize={'small'}
+                                  buttonStatus={'secondary'}
+                                  icon={'edit'}
+                                  onClick={() => prepSessionRegistrationForm('', registrant)}
+                                />
+                                <Button
+                                  type={'button'}
+                                  buttonLabel={'Delete'}
+                                  buttonSize={'small'}
+                                  buttonStatus={'secondary'}
+                                  icon={'delete'}
+                                  onClick={() => handleDeleteState(registrant)}
+                                />
+                              </span>
+                            </td>
+                            <td className='px-6 py-4 whitespace-nowrap text-center text-sm font-medium'>
+                              <input
+                                id={registrant.pk}
+                                type='checkbox'
+                                onChange={e => {
+                                  handleEmails(e, registrant)
+                                }}
                               />
-                              <Button 
-                                type={'button'}
-                                buttonLabel={'Delete'}
-                                buttonSize={'small'}
-                                buttonStatus={'secondary'}
-                                icon={'delete'}
-                                onClick={() => handleDeleteState(registrant)}
-                              />
-                            </span>
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-center text-sm font-medium'>
-                            <input
-                              id={registrant.pk}
-                              type='checkbox'
-                              onChange={(e) => {
-                                handleEmails(e, registrant)
-                              }}
-                            />
-                          </td>
-                        </tr>
-                      ))}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>

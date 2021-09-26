@@ -11,7 +11,19 @@ import NumberOfRegistrants from './createSessionForm.js/NumberOfRegistrants'
 import { RefreshIcon } from '@heroicons/react/outline'
 import SessionFacilitator from './createSessionForm.js/SessionFacilitator'
 
-const CreateSession2 = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession, setIsCreatingSession, setSessions, isLoading, setIsLoading }) => {
+const CreateSession2 = ({
+  token,
+  showModal,
+  setShowModal,
+  isEditing,
+  setIsEditing,
+  sessionToEdit,
+  handleEditSession,
+  setIsCreatingSession,
+  setSessions,
+  isLoading,
+  setIsLoading,
+}) => {
   const [filterInput, setFilterInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -24,7 +36,7 @@ const CreateSession2 = ({ token, showModal, setShowModal, isEditing, setIsEditin
       session_status: false,
       number_of_registrants_allowed: 8,
       facilitator: '',
-      facilitator_email: ''
+      facilitator_email: '',
     }
   )
 
@@ -36,7 +48,7 @@ const CreateSession2 = ({ token, showModal, setShowModal, isEditing, setIsEditin
     if (isEditing === 'edit-session' && sessionToEdit) {
       // for the existing dates to populate the datepicker fields that have to
       // run through this function that formats them correctly.
-      const convertDate = (date) => {
+      const convertDate = date => {
         return moment(date)
       }
 
@@ -50,7 +62,7 @@ const CreateSession2 = ({ token, showModal, setShowModal, isEditing, setIsEditin
         session_status: sessionToEdit.session_status,
         number_of_registrants_allowed: sessionToEdit.number_of_registrants_allowed,
         facilitator: sessionToEdit.facilitator,
-        facilitator_email: sessionToEdit.facilitator_email
+        facilitator_email: sessionToEdit.facilitator_email,
       })
     }
   }, [isEditing, sessionToEdit])
@@ -62,20 +74,18 @@ const CreateSession2 = ({ token, showModal, setShowModal, isEditing, setIsEditin
   // console.log('showModal', showModal)
   // console.log('isLoading', isLoading)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault()
     setIsLoading(true)
     if (isEditing === 'edit-session') {
       handleEditSession(token, sessionToEdit.pk, filterInput)
     } else {
-      createSession(token, filterInput)
-        .then(data => {
-          setShowModal('')
-          setIsCreatingSession(false)
-          listSessions()
-            .then(data => setSessions(data))
-          setIsLoading(true)
-        })
+      createSession(token, filterInput).then(data => {
+        setShowModal('')
+        setIsCreatingSession(false)
+        listSessions().then(data => setSessions(data))
+        setIsLoading(true)
+      })
     }
   }
 
@@ -102,22 +112,37 @@ const CreateSession2 = ({ token, showModal, setShowModal, isEditing, setIsEditin
               <div className='mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6'>
                 {/* <div className='flex flex-col'> */}
                 <div className='sm:col-span-4 sm:col-start-2'>
-                  <SessionTitle handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                  <SessionTitle
+                    handleFilterSession={handleFilterSession}
+                    filterInput={filterInput}
+                  />
                 </div>
 
                 <div className='sm:col-span-4 sm:col-start-2'>
-                  <SessionFacilitator handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                  <SessionFacilitator
+                    handleFilterSession={handleFilterSession}
+                    filterInput={filterInput}
+                  />
                 </div>
 
                 <div className='sm:col-span-4 sm:col-start-2'>
-                  <FacilitatorEmail handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                  <FacilitatorEmail
+                    handleFilterSession={handleFilterSession}
+                    filterInput={filterInput}
+                  />
                 </div>
 
                 <div className='sm:col-span-full sm:col-start-2 flex justify-between'>
                   {/* <span className='flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between'>
                     <div> */}
-                  <SessionDates handleFilterSession={handleFilterSession} filterInput={filterInput} />
-                  <SessionTime handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                  <SessionDates
+                    handleFilterSession={handleFilterSession}
+                    filterInput={filterInput}
+                  />
+                  <SessionTime
+                    handleFilterSession={handleFilterSession}
+                    filterInput={filterInput}
+                  />
                   {/* </div>
                   </span> */}
                 </div>
@@ -133,35 +158,48 @@ const CreateSession2 = ({ token, showModal, setShowModal, isEditing, setIsEditin
                 <div className='sm:col-span-3'>
                   <span className='flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between'>
                     <div>
-                      <NumberOfRegistrants handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                      <NumberOfRegistrants
+                        handleFilterSession={handleFilterSession}
+                        filterInput={filterInput}
+                      />
                     </div>
                     <div>
-                      <SessionStatus handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                      <SessionStatus
+                        handleFilterSession={handleFilterSession}
+                        filterInput={filterInput}
+                      />
                     </div>
                   </span>
                 </div>
 
                 <div className='sm:col-span-6'>
-                  <SessionDescription handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                  <SessionDescription
+                    handleFilterSession={handleFilterSession}
+                    filterInput={filterInput}
+                  />
                 </div>
-
               </div>
             </div>
-
           </div>
 
           <div className='pt-5'>
             <div className='flex justify-end'>
-              {isLoading
-                ? <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
+              {isLoading ? (
+                <button
+                  type='submit'
+                  className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                >
                   <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                   Processing
-                  </button>
-                : <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'>
-                  {isEditing === 'edit-session'
-                    ? 'Update'
-                    : 'Create'}
-                </button>}
+                </button>
+              ) : (
+                <button
+                  type='submit'
+                  className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                >
+                  {isEditing === 'edit-session' ? 'Update' : 'Create'}
+                </button>
+              )}
               <button
                 type='button'
                 className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm'
