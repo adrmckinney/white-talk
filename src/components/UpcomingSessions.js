@@ -1,13 +1,13 @@
-import { PencilAltIcon, TrashIcon } from '@heroicons/react/outline'
 import Moment from 'react-moment'
+import Button from './customComponents/Button'
 import { sortSessions } from './functions'
 
 const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setSessionToView, setRegistered, isDeleting, setIsDeleting, isRegistering, setIsRegistering, isEditing, setIsEditing, sessionToDelete, setSessionToDelete, sessionToEdit, setSessionToEdit, isLoading, setIsLoading, renderSessionStatus }) => {
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
-  console.log('sessions', sessions)
-  console.log('reg who completed session', sessions.map(session => session.session_registrants.map(regs => regs)))
-  console.log('reg completed status', sessions.map(session => session.session_registrants.map(regs => regs.completed)))
+  // console.log('sessions', sessions)
+  // console.log('reg who completed session', sessions.map(session => session.session_registrants.map(regs => regs)))
+  // console.log('reg completed status', sessions.map(session => session.session_registrants.map(regs => regs.completed)))
 
   return (
     <>
@@ -91,26 +91,29 @@ const UpcomingSessions = ({ token, sessions, setSessions, isLoggedIn, showModal,
                                 </td>
                                 <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                                   <span className='flex flex-col space-y-4'>
-                                    <button
-                                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                    <Button 
+                                      type={'button'}
+                                      buttonLabel={'Edit'}
+                                      buttonSize={'small'}
+                                      buttonStatus={'secondary'}
+                                      icon={'edit'}
+                                      customIconStyle={'-ml-4'}
                                       onClick={() => {
                                         setSessionToEdit(session)
                                         setIsEditing('edit-session')
                                       }}
-                                    >
-                                      <PencilAltIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                                      Edit
-                                    </button>
-                                    <button
-                                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 bg-lavenderBlue text-base font-medium text-coolGray-600 hover:text-ghostWhite hover:bg-bluePurple focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                                    />
+                                    <Button 
+                                      type={'button'}
+                                      buttonLabel={'Delete'}
+                                      buttonSize={'small'}
+                                      buttonStatus={'secondary'}
+                                      icon={'delete'}
                                       onClick={() => {
                                         setIsDeleting('delete-session')
                                         setSessionToDelete(session)
                                       }}
-                                    >
-                                      <TrashIcon className='-ml-0.5 mr-2 h-4 w-4' aria-hidden='true' />
-                                      Delete
-                                    </button>
+                                    />
                                   </span>
                                 </td>
                               </>}

@@ -9,11 +9,23 @@ import SessionStatus from './createSessionForm.js/SessionStatus'
 import FacilitatorEmail from './createSessionForm.js/FacilitatorEmail'
 import SessionTime from './createSessionForm.js/SessionTime'
 import NumberOfRegistrants from './createSessionForm.js/NumberOfRegistrants'
-import { RefreshIcon } from '@heroicons/react/outline'
 import SessionFacilitator from './createSessionForm.js/SessionFacilitator'
 import SessionComplete from './createSessionForm.js/SessionComplete'
+import Button from './customComponents/Button'
 
-const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing, sessionToEdit, handleEditSession, setIsCreatingSession, setSessions, isLoading, setIsLoading }) => {
+const CreateSession = ({
+  token,
+  showModal,
+  setShowModal,
+  isEditing,
+  setIsEditing,
+  sessionToEdit,
+  handleEditSession,
+  setIsCreatingSession,
+  setSessions,
+  isLoading,
+  setIsLoading,
+}) => {
   const [filterInput, setFilterInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -27,7 +39,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
       number_of_registrants_allowed: 8,
       facilitator: '',
       facilitator_email: '',
-      session_complete: false
+      session_complete: false,
     }
   )
 
@@ -37,9 +49,9 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
 
   useEffect(() => {
     if (isEditing === 'edit-session' && sessionToEdit) {
-      // for the existing dates to populate the datepicker fields that have to
+      // for the existing dates to populate the datepicker fields they have to
       // run through this function that formats them correctly.
-      const convertDate = (date) => {
+      const convertDate = date => {
         return moment(date)
       }
 
@@ -54,7 +66,7 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
         number_of_registrants_allowed: sessionToEdit.number_of_registrants_allowed,
         facilitator: sessionToEdit.facilitator,
         facilitator_email: sessionToEdit.facilitator_email,
-        session_complete: sessionToEdit.session_complete
+        session_complete: sessionToEdit.session_complete,
       })
     }
   }, [isEditing, sessionToEdit])
@@ -66,20 +78,18 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
   // console.log('showModal', showModal)
   // console.log('isLoading', isLoading)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault()
     setIsLoading(true)
     if (isEditing === 'edit-session') {
       handleEditSession(token, sessionToEdit.pk, filterInput)
     } else {
-      createSession(token, filterInput)
-        .then(data => {
-          setShowModal('')
-          setIsCreatingSession(false)
-          listSessions()
-            .then(data => setSessions(data))
-          setIsLoading(true)
-        })
+      createSession(token, filterInput).then(data => {
+        setShowModal('')
+        setIsCreatingSession(false)
+        listSessions().then(data => setSessions(data))
+        setIsLoading(false)
+      })
     }
   }
 
@@ -87,7 +97,6 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
     <>
       <div className='fixed z-20 inset-0 overflow-y-auto'>
         <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
-
           {/* Background overlay, show/hide based on modal state. */}
           <Transition
             show={showModal === 'create-session-form'}
@@ -103,8 +112,11 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
             </div>
           </Transition>
           {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-          <span className='sm:inline-block sm:align-middle sm:h-screen w-1/2 sm:w-full' aria-hidden='true'>&#8203;
-
+          <span
+            className='sm:inline-block sm:align-middle sm:h-screen w-1/2 sm:w-full'
+            aria-hidden='true'
+          >
+            &#8203;
             {/* Modal panel, show/hide based on modal state. */}
             <Transition
               show={showModal === 'create-session-form'}
@@ -115,67 +127,95 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <form onSubmit={e => {
-                e.preventDefault()
-                handleSubmit(e)
-              }}
+              <form
+                onSubmit={e => {
+                  e.preventDefault()
+                  handleSubmit(e)
+                }}
               >
-                <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6' role='dialog' aria-modal='true' aria-labelledby='modal-headline'>
+                <div
+                  className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6'
+                  role='dialog'
+                  aria-modal='true'
+                  aria-labelledby='modal-headline'
+                >
                   <div>
                     <div className='mt-2 mb-5 text-center'>
-                      <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
+                      <h3
+                        className='text-lg leading-6 font-medium text-gray-900'
+                        id='modal-headline'
+                      >
                         {isEditing ? 'Update Session' : 'Create a new session'}
                       </h3>
                     </div>
                     <span className='flex flex-col space-y-8'>
                       <div>
-                        <SessionTitle handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                        <SessionTitle
+                          handleFilterSession={handleFilterSession}
+                          filterInput={filterInput}
+                        />
                       </div>
                       <div>
-                        <SessionFacilitator handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                        <SessionFacilitator
+                          handleFilterSession={handleFilterSession}
+                          filterInput={filterInput}
+                        />
                       </div>
                       <div>
-                        <FacilitatorEmail handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                        <FacilitatorEmail
+                          handleFilterSession={handleFilterSession}
+                          filterInput={filterInput}
+                        />
                       </div>
                       <span className='flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between'>
                         <div>
-                          <SessionDates handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                          <SessionDates
+                            handleFilterSession={handleFilterSession}
+                            filterInput={filterInput}
+                          />
                         </div>
                         <div>
-                          <SessionTime handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                          <SessionTime
+                            handleFilterSession={handleFilterSession}
+                            filterInput={filterInput}
+                          />
                         </div>
                       </span>
                       <span className='flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-between'>
                         <div>
-                          <NumberOfRegistrants handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                          <NumberOfRegistrants
+                            handleFilterSession={handleFilterSession}
+                            filterInput={filterInput}
+                          />
                         </div>
                         <div>
-                          <SessionStatus handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                          <SessionStatus
+                            handleFilterSession={handleFilterSession}
+                            filterInput={filterInput}
+                          />
                         </div>
                       </span>
                       <div>
-                        <SessionDescription handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                        <SessionDescription
+                          handleFilterSession={handleFilterSession}
+                          filterInput={filterInput}
+                        />
                       </div>
                       <div>
-                        <SessionComplete handleFilterSession={handleFilterSession} filterInput={filterInput} />
+                        <SessionComplete
+                          handleFilterSession={handleFilterSession}
+                          filterInput={filterInput}
+                        />
                       </div>
                     </span>
                   </div>
                   <span className=''>
                     <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                      {isLoading
-                        ? <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple sm:col-start-2 sm:text-sm'>
-                          <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
-                          Processing
-                          </button>
-                        : <button type='submit' className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple sm:col-start-2 sm:text-sm'>
-                          {isEditing === 'edit-session'
-                            ? 'Update'
-                            : 'Create'}
-                        </button>}
-                      <button
-                        type='button'
-                        className='mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple sm:mt-0 sm:col-start-1 sm:text-sm'
+                      <Button
+                        type={'button'}
+                        buttonLabel={'Cancel'}
+                        buttonSize={'medium'}
+                        buttonStatus={'cancel'}
                         onClick={() => {
                           if (isEditing) {
                             setIsEditing('')
@@ -185,9 +225,20 @@ const CreateSession = ({ token, showModal, setShowModal, isEditing, setIsEditing
                             setIsCreatingSession(false)
                           }
                         }}
-                      >
-                        Cancel
-                      </button>
+                      />
+                      <Button
+                        type={isLoading ? 'button' : 'submit'}
+                        buttonLabel={
+                          isLoading
+                            ? 'Processing'
+                            : isEditing === 'edit-session'
+                            ? 'Update'
+                            : 'Create'
+                        }
+                        buttonSize={'medium'}
+                        icon={isLoading ? 'refresh' : ''}
+                        buttonStatus={'primary'}
+                      />
                     </div>
                   </span>
                 </div>

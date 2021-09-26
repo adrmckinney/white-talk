@@ -9,6 +9,7 @@ import SessionRegisterOverlay from './sessionForms/SessionRegisterOverlay'
 import CreateSession from './CreateSession'
 import { PencilIcon } from '@heroicons/react/outline'
 import SessionsLoadingAlert from './alerts/SessionsLoadingAlert'
+import Button from './customComponents/Button'
 // import HomeDivider from './HomeDivider'
 
 const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setSessionToView, registered, setRegistered, prepSessionRegistrationForm }) => {
@@ -76,18 +77,19 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
   const renderSessionStatus = (session, mode) => {
     if (session.session_status) {
       return (
-        <Link
-          to='/session-register'
-          className='w-3/4 lg:w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1 table-btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+        <Button 
+          type={'link'}
+          to={'/session-register'}
+          buttonLabel={'Sign up'}
+          buttonSize={'small'}
+          buttonStatus={'secondary'}
+          icon={'edit'}
+          overrideIconStyle={{marginRight: '10px'}}
           onClick={() => {
             setIsRegistering(mode)
-
             prepSessionRegistrationForm(session)
           }}
-        >
-          <PencilIcon className='mr-2 h-4 w-4' aria-hidden='true' />
-          Sign up
-        </Link>
+        />
       )
     } else {
       return (

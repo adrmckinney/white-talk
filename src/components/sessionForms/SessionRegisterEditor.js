@@ -6,6 +6,7 @@ import { sendEmail, sessionRegister, updateRegistrant } from '../../api'
 import SuccessfulRegistrationModal from '../alerts/SuccessfulRegistrationModal'
 import SessionToRegister from './SessionToRegister'
 import ConfirmationStatus from './ConfirmationStatus'
+import Button from '../customComponents/Button'
 
 export default function SessionRegisterEditor ({ token, sessionRegistrationData }) {
   const [isEditing, setIsEditing] = useState(false)
@@ -110,6 +111,11 @@ export default function SessionRegisterEditor ({ token, sessionRegistrationData 
 
   const handleChange = (name, value) => {
     setRegistrationParams(state => ({ ...state, [name]: value }))
+  }
+
+  const handleCancel = () => {
+    setIsEditing(false)
+    history.goBack()
   }
 
   const toggleAlert = (Object) => {
@@ -283,31 +289,24 @@ export default function SessionRegisterEditor ({ token, sessionRegistrationData 
               </div>}
 
             <div className='sm:col-span-2 space-y-4'>
-              {isLoading
-                ? <button type='button' className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'>
-                  <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
-                  Processing...
-                  </button>
-                : <button
-                    type='submit'
-                    className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
-                  >
-                  <CheckIcon className='h-6 w-6 mr-4 self-center' />
-                  {isEditing
-                    ? 'Update'
-                    : 'Register'}
-                </button>}
-              <button
-                type='submit'
-                className='btn-color w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-darkerPurple'
-                onClick={() => {
-                  setIsEditing(false)
-                  history.goBack()
-                }}
-              >
-                <XIcon className='h-6 w-6 mr-4 self-center' />
-                Cancel
-              </button>
+              <Button 
+                type={isLoading ? 'button' : 'submit'}
+                buttonLabel={isEditing ? 'Update' : 'Register'}
+                buttonSize={'medium'}
+                buttonStatus={'primary'}
+                disabled={isLoading ? true : false}
+                icon={isLoading ? 'refresh' : 'check'}
+                customStyle={'w-full'}
+              />
+              <Button
+                type={'button'}
+                buttonLabel={'Cancel'}
+                buttonSize={'medium'}
+                buttonStatus={'cancel'}
+                icon={'xicon'}
+                customStyle={'w-full'}
+                onClick={() => handleCancel()} 
+              />
             </div>
           </form>
         </div>

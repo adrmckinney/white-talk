@@ -94,7 +94,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
 
   if (isRegistering) {
     return (
-      <Register token={token} showModal='admin-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
+      <Register token={token} showModal='admin-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} isLoading={isLoading} setIsLoading={setIsLoading} />
     )
   }
 

@@ -27,13 +27,13 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   // console.log('confirmedEmailData', confirmedEmailData)
   // console.log('emails', emails)
   // console.log('isDeleting', isDeleting)
-  console.log('isEditing', isEditing)
+  // console.log('isEditing', isEditing)
   // console.log('sessions', sessions)
   // console.log('registrantsToRender', registrantsToRender)
   // console.log('registrantToEdit', registrantToEdit)
   // console.log('registrantToDelete', registrantToDelete)
   // console.log('sessions in ViewSessionReg', sessions)
-  console.log('sessionToUpate', sessionToUpdate)
+  // console.log('sessionToUpate', sessionToUpdate)
 
   useEffect(() => {
     listSessions()
