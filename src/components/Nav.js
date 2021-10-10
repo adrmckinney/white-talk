@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useReducer, useContext } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { pageClickEvent } from './functions'
 import NavBtns from './NavBtns'
@@ -97,6 +97,11 @@ const Nav = ({
     username: '',
     password: '',
   })
+
+  const handleLogin = () => {
+    setShowMenu(false)
+    setIsSigningIn('login-modal')
+  }
 
   if (isSigningIn === 'login-modal') {
     return (
@@ -228,9 +233,11 @@ const Nav = ({
           {/* <Search /> */}
           <div className='flex sm:hidden'>
             {/* <!-- Mobile menu button --> */}
-            <button
-              type='button'
-              className='bg-mediumPurple p-2 rounded-md inline-flex items-center justify-center text-indigo-200 hover:text-white hover:bg-darkerPurple hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-darkerPurple focus:ring-white'
+            <Button
+              type={'button'}
+              buttonStatus={'mobileHamburger'}
+              buttonSize={'mobileHamburger'}
+              labelPosition={'center'}
               aria-controls='mobile-menu'
               aria-expanded='false'
               onClick={() => setShowMenu(showMenu => !showMenu)}
@@ -270,7 +277,7 @@ const Nav = ({
                   d='M6 18L18 6M6 6l12 12'
                 />
               </svg>
-            </button>
+            </Button>
           </div>
           <div className='hidden sm:block sm:ml-4'>
             <div className='flex items-center'>
@@ -308,77 +315,70 @@ const Nav = ({
                   >
                     {token && (
                       <>
-                        <button
-                          className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
+                        <Button
+                          type={'button'}
+                          buttonLabel={'Create New Session'}
+                          buttonSize={'text'}
+                          buttonStatus={'text'}
+                          labelPosition={'left'}
                           role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
                             setIsCreatingSession(true)
                           }}
-                        >
-                          Create New Session
-                        </button>
-
-                        <Link
-                          to='/render-announcements'
-                          className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
+                        />
+                        <Button
+                          type={'link'}
+                          to={'/render-announcements'}
+                          buttonLabel={'Modify Announcements'}
+                          buttonSize={'text'}
+                          buttonStatus={'text'}
+                          labelPosition={'left'}
                           role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
                           }}
-                        >
-                          Modify Announcements
-                        </Link>
-
-                        <button
-                          type='button'
-                          className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
-                          role='menuitem'
+                        />
+                        <Button
+                          type={'button'}
+                          buttonLabel={'Register New Admin'}
+                          buttonSize={'text'}
+                          buttonStatus={'text'}
+                          labelPosition={'left'}
                           disabled={username === 'testUser'}
+                          role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
                             setIsRegistering(true)
                           }}
-                        >
-                          Register New Admin
-                        </button>
-
-                        <button
-                          className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
-                          role='menuitem'
+                        />
+                        <Button
+                          type={'button'}
+                          buttonLabel={'Update User Settings'}
+                          buttonSize={'text'}
+                          buttonStatus={'text'}
+                          labelPosition={'left'}
                           disabled={username === 'testUser'}
+                          role='menuitem'
                           onClick={() => {
                             setShowMenu(false)
                             setIsEditingAdmin(true)
                           }}
-                        >
-                          Update User Settings
-                        </button>
+                        />
                       </>
                     )}
-                    {isLoggedIn ? (
-                      <Link
-                        to='/'
-                        className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
-                        role='menuitem'
-                        onClick={() => {
-                          handleLogout()
-                        }}
-                      >
-                        Sign out
-                      </Link>
-                    ) : (
-                      <button
-                        className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
-                        role='menuitem'
-                        onClick={() => {
-                          setShowMenu(false)
-                          setIsSigningIn('login-modal')
-                        }}
-                      >
-                        Sign in
-                      </button>
-                    )}
+                    <Button
+                      type={isLoggedIn ? 'link' : 'button'}
+                      to={'/'}
+                      buttonLabel={isLoggedIn ? 'Sign out' : 'Sign in'}
+                      buttonSize={'text'}
+                      buttonStatus={'text'}
+                      labelPosition={isLoggedIn ? 'left' : 'center'}
+                      role='menuitem'
+                      onClick={() => {
+                        isLoggedIn ? handleLogout() : handleLogin()
+                      }}
+                    />
                   </div>
                 </Transition>
               </div>
