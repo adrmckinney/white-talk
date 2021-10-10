@@ -198,9 +198,9 @@ function App() {
                   />
                 </Route>
 
-                <Route path='/test-session-create'>
+                {/* <Route path='/test-session-create'>
                   <PageForm token={token} />
-                </Route>
+                </Route> */}
 
                 <Route path='/about'>
                   <About />
