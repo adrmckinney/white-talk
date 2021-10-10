@@ -7,31 +7,39 @@ import Name from './Name'
 import Pronouns from './Pronouns'
 import SessionToRegister from './SessionToRegister'
 import ConfirmationStatus from './ConfirmationStatus'
-import { RefreshIcon } from '@heroicons/react/outline'
 import Button from '../customComponents/Button'
 
-const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegister, setRegistered, showModal, setShowModal, isEditing, setIsEditing, registrantToEdit, setIsRegistering, handleRegistrantUpdate, setRegistrantsToRender }) => {
+const SessionRegister = ({
+  token,
+  sessions,
+  setRegistered,
+  showModal,
+  setShowModal,
+  isEditing,
+  setIsEditing,
+  registrantToEdit,
+  setIsRegistering,
+  handleRegistrantUpdate,
+  setRegistrantsToRender,
+}) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [filterInput, setFilterInput] = useReducer(
-    (name, value) => ({ ...name, ...value }),
-    {
-      first_name: '',
-      last_name: '',
-      pronouns: '',
-      email: '',
-      comment: '',
-      session: null,
-      confirm: false,
-      // specifically for registration emails
-      title: '',
-      facilitator: '',
-      facilitator_email: '',
-      registrant_cue_number: null,
-      number_of_registrants_allowed: null,
-      description: ''
-    }
-  )
-  const emailFacilitatorParams = ({
+  const [filterInput, setFilterInput] = useReducer((name, value) => ({ ...name, ...value }), {
+    first_name: '',
+    last_name: '',
+    pronouns: '',
+    email: '',
+    comment: '',
+    session: null,
+    confirm: false,
+    // specifically for registration emails
+    title: '',
+    facilitator: '',
+    facilitator_email: '',
+    registrant_cue_number: null,
+    number_of_registrants_allowed: null,
+    description: '',
+  })
+  const emailFacilitatorParams = {
     first_name: filterInput.first_name,
     last_name: filterInput.last_name,
     pronouns: filterInput.pronouns,
@@ -43,17 +51,17 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
     facilitator: filterInput.facilitator,
     facilitator_email: filterInput.facilitator_email,
     registrant_cue_number: filterInput.registrant_cue_number + 1,
-    number_of_registrants_allowed: filterInput.number_of_registrants_allowed
-  })
-  const emailRegistrantParams = ({
+    number_of_registrants_allowed: filterInput.number_of_registrants_allowed,
+  }
+  const emailRegistrantParams = {
     first_name: filterInput.first_name,
     last_name: filterInput.last_name,
     email: filterInput.email,
     session: filterInput.title,
     reply_to: filterInput.facilitator_email,
     facilitator: filterInput.facilitator,
-    description: filterInput.description
-  })
+    description: filterInput.description,
+  }
 
   // DEBUGGER STATION
   // console.log('sessions in SessionRegister', sessions)
@@ -72,12 +80,12 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
         email: registrantToEdit.email,
         comment: registrantToEdit.comment,
         session: registrantToEdit.session,
-        confirm: registrantToEdit.confirm
+        confirm: registrantToEdit.confirm,
       })
     }
   }, [isEditing, registrantToEdit])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault()
     setIsLoading(true)
     if (isEditing === 'edit-registrant') {
@@ -89,18 +97,22 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
           setShowModal('')
           setIsRegistering('')
           setRegistered(true)
-          sendEmail(emailRegistrantParams, 'template_jthf4wi')
-            .then(res => {
+          sendEmail(emailRegistrantParams, 'template_jthf4wi').then(
+            res => {
               console.log('success')
-            }, function (error) {
+            },
+            function (error) {
               console.log('FAILED...', error)
-            })
-          sendEmail(emailFacilitatorParams, 'template_45evc8x')
-            .then(res => {
+            }
+          )
+          sendEmail(emailFacilitatorParams, 'template_45evc8x').then(
+            res => {
               console.log('success')
-            }, function (error) {
+            },
+            function (error) {
               console.log('FAILED...', error)
-            })
+            }
+          )
         })
         .catch()
     }
@@ -119,7 +131,6 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
     <>
       <div className='fixed z-20 inset-0 overflow-y-auto'>
         <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
-
           <Transition
             show={showModal === 'session-registration-form'}
             enter='ease-out duration-300'
@@ -144,18 +155,25 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
             <form onSubmit={handleSubmit}>
-              <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6' role='dialog' aria-modal='true' aria-labelledby='modal-headline'>
+              <div
+                className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6'
+                role='dialog'
+                aria-modal='true'
+                aria-labelledby='modal-headline'
+              >
                 <div>
                   <div className='mt-2 mb-5 text-center'>
                     <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
-                      {isEditing
-                        ? 'Update Registrant Info'
-                        : 'Session Registration'}
+                      {isEditing ? 'Update Registrant Info' : 'Session Registration'}
                     </h3>
                   </div>
                   <span className='space-y-4'>
                     <div>
-                      <SessionToRegister filterInput={filterInput} setFilterInput={setFilterInput} sessions={sessions} sessionToRegister={sessionToRegister} />
+                      <SessionToRegister
+                        filterInput={filterInput}
+                        setFilterInput={setFilterInput}
+                        sessions={sessions}
+                      />
                     </div>
                     <div>
                       <Name filterInput={filterInput} setFilterInput={setFilterInput} />
@@ -169,10 +187,14 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
                     <div>
                       <Comments filterInput={filterInput} setFilterInput={setFilterInput} />
                     </div>
-                    {isEditing &&
+                    {isEditing && (
                       <div>
-                        <ConfirmationStatus filterInput={filterInput} setFilterInput={setFilterInput} />
-                      </div>}
+                        <ConfirmationStatus
+                          filterInput={filterInput}
+                          setFilterInput={setFilterInput}
+                        />
+                      </div>
+                    )}
                   </span>
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
@@ -186,7 +208,7 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
                         ? 'Update'
                         : 'Register'}
                       </button>} */}
-                  <Button 
+                  <Button
                     type={isLoading ? 'button' : 'submit'}
                     buttonLabel={isEditing ? 'Update' : 'Register'}
                     buttonSize={'medium'}
@@ -199,7 +221,7 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
                     buttonLabel={'SessionRegister.js'}
                     buttonSize={'small'}
                     buttonStatus={'cancel'}
-                    onClick={() => handleCancel()} 
+                    onClick={() => handleCancel()}
                   />
                 </div>
               </div>
@@ -207,7 +229,6 @@ const SessionRegister = ({ token, sessions, sessionToRegister, setSessionToRegis
           </Transition>
         </div>
       </div>
-
     </>
   )
 }

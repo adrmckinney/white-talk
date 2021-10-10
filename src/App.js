@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useState } from 'react'
+import { SessionsContext } from './components/useContextSessions'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import createPersistedState from 'use-persisted-state'
 import './App.css'
@@ -18,48 +19,78 @@ import Alumni from './components/Alumni'
 import About from './components/About'
 import AlumniRegContact from './components/AlumniRegContact'
 import SessionRegisterEditor from './components/sessionForms/SessionRegisterEditor'
+import { ModalContext } from './components/context/useModalContext'
+import Modal from './components/customComponents/Modal'
+import TestSessionCreate from './components/TestSessionCreate'
+import PageForm from './components/customComponents/customForms/formInputs/PageForm'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
 
-function App () {
+function App() {
   const [username, setUsername] = useUsername(null)
   const [loggedInName, setLoggedInName] = useState('')
   const [token, setToken] = useToken(null)
-  const isLoggedIn = (username && token)
+  const isLoggedIn = username && token
   const [registered, setRegistered] = useState(false)
-  const [sessions, setSessions] = useState([])
   const [sessionRegistrationData, setSessionRegistrationData] = useState({
     sessions: [], // the editor's dropdown menu needs all sessions (SessionToRegister.js)
     session: [], // for new registration and editing registrant info
-    registrant: [] // for editing registrants info
+    registrant: [], // for editing registrants info
   })
-  const [dropdownSelectorMode, setDropdownSelectorMode] = useState('')
   const [showModal, setShowModal] = useState('')
   const [formToView, setFormToView] = useState('')
   const [sessionToView, setSessionToView] = useState([])
-  const [isEditingParams, setIsEditingParams] = useState([])
+  const [announcementToEdit, setIsEditingParams] = useState([])
   const [showTransparentNav, setShowTransparentNav] = useState(false)
   const [emailFormData, setEmailFormData] = useState({
     names_emails: [],
     origin: '',
     facilitator_name: '',
-    facilitator_email: ''
+    facilitator_email: '',
   })
+  const [sessions, setSessions] = useState([])
+  const [sessionToEdit, setSessionToEdit] = useState([])
+  const [sessionToDelete, setSessionToDelete] = useState([])
+  const sessionsControls = useMemo(
+    () => ({
+      sessions,
+      setSessions,
+      sessionToEdit,
+      setSessionToEdit,
+      sessionToDelete,
+      setSessionToDelete,
+    }),
+    [sessions, sessionToEdit, sessionToDelete]
+  )
+  const [modal, setModal] = useState(false)
+  const [modalComponent, setModalComponent] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const modalControls = useMemo(
+    () => ({
+      modal,
+      setModal,
+      modalComponent,
+      setModalComponent,
+      isLoading,
+      setIsLoading,
+    }),
+    [modal, modalComponent]
+  )
 
-  function setAuth (username, token) {
+  function setAuth(username, token) {
     setUsername(username)
     setToken(token)
   }
 
   useEffect(() => {
     if (isLoggedIn) {
-      getUser(token)
-        .then(data => setLoggedInName(data.first_name))
+      getUser(token).then(data => setLoggedInName(data.first_name))
     }
+    listSessions().then(data => setSessions(data))
   }, [token, isLoggedIn])
 
-  const handleIsEditing = (value, params) => {
+  const handleEditAnnouncements = (value, params) => {
     if (value === 'edit-announcement') {
       setIsEditingParams(params)
     } else if (value === 'clear-params') {
@@ -67,33 +98,32 @@ function App () {
     }
   }
 
-  const changeNavAnimation = (value) => {
+  const changeNavAnimation = value => {
     setShowTransparentNav(value)
   }
 
   const prepSessionRegistrationForm = (session, registrant) => {
-    listSessions()
-      .then(sessions => {
-        if (registrant) {
-          sessions.forEach(sessionForEdit => {
-            if (sessionForEdit.pk === registrant.session) {
-              setSessionRegistrationData(state => ({
-                ...state,
-                sessions: sessions,
-                session: sessionForEdit,
-                registrant: registrant
-              }))
-            }
-          })
-        } else {
-          setSessionRegistrationData(state => ({
-            ...state,
-            sessions: sessions,
-            session: session,
-            registrant: ''
-          }))
-        }
-      })
+    listSessions().then(sessions => {
+      if (registrant) {
+        sessions.forEach(sessionForEdit => {
+          if (sessionForEdit.pk === registrant.session) {
+            setSessionRegistrationData(state => ({
+              ...state,
+              sessions: sessions,
+              session: sessionForEdit,
+              registrant: registrant,
+            }))
+          }
+        })
+      } else {
+        setSessionRegistrationData(state => ({
+          ...state,
+          sessions: sessions,
+          session: session,
+          registrant: '',
+        }))
+      }
+    })
   }
 
   const prepEmailForm = (emailData, origin, selectedEmails) => {
@@ -103,7 +133,7 @@ function App () {
         origin: origin,
         names_emails: selectedEmails,
         facilitator_name: emailData.session_facilitator,
-        facilitator_email: emailData.facilitator_email
+        facilitator_email: emailData.facilitator_email,
       }))
     } else {
       setEmailFormData(state => ({
@@ -111,7 +141,7 @@ function App () {
         origin: origin,
         names_emails: emailData.names_emails,
         facilitator_name: emailData.session_facilitator,
-        facilitator_email: emailData.facilitator_email
+        facilitator_email: emailData.facilitator_email,
       }))
     }
   }
@@ -121,74 +151,140 @@ function App () {
   // console.log('emailFormData', emailFormData)
 
   return (
-    <Router>
-      <div className='min-h-screen bg-ghostWhite'>
+    <SessionsContext.Provider value={sessionsControls}>
+      <ModalContext.Provider value={modalControls}>
+        <Router>
+          <div className='min-h-screen bg-ghostWhite'>
+            <div className='bg-mediumPurple pb-32'>
+              <Nav
+                token={token}
+                setToken={setToken}
+                username={username}
+                setUsername={setUsername}
+                isLoggedIn={isLoggedIn}
+                setAuth={setAuth}
+                showModal={showModal}
+                setShowModal={setShowModal}
+                loggedInName={loggedInName}
+                setFormToView={setFormToView}
+                showTransparentNav={showTransparentNav}
+              />
+            </div>
+            <main className='-mt-32 h-screen overflow-x-hidden overflow-y-auto perspective'>
+              <Modal />
+              <Switch>
+                <Route path='/book-study'>
+                  <BookStudy />
+                </Route>
 
-        <div className='bg-mediumPurple pb-32'>
-          <Nav token={token} setToken={setToken} username={username} setUsername={setUsername} isLoggedIn={isLoggedIn} setAuth={setAuth} showModal={showModal} setShowModal={setShowModal} loggedInName={loggedInName} setFormToView={setFormToView} setSessions={setSessions} showTransparentNav={showTransparentNav} />
-        </div>
-        <main className='-mt-32 h-screen overflow-x-hidden overflow-y-auto perspective'>
-          <Switch>
+                <Route path='/sessions'>
+                  <Sessions
+                    token={token}
+                    isLoggedIn={isLoggedIn}
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                    setFormToView={setFormToView}
+                    setSessionToView={setSessionToView}
+                    registered={registered}
+                    setRegistered={setRegistered}
+                    prepSessionRegistrationForm={prepSessionRegistrationForm}
+                  />
+                </Route>
 
-            <Route path='/book-study'>
-              <BookStudy />
-            </Route>
+                <Route path='/session-register'>
+                  <SessionRegisterEditor
+                    token={token}
+                    sessionRegistrationData={sessionRegistrationData}
+                  />
+                </Route>
 
-            <Route path='/sessions'>
-              <Sessions token={token} isLoggedIn={isLoggedIn} sessions={sessions} setSessions={setSessions} showModal={showModal} setShowModal={setShowModal} setFormToView={setFormToView} setSessionToView={setSessionToView} registered={registered} setRegistered={setRegistered} prepSessionRegistrationForm={prepSessionRegistrationForm} />
-            </Route>
+                {/* <Route path='/test-session-create'>
+                  <PageForm token={token} />
+                </Route> */}
 
-            <Route path='/session-register'>
-              <SessionRegisterEditor token={token} sessionRegistrationData={sessionRegistrationData} />
-            </Route>
+                <Route path='/about'>
+                  <About />
+                </Route>
 
-            <Route path='/about'>
-              <About />
-            </Route>
+                <Route path='/view-session-registrants'>
+                  <ViewSessionRegistrants
+                    token={token}
+                    isLoggedIn={isLoggedIn}
+                    setShowModal={setShowModal}
+                    prepEmailForm={prepEmailForm}
+                    prepSessionRegistrationForm={prepSessionRegistrationForm}
+                  />
+                </Route>
 
-            <Route path='/view-session-registrants'>
-              <ViewSessionRegistrants token={token} isLoggedIn={isLoggedIn} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setShowModal={setShowModal} sessions={sessions} prepEmailForm={prepEmailForm} prepSessionRegistrationForm={prepSessionRegistrationForm} />
-            </Route>
+                <Route path='/past-sessions'>
+                  <PastSessions
+                    token={token}
+                    isLoggedIn={isLoggedIn}
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                  />
+                </Route>
 
-            <Route path='/past-sessions'>
-              <PastSessions token={token} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} />
-            </Route>
+                <Route path='/alumni'>
+                  <Alumni token={token} isLoggedIn={isLoggedIn} prepEmailForm={prepEmailForm} />
+                </Route>
 
-            <Route path='/alumni'>
-              <Alumni token={token} isLoggedIn={isLoggedIn} prepEmailForm={prepEmailForm} />
-            </Route>
+                <Route path='/alumni-reg-contact'>
+                  <AlumniRegContact prepEmailForm={prepEmailForm} emailFormData={emailFormData} />
+                </Route>
 
-            <Route path='/alumni-reg-contact'>
-              <AlumniRegContact prepEmailForm={prepEmailForm} emailFormData={emailFormData} />
-            </Route>
+                <Route path='/view-form'>
+                  <ViewForm
+                    token={token}
+                    isLoggedIn={isLoggedIn}
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                    formToView={formToView}
+                    setFormToView={setFormToView}
+                    sessionToView={sessionToView}
+                  />
+                </Route>
 
-            <Route path='/view-form'>
-              <ViewForm token={token} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} formToView={formToView} setFormToView={setFormToView} sessionToView={sessionToView} />
-            </Route>
+                <Route path='/render-announcements'>
+                  <RenderAnnouncements
+                    token={token}
+                    handleEditAnnouncements={handleEditAnnouncements}
+                  />
+                </Route>
 
-            <Route path='/render-announcements'>
-              <RenderAnnouncements token={token} handleIsEditing={handleIsEditing} />
-            </Route>
+                <Route path='/modify-announcements'>
+                  <ModifyAnnouncements
+                    token={token}
+                    announcementToEdit={announcementToEdit}
+                    handleEditAnnouncements={handleEditAnnouncements}
+                  />
+                </Route>
 
-            <Route path='/modify-announcements'>
-              <ModifyAnnouncements token={token} isEditingParams={isEditingParams} handleIsEditing={handleIsEditing} />
-            </Route>
+                <Route exact path='/password/reset/confirm/:uid/:urlToken'>
+                  <PasswordResetConfirm
+                    token={token}
+                    setToken={setToken}
+                    setUsername={setUsername}
+                  />
+                </Route>
 
-            <Route exact path='/password/reset/confirm/:uid/:urlToken'>
-              <PasswordResetConfirm token={token} setToken={setToken} setUsername={setUsername} />
-            </Route>
+                <Route exact path='/username/reset/confirm/:uid/:urlToken'>
+                  <UsernameResetConfirm
+                    token={token}
+                    setToken={setToken}
+                    setUsername={setUsername}
+                  />
+                </Route>
 
-            <Route exact path='/username/reset/confirm/:uid/:urlToken'>
-              <UsernameResetConfirm token={token} setToken={setToken} setUsername={setUsername} />
-            </Route>
-
-            <Route path='/'>
-              <Home changeNavAnimation={changeNavAnimation} />
-            </Route>
-          </Switch>
-        </main>
-      </div>
-    </Router>
+                <Route path='/'>
+                  <Home changeNavAnimation={changeNavAnimation} />
+                </Route>
+              </Switch>
+            </main>
+          </div>
+        </Router>
+      </ModalContext.Provider>
+    </SessionsContext.Provider>
   )
 }
 

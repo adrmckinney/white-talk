@@ -1,6 +1,4 @@
-import { MailIcon, PencilAltIcon } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import Moment from 'react-moment'
 import { listSessions } from '../api'
 import { sortSessions } from './functions'

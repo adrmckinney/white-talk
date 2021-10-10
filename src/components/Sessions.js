@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import UpcomingSessions from './UpcomingSessions'
 import MobileUpcomingSessions from './MobileUpcomingSessions'
 import { listSessions, deleteSession, updateSession } from '../api'
@@ -7,49 +6,52 @@ import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
 import SessionRegisterOverlay from './sessionForms/SessionRegisterOverlay'
 import CreateSession from './CreateSession'
-import { PencilIcon } from '@heroicons/react/outline'
 import SessionsLoadingAlert from './alerts/SessionsLoadingAlert'
 import Button from './customComponents/Button'
-// import HomeDivider from './HomeDivider'
+import { SessionsContext } from './useContextSessions'
 
-const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSessions, sessionToRegister, setSessionToRegister, setSessionToView, registered, setRegistered, prepSessionRegistrationForm }) => {
+const Sessions = ({
+  token,
+  isLoggedIn,
+  showModal,
+  setShowModal,
+  setSessionToView,
+  registered,
+  setRegistered,
+  prepSessionRegistrationForm,
+}) => {
   const [isDeleting, setIsDeleting] = useState('')
   const [isRegistering, setIsRegistering] = useState('')
   const [isEditing, setIsEditing] = useState('')
-  const [sessionToDelete, setSessionToDelete] = useState([])
-  const [sessionToEdit, setSessionToEdit] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [sessionsAreLoading, setSessionsAreLoading] = useState(false)
+  const { sessions, setSessions } = useContext(SessionsContext)
 
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
+  // console.log('sessionsControls.sessions', sessionsControls.sessions)
   // console.log('sessions', sessions)
-
-  useEffect(() => {
-    setSessionsAreLoading(true)
-    listSessions()
-      .then(data => {
-        setSessionsAreLoading(false)
-        setSessions(data)
-      })
-  }, [setSessions])
 
   // Had to use useCallback here because the handleEditSession without
   // it was causing the useEffect below to run on every render
-  const handleEditSession = useCallback((token, pk, input) => {
-    updateSession(token, pk, input)
-      .then(data => {
-        listSessions()
-          .then(data => setSessions(data))
+  const handleEditSession = useCallback(
+    (token, pk, input) => {
+      updateSession(token, pk, input).then(data => {
+        listSessions().then(data => setSessions(data))
         setIsLoading(false)
         setIsEditing('')
         setShowModal('')
       })
-  }, [setSessions, setShowModal])
+    },
+    [setSessions, setShowModal]
+  )
 
   useEffect(() => {
     sessions.forEach(session => {
-      if (session.session_registrants.length >= session.number_of_registrants_allowed && session.session_status === true) {
+      if (
+        session.session_registrants.length >= session.number_of_registrants_allowed &&
+        session.session_status === true
+      ) {
         const input = {
           title: session.title,
           start_date: session.start_date,
@@ -58,7 +60,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
           end_time: session.end_time,
           description: session.description,
           session_status: 'false',
-          number_of_registrants_allowed: session.number_of_registrants_allowed
+          number_of_registrants_allowed: session.number_of_registrants_allowed,
         }
         // console.log('input', input)
         handleEditSession(token, session.pk, input)
@@ -66,25 +68,23 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
     })
   }, [sessions, handleEditSession, token])
 
-  const handleDelete = (pk) => {
-    deleteSession(token, pk)
-      .then(data => {
-        listSessions()
-          .then(data => setSessions(data))
-      })
+  const handleDelete = pk => {
+    deleteSession(token, pk).then(data => {
+      listSessions().then(data => setSessions(data))
+    })
   }
 
   const renderSessionStatus = (session, mode) => {
     if (session.session_status) {
       return (
-        <Button 
+        <Button
           type={'link'}
           to={'/session-register'}
           buttonLabel={'Sign up'}
           buttonSize={'small'}
           buttonStatus={'secondary'}
           icon={'edit'}
-          overrideIconStyle={{marginRight: '10px'}}
+          overrideIconStyle={{ marginRight: '10px' }}
           onClick={() => {
             setIsRegistering(mode)
             prepSessionRegistrationForm(session)
@@ -98,7 +98,7 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
     }
   }
 
-  const getConfirmationCount = (session) => {
+  const getConfirmationCount = session => {
     const confirmationStatuses = session.session_registrants.map(reg => reg.confirm)
     const confirmed = []
     confirmationStatuses.forEach(status => {
@@ -111,26 +111,51 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
 
   if (isRegistering === 'register-modal') {
     return (
-      <SessionRegister sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setRegistered={setRegistered} showModal='session-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
+      <SessionRegister
+        sessions={sessions}
+        setRegistered={setRegistered}
+        showModal='session-registration-form'
+        setShowModal={setShowModal}
+        setIsRegistering={setIsRegistering}
+      />
     )
   }
 
   if (isRegistering === 'register-overlay') {
     return (
-      <SessionRegisterOverlay sessions={sessions} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setRegistered={setRegistered} showModal='session-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} />
+      <SessionRegisterOverlay
+        sessions={sessions}
+        setRegistered={setRegistered}
+        showModal='session-registration-form'
+        setShowModal={setShowModal}
+        setIsRegistering={setIsRegistering}
+      />
     )
   }
 
   if (isDeleting) {
     return (
-      <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={sessionToDelete} />
+      <DeleteAlert
+        isDeleting={isDeleting}
+        setIsDeleting={setIsDeleting}
+        handleDelete={handleDelete}
+      />
     )
   }
 
   if (isEditing === 'edit-session') {
     return (
       <span className=''>
-        <CreateSession isEditing='edit-session' token={token} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} sessionToEdit={sessionToEdit} handleEditSession={handleEditSession} isLoading={isLoading} setIsLoading={setIsLoading} />
+        <CreateSession
+          isEditing='edit-session'
+          token={token}
+          showModal='create-session-form'
+          setShowModal={setShowModal}
+          setIsEditing={setIsEditing}
+          handleEditSession={handleEditSession}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
       </span>
     )
   }
@@ -153,31 +178,26 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
             {/* Have to keep this for style */}
             <div className='relative pt-6 px-4 sm:px-6 lg:px-8' />
 
-            <main
-              className='mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28'
-            >
-              <div
-                className='text-center lg:text-left'
-              >
+            <main className='mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28'>
+              <div className='text-center lg:text-left'>
                 <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-davysGray sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-10 sm:pt-4 lg:pt-0'>
                   <span className='block xl:inline'>Get Engaged</span>{' '}
                   <span className='block text-mediumPurple xl:inline'>Sign up for a Session</span>
                 </h1>
-                <p
-                  className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0'
-                >
-                  White talk sessions are opportunities to spend intentional time each week digging deeper into our understanding of racism and whiteness. Each session lasts 5 weeks, with a 1 hour meeting each week.
+                <p className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0'>
+                  White talk sessions are opportunities to spend intentional time each week digging
+                  deeper into our understanding of racism and whiteness. Each session lasts 5 weeks,
+                  with a 1 hour meeting each week.
                 </p>
-                <p
-                  className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0'
-                >
+                <p className='mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0'>
                   For more information about sessions, contact Rachael Gigliotti at&nbsp;
                   <a
                     href='mailto:rachgigliotti@yahoo.com'
                     rel='noreferrer'
                     target='_blank'
                     className='text-blue-500'
-                  >rachgigliotti@yahoo.com
+                  >
+                    rachgigliotti@yahoo.com
                   </a>
                 </p>
               </div>
@@ -187,41 +207,97 @@ const Sessions = ({ token, isLoggedIn, showModal, setShowModal, sessions, setSes
         <div className='lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-mediumPurple flex justify-end'>
           <div className='flex flex-col items-center justify-end xl:justify-center w-full h-full space-y-4 xl:space-y-8 pb-2 xl:pb-0 font-nunito'>
             <div className='bg-darkerPurple w-full lg:flex lg:flex-col lg:items-end mt-4'>
-              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>Meeting 1</h2>
-              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'> Let's talk about race and racism and how it works</p>
+              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>
+                Meeting 1
+              </h2>
+              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'>
+                {' '}
+                Let's talk about race and racism and how it works
+              </p>
             </div>
             <div className='bg-darkerPurple w-full lg:flex lg:flex-col lg:items-end'>
-              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>Meeting 2</h2>
-              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'> Community and the importance of meeting as a white collective</p>
+              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>
+                Meeting 2
+              </h2>
+              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'>
+                {' '}
+                Community and the importance of meeting as a white collective
+              </p>
             </div>
             <div className='bg-darkerPurple w-full lg:flex lg:flex-col lg:items-end'>
-              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>Meeting 3</h2>
-              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'> Strategies to disrupt racism</p>
+              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>
+                Meeting 3
+              </h2>
+              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'>
+                {' '}
+                Strategies to disrupt racism
+              </p>
             </div>
             <div className='bg-darkerPurple w-full lg:flex lg:flex-col lg:items-end'>
-              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>Meeting 4</h2>
-              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'> Characteristics and antidotes of white supremacy culture</p>
+              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>
+                Meeting 4
+              </h2>
+              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'>
+                {' '}
+                Characteristics and antidotes of white supremacy culture
+              </p>
             </div>
             <div className='bg-darkerPurple w-full lg:flex lg:flex-col lg:items-end'>
-              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>Meeting 5</h2>
-              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'> Continuing the work for racial justice and the healing of racial injustices</p>
+              <h2 className='font-bold text-lg text-ghostWhite text-center lg:w-7/12 xl:w-full'>
+                Meeting 5
+              </h2>
+              <p className='text-white text-md text-center px-3 lg:w-7/12 xl:w-full'>
+                {' '}
+                Continuing the work for racial justice and the healing of racial injustices
+              </p>
             </div>
           </div>
         </div>
       </div>
       {/* <HomeDivider /> */}
       <div className='pb-20 sm:pb-10 lg:pb-0'>
-        {sessionsAreLoading
-          ? <span className='pt-32 pb-10'><SessionsLoadingAlert /></span>
-          : <>
+        {sessionsAreLoading ? (
+          <span className='pt-32 pb-10'>
+            <SessionsLoadingAlert />
+          </span>
+        ) : (
+          <>
             <span className='hidden lg:block'>
-              <UpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
+              <UpcomingSessions
+                token={token}
+                sessions={sessions}
+                setSessions={setSessions}
+                isLoggedIn={isLoggedIn}
+                showModal={showModal}
+                setShowModal={setShowModal}
+                setSessionToView={setSessionToView}
+                setRegistered={setRegistered}
+                setIsRegistering={setIsRegistering}
+                setIsEditing={setIsEditing}
+                setIsDeleting={setIsDeleting}
+                renderSessionStatus={renderSessionStatus}
+                getConfirmationCount={getConfirmationCount}
+              />
             </span>
             <span className='lg:hidden'>
-              <MobileUpcomingSessions token={token} sessions={sessions} setSessions={setSessions} isLoggedIn={isLoggedIn} showModal={showModal} setShowModal={setShowModal} sessionToRegister={sessionToRegister} setSessionToRegister={setSessionToRegister} setSessionToView={setSessionToView} setRegistered={setRegistered} setIsRegistering={setIsRegistering} setSessionToEdit={setSessionToEdit} setIsEditing={setIsEditing} setSessionToDelete={setSessionToDelete} setIsDeleting={setIsDeleting} renderSessionStatus={renderSessionStatus} getConfirmationCount={getConfirmationCount} />
+              <MobileUpcomingSessions
+                token={token}
+                sessions={sessions}
+                setSessions={setSessions}
+                isLoggedIn={isLoggedIn}
+                showModal={showModal}
+                setShowModal={setShowModal}
+                setSessionToView={setSessionToView}
+                setRegistered={setRegistered}
+                setIsRegistering={setIsRegistering}
+                setIsEditing={setIsEditing}
+                setIsDeleting={setIsDeleting}
+                renderSessionStatus={renderSessionStatus}
+                getConfirmationCount={getConfirmationCount}
+              />
             </span>
-            </>}
-
+          </>
+        )}
       </div>
     </>
   )

@@ -26,7 +26,6 @@ const SessionTime = ({ handleFilterSession, filterInput }) => {
             placeholderText='Select a Start Time'
             onChange={e => handleFilterSession('start_time', e)}
           />
-
         </div>
         <div>
           {/* <label

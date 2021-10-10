@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react'
+import { useReducer, useEffect, useContext } from 'react'
 import { Transition } from '@headlessui/react'
 import moment from 'moment'
 import { createSession, listSessions } from '../api'
@@ -12,6 +12,7 @@ import NumberOfRegistrants from './createSessionForm.js/NumberOfRegistrants'
 import SessionFacilitator from './createSessionForm.js/SessionFacilitator'
 import SessionComplete from './createSessionForm.js/SessionComplete'
 import Button from './customComponents/Button'
+import { SessionsContext } from './useContextSessions'
 
 const CreateSession = ({
   token,
@@ -19,13 +20,12 @@ const CreateSession = ({
   setShowModal,
   isEditing,
   setIsEditing,
-  sessionToEdit,
   handleEditSession,
   setIsCreatingSession,
-  setSessions,
   isLoading,
   setIsLoading,
 }) => {
+  const { setSessions, sessionToEdit } = useContext(SessionsContext)
   const [filterInput, setFilterInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {

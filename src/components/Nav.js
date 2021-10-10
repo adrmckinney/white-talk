@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useReducer } from 'react'
+import { useEffect, useState, useRef, useReducer, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Transition } from '@headlessui/react'
 import { pageClickEvent } from './functions'
@@ -12,8 +12,28 @@ import Register from './Register'
 import ViewForm from './ViewForm'
 import { logout } from '../api'
 import LoginOverlay from './LoginOverlay'
+import { ModalContext } from './context/useModalContext'
+import Button from './customComponents/Button'
 
-const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, showModal, setShowModal, showLoginModal, setShowLoginModal, setShowCreateSessionModal, setShowRegistrationModal, loggedInName, showRegSuccessfulAlert, setShowRegSuccessfulAlert, setFormToView, setSessions, showTransparentNav }) => {
+const Nav = ({
+  token,
+  setToken,
+  username,
+  setUsername,
+  isLoggedIn,
+  setAuth,
+  showModal,
+  setShowModal,
+  showLoginModal,
+  setShowLoginModal,
+  setShowCreateSessionModal,
+  setShowRegistrationModal,
+  loggedInName,
+  showRegSuccessfulAlert,
+  setShowRegSuccessfulAlert,
+  setFormToView,
+  showTransparentNav,
+}) => {
   const [showMenu, setShowMenu] = useState(false)
   const [isSigningIn, setIsSigningIn] = useState('')
   const [isRegistering, setIsRegistering] = useState(false)
@@ -25,6 +45,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   const [errors, setErrors] = useState('')
   const dropdownRef = useRef(null)
   const history = useHistory('')
+  const { setModal, setModalComponent } = useContext(ModalContext)
 
   // DEBUGGER STATION
   // console.log('isRegistering', isRegistering)
@@ -51,7 +72,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
 
   // close menu on window click feature
   useEffect(() => {
-    const pageClickEvent = (e) => {
+    const pageClickEvent = e => {
       if (dropdownRef.current !== null && !dropdownRef.current.contains(e.target)) {
         setShowMenu(false)
         setAdminBtn(false)
@@ -72,41 +93,82 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   }, [showMenu])
 
   // ********** LOGIN FEATURES *************
-  const [filterLogin, setFilterLogin] = useReducer(
-    (name, value) => ({ ...name, ...value }),
-    {
-      username: '',
-      password: ''
-    }
-  )
+  const [filterLogin, setFilterLogin] = useReducer((name, value) => ({ ...name, ...value }), {
+    username: '',
+    password: '',
+  })
 
   if (isSigningIn === 'login-modal') {
     return (
-      <LoginModal setAuth={setAuth} showModal='login-form' setShowModal={setShowModal} setIsSigningIn={setIsSigningIn} filterLogin={filterLogin} setFilterLogin={setFilterLogin} isLoading={isLoading} setIsLoading={setIsLoading} errors={errors} setErrors={setErrors} />
+      <LoginModal
+        setAuth={setAuth}
+        showModal={'login-form'}
+        setShowModal={setShowModal}
+        setIsSigningIn={setIsSigningIn}
+        filterLogin={filterLogin}
+        setFilterLogin={setFilterLogin}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        errors={errors}
+        setErrors={setErrors}
+      />
     )
   }
   if (isSigningIn === 'login-overlay') {
     return (
-      <LoginOverlay setAuth={setAuth} showModal='login-form' setShowModal={setShowModal} setIsSigningIn={setIsSigningIn} filterLogin={filterLogin} setFilterLogin={setFilterLogin} isLoading={isLoading} setIsLoading={setIsLoading} errors={errors} setErrors={setErrors} />
+      <LoginOverlay
+        setAuth={setAuth}
+        showModal='login-form'
+        setShowModal={setShowModal}
+        setIsSigningIn={setIsSigningIn}
+        filterLogin={filterLogin}
+        setFilterLogin={setFilterLogin}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        errors={errors}
+        setErrors={setErrors}
+      />
     )
   }
   // ********** LOGIN FEATURES *************
 
   if (isRegistering) {
     return (
-      <Register token={token} showModal='admin-registration-form' setShowModal={setShowModal} setIsRegistering={setIsRegistering} isLoading={isLoading} setIsLoading={setIsLoading} />
+      <Register
+        token={token}
+        showModal='admin-registration-form'
+        setShowModal={setShowModal}
+        setIsRegistering={setIsRegistering}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+      />
     )
   }
 
   if (isCreatingSession) {
     return (
-      <CreateSession token={token} showModal='create-session-form' setShowModal={setShowModal} setIsCreatingSession={setIsCreatingSession} setSessions={setSessions} isLoading={isLoading} setIsLoading={setIsLoading} />
+      <CreateSession
+        token={token}
+        showModal='create-session-form'
+        setShowModal={setShowModal}
+        setIsCreatingSession={setIsCreatingSession}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+      />
     )
   }
 
   if (isEditingAdmin) {
     return (
-      <ViewForm token={token} isLoggedIn={isLoggedIn} showModal='view-form' setShowModal={setShowModal} formToView='admin-reg-form' setFormToView={setFormToView} setIsEditingAdmin={setIsEditingAdmin} />
+      <ViewForm
+        token={token}
+        isLoggedIn={isLoggedIn}
+        showModal='view-form'
+        setShowModal={setShowModal}
+        formToView='admin-reg-form'
+        setFormToView={setFormToView}
+        setIsEditingAdmin={setIsEditingAdmin}
+      />
     )
   }
 
@@ -117,17 +179,16 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
   // }
 
   const handleLogout = () => {
-    logout(token)
-      .then(data => {
-        setToken(null)
-        setUsername('')
-        setShowMenu(false)
-        setFilterLogin({
-          username: '',
-          password: ''
-        })
-        history.push('/')
+    logout(token).then(data => {
+      setToken(null)
+      setUsername('')
+      setShowMenu(false)
+      setFilterLogin({
+        username: '',
+        password: '',
       })
+      history.push('/')
+    })
   }
 
   const navBtnClass = () => {
@@ -148,6 +209,20 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
             </div> */}
             <div className='hidden sm:block sm:ml-10'>
               <NavBtns isLoggedIn={isLoggedIn} navBtnClass={navBtnClass} />
+              {/* <button
+                onClick={() => {
+                  setModal(true)
+                  setModalComponent('create-session')
+                }}
+              >
+                Test Modal
+              </button> */}
+              {/* <Button
+                type={'link'}
+                to={'/test-session-create'}
+                buttonSize={'small'}
+                buttonLabel={'hello'}
+              /> */}
             </div>
           </div>
           {/* <Search /> */}
@@ -164,18 +239,41 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
 
               {/* Heroicon name: outline/menu */}
 
-              <svg className={`${showMenu ? 'hidden' : 'block'} h-6 w-6`} xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M4 6h16M4 12h16M4 18h16' />
+              <svg
+                className={`${showMenu ? 'hidden' : 'block'} h-6 w-6`}
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+                aria-hidden='true'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                  d='M4 6h16M4 12h16M4 18h16'
+                />
               </svg>
               {/* Heroicon name: outline/x */}
-              <svg className={`${showMenu ? 'block' : 'hidden'} h-6 w-6`} xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
+              <svg
+                className={`${showMenu ? 'block' : 'hidden'} h-6 w-6`}
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+                aria-hidden='true'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                  d='M6 18L18 6M6 6l12 12'
+                />
               </svg>
             </button>
           </div>
           <div className='hidden sm:block sm:ml-4'>
             <div className='flex items-center'>
-
               {/* <!-- Profile dropdown --> */}
               <div className='ml-3 relative flex-shrink-0 font-nunito'>
                 <div>
@@ -187,10 +285,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                     aria-haspopup='true'
                     onClick={() => setShowMenu(showMenu => !showMenu)}
                   >
-                    {isLoggedIn
-                      ? `Hello ${loggedInName}`
-                      : 'admin login'}
-
+                    {isLoggedIn ? `Hello ${loggedInName}` : 'admin login'}
                   </button>
                 </div>
 
@@ -211,7 +306,7 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                     aria-labelledby='user-menu'
                     ref={dropdownRef}
                   >
-                    {token &&
+                    {token && (
                       <>
                         <button
                           className='block py-2 px-4 text-sm text-left text-gray-700 hover:bg-gray-100'
@@ -259,29 +354,31 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
                         >
                           Update User Settings
                         </button>
-                      </>}
-                    {isLoggedIn
-                      ? (
-                        <Link
-                          to='/'
-                          className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'
-                          onClick={() => {
-                            handleLogout()
-                          }}
-                        >
-                          Sign out
-                        </Link>
-                        )
-                      : (
-                        <button
-                          className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100' role='menuitem'
-                          onClick={() => {
-                            setShowMenu(false)
-                            setIsSigningIn('login-modal')
-                          }}
-                        >
-                          Sign in
-                        </button>)}
+                      </>
+                    )}
+                    {isLoggedIn ? (
+                      <Link
+                        to='/'
+                        className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                        role='menuitem'
+                        onClick={() => {
+                          handleLogout()
+                        }}
+                      >
+                        Sign out
+                      </Link>
+                    ) : (
+                      <button
+                        className='block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100'
+                        role='menuitem'
+                        onClick={() => {
+                          setShowMenu(false)
+                          setIsSigningIn('login-modal')
+                        }}
+                      >
+                        Sign in
+                      </button>
+                    )}
                   </div>
                 </Transition>
               </div>
@@ -289,17 +386,42 @@ const Nav = ({ token, setToken, username, setUsername, isLoggedIn, setAuth, show
           </div>
         </div>
       </div>
-      {showRegSuccessfulAlert &&
-        <RegSuccessfulAlert showRegSuccessfulAlert={showRegSuccessfulAlert} setShowRegSuccessfulAlert={setShowRegSuccessfulAlert} />}
+      {showRegSuccessfulAlert && (
+        <RegSuccessfulAlert
+          showRegSuccessfulAlert={showRegSuccessfulAlert}
+          setShowRegSuccessfulAlert={setShowRegSuccessfulAlert}
+        />
+      )}
 
       {/* <!-- Mobile menu, show/hide based on menu state. --> */}
       <div className='lg:hidden bg-davysGray text-gray-800' id='mobile-menu'>
-        {showMenu &&
+        {showMenu && (
           <>
-            <MobileNavBtns isLoggedIn={isLoggedIn} loggedInName={loggedInName} handleLogout={handleLogout} showMenu={showMenu} setShowMenu={setShowMenu} setIsSigningIn={setIsSigningIn} />
-            {isLoggedIn &&
-              <MobileNavMenu setToken={setToken} showMenu={showMenu} setUsername={setUsername} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} username={username} setIsCreatingSession={setIsCreatingSession} setIsRegistering={setIsRegistering} setIsEditingAdmin={setIsEditingAdmin} loggedInName={loggedInName} handleLogout={handleLogout} />}
-          </>}
+            <MobileNavBtns
+              isLoggedIn={isLoggedIn}
+              loggedInName={loggedInName}
+              handleLogout={handleLogout}
+              showMenu={showMenu}
+              setShowMenu={setShowMenu}
+              setIsSigningIn={setIsSigningIn}
+            />
+            {isLoggedIn && (
+              <MobileNavMenu
+                setToken={setToken}
+                showMenu={showMenu}
+                setUsername={setUsername}
+                setShowMenu={setShowMenu}
+                isLoggedIn={isLoggedIn}
+                username={username}
+                setIsCreatingSession={setIsCreatingSession}
+                setIsRegistering={setIsRegistering}
+                setIsEditingAdmin={setIsEditingAdmin}
+                loggedInName={loggedInName}
+                handleLogout={handleLogout}
+              />
+            )}
+          </>
+        )}
       </div>
     </nav>
   )

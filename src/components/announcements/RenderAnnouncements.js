@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { authListAnnouncement, deleteAnnouncement } from '../../api'
 import Button from '../customComponents/Button'
 
-export default function RenderAnnouncements({ token, handleIsEditing }) {
+export default function RenderAnnouncements({ token, handleEditAnnouncements }) {
   const [announcements, setAnnouncements] = useState([])
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function RenderAnnouncements({ token, handleIsEditing }) {
                       buttonLabel={'Edit'}
                       buttonSize={'extraSmall'}
                       buttonStatus={'primary'}
-                      onClick={() => handleIsEditing('edit-announcement', announcement)}
+                      onClick={() => handleEditAnnouncements('edit-announcement', announcement)}
                       overrideButtonStyle={{ paddingRight: '0.375rem', paddingLeft: '0.375rem' }}
                     />
                     <Button

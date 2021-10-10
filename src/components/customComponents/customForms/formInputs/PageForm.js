@@ -1,55 +1,9 @@
-import { useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
-import { authListAnnouncement, listCreateAnnouncement, updateAnnouncement } from '../../api'
-import Button from '../customComponents/Button'
+import Button from '../../Button'
+import useForm from '../useForm'
+import { createSessionForm } from '../utils/formConfig'
 
-export default function ModifyAnnouncements({
-  token,
-  handleEditAnnouncements,
-  announcementToEdit,
-}) {
-  const history = useHistory()
-
-  const [announcementParams, setAnnouncementParams] = useState({
-    title: '',
-    body: '',
-  })
-
-  const changeParams = (name, value) => {
-    setAnnouncementParams(state => ({ ...state, [name]: value }))
-  }
-
-  // Debugger station
-  // console.log('announcementParams', announcementParams)
-  // console.log('announcementToEdit', announcementToEdit)
-
-  useEffect(() => {
-    if (announcementToEdit.pk) {
-      setAnnouncementParams(state => ({
-        ...state,
-        title: announcementToEdit.title,
-        body: announcementToEdit.body,
-      }))
-    }
-  }, [announcementToEdit.pk, announcementToEdit.title, announcementToEdit.body])
-
-  const handleSubmit = e => {
-    e.preventDefault()
-    if (announcementToEdit.pk) {
-      updateAnnouncement(token, announcementToEdit.pk, announcementParams).then(data => {
-        authListAnnouncement(token).then(data => {
-          handleEditAnnouncements('clear-params')
-          history.push('/render-announcements')
-        })
-      })
-    } else {
-      listCreateAnnouncement(token, announcementParams).then(data => {
-        console.log('data', data)
-        history.push('/render-announcements')
-      })
-    }
-  }
-
+const PageForm = () => {
+  const { renderFormInputs, isFormValid } = useForm(createSessionForm)
   return (
     <div className='bg-white mt-10 sm:mt-0 py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24'>
       <div className='relative max-w-xl mx-auto'>
@@ -113,15 +67,14 @@ export default function ModifyAnnouncements({
         </svg>
         <div className='text-center'>
           <h2 className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
-            {announcementToEdit.pk ? 'Edit Announcement' : 'New Announcement'}
+            {/* {announcementToEdit.pk ? 'Edit Announcement' : 'New Announcement'} */}
+            Create Session
           </h2>
         </div>
         <div className='mt-12'>
-          <form
-            onSubmit={handleSubmit}
-            className='grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8'
-          >
-            <div className='sm:col-span-2'>
+          <form className='grid grid-cols-1 gap-y-6 sm:grid-cols-1 sm:gap-x-8'>
+            {renderFormInputs()}
+            {/* <div className='sm:col-span-2'>
               <label htmlFor='title' className='block text-sm font-medium text-gray-700'>
                 Announcement Title
               </label>
@@ -153,12 +106,11 @@ export default function ModifyAnnouncements({
                   onChange={e => changeParams(e.target.name, e.target.value)}
                 />
               </div>
-            </div>
-
+            </div> */}
             <div className='sm:col-span-2 space-y-4'>
               <Button
                 type={'submit'}
-                buttonLabel={announcementToEdit.pk ? 'Update' : 'Create'}
+                buttonLabel={'Create'}
                 buttonSize={'large'}
                 buttonStatus={'primary'}
                 customButtonStyle={'w-full'}
@@ -169,10 +121,10 @@ export default function ModifyAnnouncements({
                 buttonSize={'large'}
                 buttonStatus={'cancel'}
                 customButtonStyle={'w-full'}
-                onClick={() => {
-                  handleEditAnnouncements('clear-params')
-                  history.push('/render-announcements')
-                }}
+                // onClick={() => {
+                //   handleEditAnnouncements('clear-params')
+                //   history.push('/render-announcements')
+                // }}
               />
             </div>
           </form>
@@ -181,3 +133,5 @@ export default function ModifyAnnouncements({
     </div>
   )
 }
+
+export default PageForm

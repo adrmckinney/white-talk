@@ -2,6 +2,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
 const SessionDates = ({ handleFilterSession, filterInput }) => {
+  console.log(filterInput.start_date)
   return (
     <>
       <div className='flex flex-col space-y-2 items-center text-sm sm:text-lg font-medium text-gray-700'>
