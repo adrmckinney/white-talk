@@ -96,7 +96,7 @@ const Button = ({
   if (type === 'link') {
     return (
       <Link
-        to={to}
+        to={to || '/'}
         disabled={disabled ?? false}
         onClick={onClick}
         style={overrideButtonStyle}

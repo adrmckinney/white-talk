@@ -1,4 +1,3 @@
-import { PencilAltIcon } from '@heroicons/react/outline'
 import { useState, useEffect, useCallback } from 'react'
 import Moment from 'react-moment'
 import { listSessions, updateSession } from '../api'
@@ -18,30 +17,40 @@ const PastSessions = ({ token, isLoggedIn, showModal, setShowModal }) => {
 
   useEffect(() => {
     // setSessionsAreLoading(true)
-    listSessions()
-      .then(data => {
-        // setSessionsAreLoading(false)
-        setSessions(data)
-      })
+    listSessions().then(data => {
+      // setSessionsAreLoading(false)
+      setSessions(data)
+    })
   }, [setSessions])
 
   // Had to use useCallback here because the handleEditSession without
   // it was causing the useEffect below to run on every render
-  const handleEditSession = useCallback((token, pk, input) => {
-    updateSession(token, pk, input)
-      .then(data => {
-        listSessions()
-          .then(data => setSessions(data))
+  const handleEditSession = useCallback(
+    (token, pk, input) => {
+      updateSession(token, pk, input).then(data => {
+        listSessions().then(data => setSessions(data))
         setIsLoading(false)
         setIsEditing('')
         setShowModal('')
       })
-  }, [setSessions, setShowModal, setIsLoading])
+    },
+    [setSessions, setShowModal, setIsLoading]
+  )
 
   if (isEditing === 'edit-session') {
     return (
       <span className=''>
-        <CreateSession isEditing='edit-session' token={token} showModal='create-session-form' setShowModal={setShowModal} setIsEditing={setIsEditing} sessionToEdit={sessionToEdit} handleEditSession={handleEditSession} isLoading={isLoading} setIsLoading={setIsLoading} />
+        <CreateSession
+          isEditing='edit-session'
+          token={token}
+          showModal='create-session-form'
+          setShowModal={setShowModal}
+          setIsEditing={setIsEditing}
+          sessionToEdit={sessionToEdit}
+          handleEditSession={handleEditSession}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
       </span>
     )
   }
@@ -52,42 +61,66 @@ const PastSessions = ({ token, isLoggedIn, showModal, setShowModal }) => {
         <div className='-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='py-1 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
             <span>
-              <h1 className='text-6xl text-center text-davysGray font-extrabold font-sans mb-10 rounded-lg'>Past Sessions</h1>
+              <h1 className='text-6xl text-center text-davysGray font-extrabold font-sans mb-10 rounded-lg'>
+                Past Sessions
+              </h1>
               <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mx-8'>
                 <table className='min-w-full divide-y-8 divide-mediumPurple font-nunito'>
                   <thead className='bg-magnolia'>
                     <tr>
-                      <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th
+                        scope='col'
+                        className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                      >
                         Title
                       </th>
-                      <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th
+                        scope='col'
+                        className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                      >
                         Facilitator
                       </th>
-                      <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th
+                        scope='col'
+                        className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                      >
                         Date/Time
                       </th>
-                      <th scope='col' className='px-6 py-3 w-96 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th
+                        scope='col'
+                        className='px-6 py-3 w-96 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                      >
                         Description
                       </th>
-                      <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                      <th
+                        scope='col'
+                        className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                      >
                         Status
                       </th>
-                      {isLoggedIn &&
+                      {isLoggedIn && (
                         <>
-                          <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th
+                            scope='col'
+                            className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                          >
                             Registered
                           </th>
-                          <th scope='col' className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                          <th
+                            scope='col'
+                            className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                          >
                             Edit/Delete
                           </th>
-                        </>}
+                        </>
+                      )}
                     </tr>
                   </thead>
 
                   <tbody className='bg-ghostWhite divide-y-8 divide-lavenderWebb'>
                     {sortSessions(sessions).map(session => (
                       <tr key={`session-${session.pk}`}>
-                        {session.session_complete === true &&
+                        {session.session_complete === true && (
                           <>
                             <td className=' px-6 py-4 break-words text-sm font-medium text-coolGray-900'>
                               {session.title}
@@ -115,20 +148,24 @@ const PastSessions = ({ token, isLoggedIn, showModal, setShowModal }) => {
                                 </span>
                               </span>
                             </td>
-                            <td className={`${isLoggedIn ? 'whitespace-nowrap truncate max-w-sm' : 'break-words'} px-6 py-4 text-sm text-coolGray-500 space-x-1 text-center`}>
+                            <td
+                              className={`${
+                                isLoggedIn ? 'whitespace-nowrap truncate max-w-sm' : 'break-words'
+                              } px-6 py-4 text-sm text-coolGray-500 space-x-1 text-center`}
+                            >
                               {session.description}
                             </td>
                             <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                               Completed
                             </td>
-                            {isLoggedIn &&
+                            {isLoggedIn && (
                               <>
                                 <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                                   {session.session_registrants.length}
                                 </td>
                                 <td className='px-6 py-4 whitespace-nowrap text-center text-sm text-coolGray-500'>
                                   <span className='flex flex-col space-y-4'>
-                                    <Button 
+                                    <Button
                                       type={'button'}
                                       buttonLabel={'Edit'}
                                       buttonSize={'small'}
@@ -151,8 +188,10 @@ const PastSessions = ({ token, isLoggedIn, showModal, setShowModal }) => {
                                     </button> */}
                                   </span>
                                 </td>
-                              </>}
-                          </>}
+                              </>
+                            )}
+                          </>
+                        )}
                       </tr>
                     ))}
                   </tbody>

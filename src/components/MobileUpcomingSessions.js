@@ -1,19 +1,43 @@
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/outline'
+import { useContext } from 'react'
 import Moment from 'react-moment'
 import { sortSessions } from './functions'
+import { SessionsContext } from './useContextSessions'
 
-export default function MobileUpcomingSessions ({ token, sessions, setSessions, isLoggedIn, showModal, setShowModal, sessionToRegister, setSessionToRegister, setFormToView, setSessionToView, setRegistered, isDeleting, setIsDeleting, isRegistering, setIsRegistering, isEditing, setIsEditing, sessionToDelete, setSessionToDelete, sessionToEdit, setSessionToEdit, isLoading, setIsLoading, renderSessionStatus, getConfirmationCount }) {
+export default function MobileUpcomingSessions({
+  token,
+  sessions,
+  setSessions,
+  isLoggedIn,
+  showModal,
+  setShowModal,
+  setFormToView,
+  setSessionToView,
+  setRegistered,
+  isDeleting,
+  setIsDeleting,
+  isRegistering,
+  setIsRegistering,
+  isEditing,
+  setIsEditing,
+  sessionToEdit,
+  isLoading,
+  setIsLoading,
+  renderSessionStatus,
+  getConfirmationCount,
+}) {
+  const { setSessionToEdit, setSessionToDelete } = useContext(SessionsContext)
   return (
     <ul className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 sm:px-10'>
-      <h1 className='col-span-full text-3xl text-center text-gray-900 font-extrabold font-sans my-10 rounded-lg'>Upcoming Sessions</h1>
-      {sortSessions(sessions).map((session) => (
+      <h1 className='col-span-full text-3xl text-center text-gray-900 font-extrabold font-sans my-10 rounded-lg'>
+        Upcoming Sessions
+      </h1>
+      {sortSessions(sessions).map(session => (
         <li
           key={`session-${session.pk}`}
           className='col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y-2 divide-mediumPurple font-nunito mx-2 border border-mediumPurple'
         >
-          <div className='text-2xl font-bold py-2 break-words'>
-            {session.title}
-          </div>
+          <div className='text-2xl font-bold py-2 break-words'>{session.title}</div>
           <div className='flex flex-col px-4 pt-8 pb-2 text-xl space-y-8'>
             <span className='space-y-8'>
               <span className=''>
@@ -42,7 +66,7 @@ export default function MobileUpcomingSessions ({ token, sessions, setSessions, 
               </div>
             </div>
           </div>
-          {isLoggedIn &&
+          {isLoggedIn && (
             <div className='flex flex-col justify-between h-full'>
               <span className='flex justify-around py-4'>
                 <div className='flex justify-center space-x-2'>
@@ -82,7 +106,8 @@ export default function MobileUpcomingSessions ({ token, sessions, setSessions, 
                   </button>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
         </li>
       ))}
     </ul>

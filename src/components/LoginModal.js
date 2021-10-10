@@ -2,22 +2,31 @@ import { useState } from 'react'
 import { Transition } from '@headlessui/react'
 import Errors from './Errors'
 import ForgotPasswordRequest from './ForgotPasswordRequest'
-import { EyeIcon, EyeOffIcon, RefreshIcon } from '@heroicons/react/outline'
+import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
 import { handleFormFilter } from './functions'
 import { login } from '../api'
 import Button from './customComponents/Button'
 
-const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLogin, setFilterLogin, isLoading, setIsLoading, errors, setErrors }) => {
+const LoginModal = ({
+  showModal,
+  setShowModal,
+  setAuth,
+  setIsSigningIn,
+  filterLogin,
+  setFilterLogin,
+  isLoading,
+  setIsLoading,
+  errors,
+  setErrors,
+}) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
   if (isForgotPassword) {
-    return (
-      <ForgotPasswordRequest setIsForgotPassword={setIsForgotPassword} />
-    )
+    return <ForgotPasswordRequest setIsForgotPassword={setIsForgotPassword} />
   }
 
-  const handleLogin = (e) => {
+  const handleLogin = e => {
     setIsLoading(true)
     e.preventDefault()
     login(filterLogin.username, filterLogin.password)
@@ -41,14 +50,13 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
     setIsLoading(false)
     setFilterLogin({
       username: '',
-      password: ''
+      password: '',
     })
   }
 
   return (
     <div className='fixed z-20 inset-0 overflow-y-auto'>
       <div className='flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
-
         {/* Background overlay, show/hide based on modal state. */}
         <Transition
           show={showModal === 'login-form'}
@@ -64,8 +72,11 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
           </div>
         </Transition>
         {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
-        <span className='inline-block align-middle h-screen w-3/4 sm:w-1/2 md:w-1/3' aria-hidden='true'>&#8203;
-
+        <span
+          className='inline-block align-middle h-screen w-3/4 sm:w-1/2 md:w-1/3'
+          aria-hidden='true'
+        >
+          &#8203;
           {/* Modal panel, show/hide based on modal state. */}
           <Transition
             show={showModal === 'login-form'}
@@ -76,11 +87,13 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
             leaveFrom='opacity-100 translate-y-0 sm:scale-100'
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
-            <form
-              className='mt-8 space-y-6'
-              onSubmit={handleLogin}
-            >
-              <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6' role='dialog' aria-modal='true' aria-labelledby='modal-headline'>
+            <form className='mt-8 space-y-6' onSubmit={handleLogin}>
+              <div
+                className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6'
+                role='dialog'
+                aria-modal='true'
+                aria-labelledby='modal-headline'
+              >
                 <div>
                   <div className='mt-2 mb-5 text-center'>
                     <h3 className='text-lg leading-6 font-medium text-gray-900' id='modal-headline'>
@@ -96,7 +109,9 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
                   <input type='hidden' name='remember' value='true' />
                   <div className='rounded-md shadow-sm -space-y-px'>
                     <div>
-                      <label htmlFor='modal-username' className='sr-only'>Username</label>
+                      <label htmlFor='modal-username' className='sr-only'>
+                        Username
+                      </label>
                       <input
                         id='modal-username'
                         name='username'
@@ -106,11 +121,15 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
                         className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                         placeholder='Username'
                         value={filterLogin.username}
-                        onChange={(e) => handleFormFilter(e.target.name, e.target.value, setFilterLogin)}
+                        onChange={e =>
+                          handleFormFilter(e.target.name, e.target.value, setFilterLogin)
+                        }
                       />
                     </div>
                     <div>
-                      <label htmlFor='modal-password' className='sr-only'>Password</label>
+                      <label htmlFor='modal-password' className='sr-only'>
+                        Password
+                      </label>
                       <span className='flex'>
                         <input
                           id='modal-password'
@@ -121,7 +140,9 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
                           className='appearance-none rounded-md rounded-r-none rounded-t-none  relative block w-full px-3 py-2 border border-gray-300 border-r-0 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-darkerPurple focus:darkerPurple focus:z-10 sm:text-sm'
                           placeholder='Password'
                           value={filterLogin.password}
-                          onChange={(e) => handleFormFilter(e.target.name, e.target.value, setFilterLogin)}
+                          onChange={e =>
+                            handleFormFilter(e.target.name, e.target.value, setFilterLogin)
+                          }
                         />
                         <button
                           type='button'
@@ -129,9 +150,11 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
                           className='px-3 py-2 border border-gray-300 border-l-0 rounded-md rounded-t-none  rounded-l-none focus:outline-none'
                           onClick={() => setShowPassword(!showPassword)}
                         >
-                          {showPassword
-                            ? <EyeOffIcon className='w-4 h-4' />
-                            : <EyeIcon className='w-4 h-4' />}
+                          {showPassword ? (
+                            <EyeOffIcon className='w-4 h-4' />
+                          ) : (
+                            <EyeIcon className='w-4 h-4' />
+                          )}
                         </button>
                       </span>
                     </div>
@@ -148,7 +171,6 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
                       </button>
                     </div>
                   </div>
-
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
                   <Button
@@ -156,7 +178,7 @@ const LoginModal = ({ showModal, setShowModal, setAuth, setIsSigningIn, filterLo
                     buttonLabel={'Cancel'}
                     buttonSize={'small'}
                     buttonStatus={'cancel'}
-                    onClick={() => handleCancel()} 
+                    onClick={() => handleCancel()}
                   />
                   <Button
                     type={isLoading ? 'button' : 'submit'}

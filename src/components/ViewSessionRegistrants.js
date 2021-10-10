@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Popover } from '@headlessui/react'
 import { Redirect } from 'react-router-dom'
 import Moment from 'react-moment'
@@ -8,41 +8,41 @@ import DeleteAlert from './alerts/DeleteAlert'
 // import SessionRegister from './sessionForms/SessionRegister'
 import RenderRegistrants from './RenderRegistrants'
 import SessionsLoadingAlert from './alerts/SessionsLoadingAlert'
+import { SessionsContext } from './useContextSessions'
 
-const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelectorMode, setDropdownSelectorMode, setSessionToRegister, prepEmailForm, prepSessionRegistrationForm }) => {
-  const [sessions, setSessions] = useState([])
+const ViewSessionRegistrants = ({
+  token,
+  isLoggedIn,
+  setShowModal,
+  setSessionToRegister,
+  prepEmailForm,
+  prepSessionRegistrationForm,
+}) => {
   const [registrantsToRender, setRegistrantsToRender] = useState([])
   const [isDeleting, setIsDeleting] = useState('')
   const [isEditing, setIsEditing] = useState('')
   const [registrantToDelete, setRegistrantToDelete] = useState([])
   const [sessionToUpdate, setSessionToUpdate] = useState([])
-  const [dataIsLoading, setDataIsLoading] = useState(true)
+  const [dataIsLoading, setDataIsLoading] = useState(false)
   const [confirmedEmailData, setConfirmedEmailData] = useState({
     names_emails: [],
     session_facilitator: '',
-    facilitator_email: ''
+    facilitator_email: '',
   })
+  const { sessions, setSessions } = useContext(SessionsContext)
+  const [dropdownSelectorMode, setDropdownSelectorMode] = useState('view-session-registrants')
 
   // DEBUGGER STATION
   // console.log('confirmedEmailData', confirmedEmailData)
   // console.log('emails', emails)
   // console.log('isDeleting', isDeleting)
-  // console.log('isEditing', isEditing)
+  console.log('isEditing', isEditing)
   // console.log('sessions', sessions)
   // console.log('registrantsToRender', registrantsToRender)
   // console.log('registrantToEdit', registrantToEdit)
   // console.log('registrantToDelete', registrantToDelete)
   // console.log('sessions in ViewSessionReg', sessions)
-  // console.log('sessionToUpate', sessionToUpdate)
-
-  useEffect(() => {
-    listSessions()
-      .then(sessions => {
-        setSessions(sessions)
-        setDropdownSelectorMode('view-session-registrants')
-        setDataIsLoading(false)
-      })
-  }, [setDropdownSelectorMode])
+  console.log('sessionToUpate', sessionToUpdate)
 
   const getConfirmationCount = () => {
     const confirmationStatuses = registrantsToRender.session_registrants.map(reg => reg.confirm)
@@ -60,7 +60,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     setRegistrantToDelete([])
   }
 
-  const extractConfirmedEmailData = (session) => {
+  const extractConfirmedEmailData = session => {
     const emailObjects = []
     session.session_registrants.forEach(reg => {
       if (reg.confirm === true) {
@@ -72,18 +72,18 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
         ...state,
         names_emails: emailObjects,
         session_facilitator: session.facilitator,
-        facilitator_email: session.facilitator_email
+        facilitator_email: session.facilitator_email,
       }))
     })
   }
 
-  const handleSelectedEmails = (selectedEmails) => {
+  const handleSelectedEmails = selectedEmails => {
     console.log('selectedEmails', selectedEmails)
     setConfirmedEmailData(state => ({ ...state, names_emails: selectedEmails }))
     prepEmailForm(confirmedEmailData, 'registrants')
   }
 
-  const handleDeleteState = (registrant) => {
+  const handleDeleteState = registrant => {
     setRegistrantToDelete(registrant)
     setIsEditing('')
     setIsDeleting('delete-registrant')
@@ -108,7 +108,7 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   // be passed to SessionRegister.js. It is passed as
   // 'sessionToRegister' because that is already
   // working on the receiving end.
-  const handleSessionToEdit = (registrant) => {
+  const handleSessionToEdit = registrant => {
     sessions.forEach(session => {
       if (session.pk === registrant.session) {
         setSessionToUpdate(session)
@@ -116,32 +116,28 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
     })
   }
 
-  const handleDelete = (pk) => {
-    deleteRegistrant(token, pk)
-      .then(data => {
-        listSessions()
-          .then(sessions => {
-            setSessions(sessions)
-            handleRefreshAfterEdit(sessions)
-            setDropdownSelectorMode('view-session-registrants')
-          })
+  const handleDelete = pk => {
+    deleteRegistrant(token, pk).then(data => {
+      listSessions().then(sessions => {
+        setSessions(sessions)
+        handleRefreshAfterEdit(sessions)
+        setDropdownSelectorMode('view-session-registrants')
       })
+    })
   }
 
   const handleRegistrantUpdate = (token, pk, input) => {
-    updateRegistrant(token, pk, input)
-      .then(data => {
-        listSessions()
-          .then(sessions => {
-            setSessions(sessions)
-            handleRefreshAfterEdit(sessions)
-            setIsEditing('')
-            setDropdownSelectorMode('view-session-registrants')
-          })
+    updateRegistrant(token, pk, input).then(data => {
+      listSessions().then(sessions => {
+        setSessions(sessions)
+        handleRefreshAfterEdit(sessions)
+        setIsEditing('')
+        setDropdownSelectorMode('view-session-registrants')
       })
+    })
   }
 
-  const handleRefreshAfterEdit = (sessions) => {
+  const handleRefreshAfterEdit = sessions => {
     sessions.forEach(session => {
       if (session.pk === registrantsToRender.pk) {
         setRegistrantsToRender(session)
@@ -152,7 +148,13 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
 
   if (isDeleting) {
     return (
-      <DeleteAlert isDeleting={isDeleting} setIsDeleting={setIsDeleting} handleDelete={handleDelete} dataToDelete={registrantToDelete} handleClearAllActionState={handleClearAllActionState} />
+      <DeleteAlert
+        isDeleting={isDeleting}
+        setIsDeleting={setIsDeleting}
+        handleDelete={handleDelete}
+        dataToDelete={registrantToDelete}
+        handleClearAllActionState={handleClearAllActionState}
+      />
     )
   }
 
@@ -174,14 +176,12 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
   // }
 
   if (!isLoggedIn) {
-    <Redirect to='/' />
+    ;<Redirect to='/' />
   }
 
   const setSessionTableTitle = () => {
     return (
-      <span
-        className='text-3xl font-bold font-nunito space-x-2 break-words flex'
-      >
+      <span className='text-3xl font-bold font-nunito space-x-2 break-words flex'>
         <p>{registrantsToRender.title}</p>
       </span>
     )
@@ -211,21 +211,23 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
               )}
             </Popover>
 
-            <main
-              className='mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28'
-            >
-              <div
-                className='text-center lg:text-left'
-              >
+            <main className='mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28'>
+              <div className='text-center lg:text-left'>
                 <h1 className='flex flex-col text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl space-y-2 lg:space-y-0 pt-4 lg:pt-0'>
                   <span className='block xl:inline'>Admin Hub</span>{' '}
                   <span className='block text-mediumPurple xl:inline'>See Who's Registered</span>
                 </h1>
-                <SelectionElement sessions={sessions} dropdownSelectorMode={dropdownSelectorMode} setRegistrantsToRender={setRegistrantsToRender} extractConfirmedEmailData={extractConfirmedEmailData} />
-                {dataIsLoading &&
+                <SelectionElement
+                  sessions={sessions}
+                  dropdownSelectorMode={dropdownSelectorMode}
+                  setRegistrantsToRender={setRegistrantsToRender}
+                  extractConfirmedEmailData={extractConfirmedEmailData}
+                />
+                {dataIsLoading && (
                   <span>
                     <SessionsLoadingAlert />
-                  </span>}
+                  </span>
+                )}
                 <div className='mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start' />
               </div>
             </main>
@@ -235,8 +237,10 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
           <div className='flex flex-col items-end justify-center w-full h-72 sm:h-64 lg:h-full space-y-4 xl:space-y-8 pb-2 xl:pb-0 font-nunito'>
             <div className='bg-darkerPurple w-full flex justify-center lg:justify-end lg:pr-8 lg:pl-14 xl:justify-center xl:pr-0'>
               <span className='text-white font-nunito text-md xl:text-xl lg:max-w-xs xl:max-w-none'>
-                <h1 className='text-3xl font-bold flex justify-start shadow-sm rounded-lg'>{!registrantsToRender.pk ? 'Session Dashboard' : setSessionTableTitle()}</h1>
-                {registrantsToRender.pk &&
+                <h1 className='text-3xl font-bold flex justify-start shadow-sm rounded-lg'>
+                  {!registrantsToRender.pk ? 'Session Dashboard' : setSessionTableTitle()}
+                </h1>
+                {registrantsToRender.pk && (
                   <>
                     <div className='flex space-x-2'>
                       <p className='font-bold text-coolGray-100'>Date:</p>
@@ -256,20 +260,44 @@ const ViewSessionRegistrants = ({ token, isLoggedIn, setShowModal, dropdownSelec
                     </div>
                     <div className='flex space-x-2'>
                       <p className='font-bold text-coolGray-100'>Number of registrants:</p>
-                      <p>{!registrantsToRender.pk || registrantsToRender.session_registrants.length}</p>
+                      <p>
+                        {!registrantsToRender.pk || registrantsToRender.session_registrants.length}
+                      </p>
                     </div>
                     <div className='flex space-x-2'>
                       <p className='font-bold text-coolGray-100'>Number confirmed:</p>
                       <p>{!registrantsToRender.pk || getConfirmationCount()}</p>
                     </div>
-                  </>}
+                  </>
+                )}
               </span>
             </div>
           </div>
         </div>
       </div>
       <div className=''>
-        <RenderRegistrants token={token} isLoggedIn={isLoggedIn} sessions={sessions} setShowModal={setShowModal} dropdownSelectorMode={dropdownSelectorMode} setDropdownSelectorMode={setDropdownSelectorMode} setSessionToRegister={setSessionToRegister} registrantsToRender={registrantsToRender} setRegistrantsToRender={setRegistrantsToRender} confirmedEmailData={confirmedEmailData} handleDeleteState={handleDeleteState} handleSessionToEdit={handleSessionToEdit} handleDelete={handleDelete} handleRegistrantUpdate={handleRegistrantUpdate} handleRefreshAfterEdit={handleRefreshAfterEdit} setIsDeleting={setIsDeleting} setIsEditing={setIsEditing} prepEmailForm={prepEmailForm} handleSelectedEmails={handleSelectedEmails} prepSessionRegistrationForm={prepSessionRegistrationForm} />
+        <RenderRegistrants
+          token={token}
+          isLoggedIn={isLoggedIn}
+          sessions={sessions}
+          setShowModal={setShowModal}
+          dropdownSelectorMode={dropdownSelectorMode}
+          setDropdownSelectorMode={setDropdownSelectorMode}
+          setSessionToRegister={setSessionToRegister}
+          registrantsToRender={registrantsToRender}
+          setRegistrantsToRender={setRegistrantsToRender}
+          confirmedEmailData={confirmedEmailData}
+          handleDeleteState={handleDeleteState}
+          handleSessionToEdit={handleSessionToEdit}
+          handleDelete={handleDelete}
+          handleRegistrantUpdate={handleRegistrantUpdate}
+          handleRefreshAfterEdit={handleRefreshAfterEdit}
+          setIsDeleting={setIsDeleting}
+          setIsEditing={setIsEditing}
+          prepEmailForm={prepEmailForm}
+          handleSelectedEmails={handleSelectedEmails}
+          prepSessionRegistrationForm={prepSessionRegistrationForm}
+        />
       </div>
     </>
   )

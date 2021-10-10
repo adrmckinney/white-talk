@@ -1,11 +1,18 @@
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useContext, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
 import Moment from 'react-moment'
+import { SessionsContext } from '../useContextSessions'
 
-export default function DeleteAlert ({ isDeleting, setIsDeleting, handleDelete, dataToDelete, handleClearAllActionState }) {
+export default function DeleteAlert({
+  isDeleting,
+  setIsDeleting,
+  handleDelete,
+  handleClearAllActionState,
+}) {
   const [open, setOpen] = useState(true)
   const cancelButtonRef = useRef()
+  const { sessionToDelete: dataToDelete } = useContext(SessionsContext)
 
   const handleMessage = () => {
     if (dataToDelete.length === 0) {
@@ -17,7 +24,11 @@ export default function DeleteAlert ({ isDeleting, setIsDeleting, handleDelete, 
     } else {
       return (
         <p className='text-sm text-gray-500'>
-          Are you sure you want to delete <strong>{dataToDelete.first_name} {dataToDelete.last_name}</strong> from this session? This action cannot be undone.
+          Are you sure you want to delete{' '}
+          <strong>
+            {dataToDelete.first_name} {dataToDelete.last_name}
+          </strong>{' '}
+          from this session? This action cannot be undone.
         </p>
       )
     }
@@ -33,7 +44,13 @@ export default function DeleteAlert ({ isDeleting, setIsDeleting, handleDelete, 
           <div className='mt-2'>
             <p className='text-sm text-gray-500'>
               <p className='text-sm text-gray-500'>
-                Are you sure you want to delete the session <strong>{dataToDelete.title} <Moment format='MM/DD/YYYY'>{dataToDelete.start_date}</Moment>-<Moment format='MM/DD/YYYY'>{dataToDelete.end_date}</Moment></strong>? This action cannot be undone.
+                Are you sure you want to delete the session{' '}
+                <strong>
+                  {dataToDelete.title}{' '}
+                  <Moment format='MM/DD/YYYY'>{dataToDelete.start_date}</Moment>-
+                  <Moment format='MM/DD/YYYY'>{dataToDelete.end_date}</Moment>
+                </strong>
+                ? This action cannot be undone.
               </p>
             </p>
           </div>
@@ -45,9 +62,7 @@ export default function DeleteAlert ({ isDeleting, setIsDeleting, handleDelete, 
           <Dialog.Title as='h3' className='text-lg leading-6 font-medium text-gray-900'>
             Delete Registrant
           </Dialog.Title>
-          <div className='mt-2'>
-            {handleMessage()}
-          </div>
+          <div className='mt-2'>{handleMessage()}</div>
         </div>
       )
     }
