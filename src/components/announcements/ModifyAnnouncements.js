@@ -1,51 +1,45 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { authListAnnouncement, listCreateAnnouncement, updateAnnouncement } from '../../api'
+import { AnnouncementsContext } from '../context/useContextAnnouncements'
 import Button from '../customComponents/Button'
 
-export default function ModifyAnnouncements({
-  token,
-  handleEditAnnouncements,
-  announcementToEdit,
-}) {
+export default function ModifyAnnouncements({ token }) {
   const history = useHistory()
-
-  const [announcementParams, setAnnouncementParams] = useState({
-    title: '',
-    body: '',
-  })
+  const [announcementParams, setAnnouncementParams] = useState({})
+  const { announcementToEdit, setAnnouncements, setAnnouncementToEdit } =
+    useContext(AnnouncementsContext)
 
   const changeParams = (name, value) => {
     setAnnouncementParams(state => ({ ...state, [name]: value }))
   }
 
-  // Debugger station
-  // console.log('announcementParams', announcementParams)
-  // console.log('announcementToEdit', announcementToEdit)
-
   useEffect(() => {
-    if (announcementToEdit.pk) {
+    if (announcementToEdit?.pk) {
       setAnnouncementParams(state => ({
         ...state,
-        title: announcementToEdit.title,
-        body: announcementToEdit.body,
+        title: announcementToEdit?.title,
+        body: announcementToEdit?.body,
       }))
     }
-  }, [announcementToEdit.pk, announcementToEdit.title, announcementToEdit.body])
+  }, [announcementToEdit?.pk, announcementToEdit?.title, announcementToEdit?.body])
 
   const handleSubmit = e => {
     e.preventDefault()
     if (announcementToEdit.pk) {
       updateAnnouncement(token, announcementToEdit.pk, announcementParams).then(data => {
         authListAnnouncement(token).then(data => {
-          handleEditAnnouncements('clear-params')
+          setAnnouncementToEdit([])
           history.push('/render-announcements')
+          setAnnouncements(data)
         })
       })
     } else {
-      listCreateAnnouncement(token, announcementParams).then(data => {
-        console.log('data', data)
-        history.push('/render-announcements')
+      listCreateAnnouncement(token, announcementParams).then(newAnnouncement => {
+        authListAnnouncement(token).then(announcements => {
+          history.push('/render-announcements')
+          setAnnouncements(announcements)
+        })
       })
     }
   }
@@ -113,7 +107,7 @@ export default function ModifyAnnouncements({
         </svg>
         <div className='text-center'>
           <h2 className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
-            {announcementToEdit.pk ? 'Edit Announcement' : 'New Announcement'}
+            {announcementToEdit?.pk ? 'Edit Announcement' : 'New Announcement'}
           </h2>
         </div>
         <div className='mt-12'>
@@ -130,7 +124,7 @@ export default function ModifyAnnouncements({
                   type='text'
                   name='title'
                   id='title'
-                  value={announcementParams.title}
+                  value={announcementParams?.title}
                   autoComplete='organization'
                   className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
                   onChange={e => changeParams(e.target.name, e.target.value)}
@@ -146,7 +140,7 @@ export default function ModifyAnnouncements({
                 <textarea
                   id='body'
                   name='body'
-                  value={announcementParams.body}
+                  value={announcementParams?.body}
                   rows={4}
                   className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md'
                   defaultValue=''
@@ -158,7 +152,7 @@ export default function ModifyAnnouncements({
             <div className='sm:col-span-2 space-y-4'>
               <Button
                 type={'submit'}
-                buttonLabel={announcementToEdit.pk ? 'Update' : 'Create'}
+                buttonLabel={announcementToEdit?.pk ? 'Update' : 'Create'}
                 buttonSize={'large'}
                 buttonStatus={'primary'}
                 customButtonStyle={'w-full'}
@@ -169,10 +163,7 @@ export default function ModifyAnnouncements({
                 buttonSize={'large'}
                 buttonStatus={'cancel'}
                 customButtonStyle={'w-full'}
-                onClick={() => {
-                  handleEditAnnouncements('clear-params')
-                  history.push('/render-announcements')
-                }}
+                onClick={() => history.push('/render-announcements')}
               />
             </div>
           </form>

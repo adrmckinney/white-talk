@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { authListAnnouncement, deleteAnnouncement } from '../../api'
+import { AnnouncementsContext } from '../context/useContextAnnouncements'
 import Button from '../customComponents/Button'
 
-export default function RenderAnnouncements({ token, handleEditAnnouncements }) {
-  const [announcements, setAnnouncements] = useState([])
-
-  useEffect(() => {
-    authListAnnouncement(token).then(data => setAnnouncements(data))
-  }, [token])
+export default function RenderAnnouncements({ token }) {
+  const { announcements, setAnnouncements, setAnnouncementToEdit } =
+    useContext(AnnouncementsContext)
 
   const handleDelete = pk => {
     deleteAnnouncement(token, pk).then(data => {
@@ -38,8 +36,8 @@ export default function RenderAnnouncements({ token, handleEditAnnouncements }) 
 
         <div className='mt-10'>
           <dl className='space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10'>
-            {announcements.map(announcement => (
-              <div key={announcement.pk} className='relative'>
+            {announcements?.map(announcement => (
+              <div key={announcement?.pk} className='relative'>
                 <dt>
                   <div className='absolute flex flex-col items-center justify-around h-full'>
                     <Button
@@ -48,7 +46,10 @@ export default function RenderAnnouncements({ token, handleEditAnnouncements }) 
                       buttonLabel={'Edit'}
                       buttonSize={'extraSmall'}
                       buttonStatus={'primary'}
-                      onClick={() => handleEditAnnouncements('edit-announcement', announcement)}
+                      onClick={() => {
+                        setAnnouncementToEdit(announcement)
+                        // handleEditAnnouncements('edit-announcement', announcement)
+                      }}
                       overrideButtonStyle={{ paddingRight: '0.375rem', paddingLeft: '0.375rem' }}
                     />
                     <Button
@@ -56,15 +57,15 @@ export default function RenderAnnouncements({ token, handleEditAnnouncements }) 
                       buttonLabel={'Delete'}
                       buttonSize={'extraSmall'}
                       buttonStatus={'primary'}
-                      onClick={() => handleDelete(announcement.pk)}
+                      onClick={() => handleDelete(announcement?.pk)}
                       overrideButtonStyle={{ paddingRight: '0.375rem', paddingLeft: '0.375rem' }}
                     />
                   </div>
                   <p className='ml-16 text-lg leading-6 font-medium text-gray-900'>
-                    {announcement.title}
+                    {announcement?.title}
                   </p>
                 </dt>
-                <dd className='mt-2 ml-16 text-base text-gray-500'>{announcement.body}</dd>
+                <dd className='mt-2 ml-16 text-base text-gray-500'>{announcement?.body}</dd>
               </div>
             ))}
           </dl>

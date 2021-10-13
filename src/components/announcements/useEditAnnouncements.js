@@ -6,7 +6,6 @@ const useEditAnnouncements = () => {
   const handleEditAnnouncements = (value, params) => {
     if (value === 'edit-announcement') {
       setAnnouncementToEdit(params)
-      return params
     } else if (value === 'clear-params') {
       setAnnouncementToEdit([])
     }
@@ -14,11 +13,7 @@ const useEditAnnouncements = () => {
 
   console.log('announcementToEdit', announcementToEdit)
 
-  return {
-    announcementToEdit,
-    setAnnouncementToEdit,
-    handleEditAnnouncements,
-  }
+  return { announcementToEdit, setAnnouncementToEdit, handleEditAnnouncements }
 }
 
 export default useEditAnnouncements

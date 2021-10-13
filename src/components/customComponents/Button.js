@@ -11,6 +11,7 @@ const SIZES = {
   large: 'px-6 py-3 text-lg font-medium items-center',
   text: 'py-2 px-4 text-sm',
   mobileHamburger: 'p-2',
+  null: '',
 }
 
 const LABEL_POSITION = {
@@ -29,6 +30,7 @@ const STATUSES = {
   text: 'block text-gray-700 hover:bg-gray-100',
   mobileHamburger:
     'bg-mediumPurple inline-flex items-center text-indigo-200 hover:text-white hover:bg-darkerPurple hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-darkerPurple focus:ring-white',
+  null: '',
 }
 
 const ICON_SIZES = {
@@ -56,6 +58,7 @@ const Button = ({
   children,
   ariaControls,
   ariaExpanded,
+  ariaHaspopup,
 }) => {
   const ICONS = {
     mailOutline: (
@@ -116,6 +119,9 @@ const Button = ({
         disabled={disabled ?? false}
         onClick={onClick}
         style={overrideButtonStyle}
+        aria-controls={ariaControls}
+        aria-expanded={ariaExpanded}
+        aria-haspopup={ariaHaspopup}
         role={role}
         className={`
                     inline-flex rounded-md shadow-sm
@@ -140,6 +146,7 @@ const Button = ({
       role={role}
       aria-controls={ariaControls}
       aria-expanded={ariaExpanded}
+      aria-haspopup={ariaHaspopup}
       className={`
             inline-flex rounded-md shadow-sm
             ${SIZES[buttonSize] ?? SIZES['medium']} 

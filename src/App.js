@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { SessionsContext } from './components/useContextSessions'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import createPersistedState from 'use-persisted-state'
 import './App.css'
-import { getUser, listSessions } from './api'
+import { authListAnnouncement, getUser, listSessions } from './api'
 import Nav from './components/Nav'
 import BookStudy from './components/BookStudy'
 import Sessions from './components/Sessions'
@@ -23,6 +23,10 @@ import { ModalContext } from './components/context/useModalContext'
 import Modal from './components/customComponents/Modal'
 import TestSessionCreate from './components/TestSessionCreate'
 import PageForm from './components/customComponents/customForms/formInputs/PageForm'
+import {
+  AnnouncementsContext,
+  useContextAnnouncements,
+} from './components/context/useContextAnnouncements'
 
 const useUsername = createPersistedState('username')
 const useToken = createPersistedState('token')
@@ -41,7 +45,6 @@ function App() {
   const [showModal, setShowModal] = useState('')
   const [formToView, setFormToView] = useState('')
   const [sessionToView, setSessionToView] = useState([])
-  const [announcementToEdit, setIsEditingParams] = useState([])
   const [showTransparentNav, setShowTransparentNav] = useState(false)
   const [emailFormData, setEmailFormData] = useState({
     names_emails: [],
@@ -49,6 +52,9 @@ function App() {
     facilitator_name: '',
     facilitator_email: '',
   })
+  const { setAnnouncements, announcements } = useContext(AnnouncementsContext)
+  const { announcementControls } = useContextAnnouncements(token)
+
   const [sessions, setSessions] = useState([])
   const [sessionToEdit, setSessionToEdit] = useState([])
   const [sessionToDelete, setSessionToDelete] = useState([])
@@ -75,7 +81,7 @@ function App() {
       isLoading,
       setIsLoading,
     }),
-    [modal, modalComponent]
+    [modal, modalComponent, isLoading]
   )
 
   function setAuth(username, token) {
@@ -88,15 +94,8 @@ function App() {
       getUser(token).then(data => setLoggedInName(data.first_name))
     }
     listSessions().then(data => setSessions(data))
+    authListAnnouncement(token).then(data => setAnnouncements(data))
   }, [token, isLoggedIn])
-
-  const handleEditAnnouncements = (value, params) => {
-    if (value === 'edit-announcement') {
-      setIsEditingParams(params)
-    } else if (value === 'clear-params') {
-      setIsEditingParams([])
-    }
-  }
 
   const changeNavAnimation = value => {
     setShowTransparentNav(value)
@@ -153,136 +152,138 @@ function App() {
   return (
     <SessionsContext.Provider value={sessionsControls}>
       <ModalContext.Provider value={modalControls}>
-        <Router>
-          <div className='min-h-screen bg-ghostWhite'>
-            <div className='bg-mediumPurple pb-32'>
-              <Nav
-                token={token}
-                setToken={setToken}
-                username={username}
-                setUsername={setUsername}
-                isLoggedIn={isLoggedIn}
-                setAuth={setAuth}
-                showModal={showModal}
-                setShowModal={setShowModal}
-                loggedInName={loggedInName}
-                setFormToView={setFormToView}
-                showTransparentNav={showTransparentNav}
-              />
-            </div>
-            <main className='-mt-32 h-screen overflow-x-hidden overflow-y-auto perspective'>
-              <Modal />
-              <Switch>
-                <Route path='/book-study'>
-                  <BookStudy />
-                </Route>
+        <AnnouncementsContext.Provider value={announcementControls}>
+          <Router>
+            <div className='min-h-screen bg-ghostWhite'>
+              <div className='bg-mediumPurple pb-32'>
+                <Nav
+                  token={token}
+                  setToken={setToken}
+                  username={username}
+                  setUsername={setUsername}
+                  isLoggedIn={isLoggedIn}
+                  setAuth={setAuth}
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                  loggedInName={loggedInName}
+                  setFormToView={setFormToView}
+                  showTransparentNav={showTransparentNav}
+                />
+              </div>
+              <main className='-mt-32 h-screen overflow-x-hidden overflow-y-auto perspective'>
+                <Modal />
+                <Switch>
+                  <Route path='/book-study'>
+                    <BookStudy />
+                  </Route>
 
-                <Route path='/sessions'>
-                  <Sessions
-                    token={token}
-                    isLoggedIn={isLoggedIn}
-                    showModal={showModal}
-                    setShowModal={setShowModal}
-                    setFormToView={setFormToView}
-                    setSessionToView={setSessionToView}
-                    registered={registered}
-                    setRegistered={setRegistered}
-                    prepSessionRegistrationForm={prepSessionRegistrationForm}
-                  />
-                </Route>
+                  <Route path='/sessions'>
+                    <Sessions
+                      token={token}
+                      isLoggedIn={isLoggedIn}
+                      showModal={showModal}
+                      setShowModal={setShowModal}
+                      setFormToView={setFormToView}
+                      setSessionToView={setSessionToView}
+                      registered={registered}
+                      setRegistered={setRegistered}
+                      prepSessionRegistrationForm={prepSessionRegistrationForm}
+                    />
+                  </Route>
 
-                <Route path='/session-register'>
-                  <SessionRegisterEditor
-                    token={token}
-                    sessionRegistrationData={sessionRegistrationData}
-                  />
-                </Route>
+                  <Route path='/session-register'>
+                    <SessionRegisterEditor
+                      token={token}
+                      sessionRegistrationData={sessionRegistrationData}
+                    />
+                  </Route>
 
-                {/* <Route path='/test-session-create'>
+                  {/* <Route path='/test-session-create'>
                   <PageForm token={token} />
                 </Route> */}
 
-                <Route path='/about'>
-                  <About />
-                </Route>
+                  <Route path='/about'>
+                    <About />
+                  </Route>
 
-                <Route path='/view-session-registrants'>
-                  <ViewSessionRegistrants
-                    token={token}
-                    isLoggedIn={isLoggedIn}
-                    setShowModal={setShowModal}
-                    prepEmailForm={prepEmailForm}
-                    prepSessionRegistrationForm={prepSessionRegistrationForm}
-                  />
-                </Route>
+                  <Route path='/view-session-registrants'>
+                    <ViewSessionRegistrants
+                      token={token}
+                      isLoggedIn={isLoggedIn}
+                      setShowModal={setShowModal}
+                      prepEmailForm={prepEmailForm}
+                      prepSessionRegistrationForm={prepSessionRegistrationForm}
+                    />
+                  </Route>
 
-                <Route path='/past-sessions'>
-                  <PastSessions
-                    token={token}
-                    isLoggedIn={isLoggedIn}
-                    showModal={showModal}
-                    setShowModal={setShowModal}
-                  />
-                </Route>
+                  <Route path='/past-sessions'>
+                    <PastSessions
+                      token={token}
+                      isLoggedIn={isLoggedIn}
+                      showModal={showModal}
+                      setShowModal={setShowModal}
+                    />
+                  </Route>
 
-                <Route path='/alumni'>
-                  <Alumni token={token} isLoggedIn={isLoggedIn} prepEmailForm={prepEmailForm} />
-                </Route>
+                  <Route path='/alumni'>
+                    <Alumni token={token} isLoggedIn={isLoggedIn} prepEmailForm={prepEmailForm} />
+                  </Route>
 
-                <Route path='/alumni-reg-contact'>
-                  <AlumniRegContact prepEmailForm={prepEmailForm} emailFormData={emailFormData} />
-                </Route>
+                  <Route path='/alumni-reg-contact'>
+                    <AlumniRegContact prepEmailForm={prepEmailForm} emailFormData={emailFormData} />
+                  </Route>
 
-                <Route path='/view-form'>
-                  <ViewForm
-                    token={token}
-                    isLoggedIn={isLoggedIn}
-                    showModal={showModal}
-                    setShowModal={setShowModal}
-                    formToView={formToView}
-                    setFormToView={setFormToView}
-                    sessionToView={sessionToView}
-                  />
-                </Route>
+                  <Route path='/view-form'>
+                    <ViewForm
+                      token={token}
+                      isLoggedIn={isLoggedIn}
+                      showModal={showModal}
+                      setShowModal={setShowModal}
+                      formToView={formToView}
+                      setFormToView={setFormToView}
+                      sessionToView={sessionToView}
+                    />
+                  </Route>
 
-                <Route path='/render-announcements'>
-                  <RenderAnnouncements
-                    token={token}
-                    handleEditAnnouncements={handleEditAnnouncements}
-                  />
-                </Route>
+                  <Route path='/render-announcements'>
+                    <RenderAnnouncements
+                      token={token}
+                      // handleEditAnnouncements={handleEditAnnouncements}
+                    />
+                  </Route>
 
-                <Route path='/modify-announcements'>
-                  <ModifyAnnouncements
-                    token={token}
-                    announcementToEdit={announcementToEdit}
-                    handleEditAnnouncements={handleEditAnnouncements}
-                  />
-                </Route>
+                  <Route path='/modify-announcements'>
+                    <ModifyAnnouncements
+                      token={token}
+                      // announcementToEdit={announcementToEdit}
+                      // handleEditAnnouncements={handleEditAnnouncements}
+                    />
+                  </Route>
 
-                <Route exact path='/password/reset/confirm/:uid/:urlToken'>
-                  <PasswordResetConfirm
-                    token={token}
-                    setToken={setToken}
-                    setUsername={setUsername}
-                  />
-                </Route>
+                  <Route exact path='/password/reset/confirm/:uid/:urlToken'>
+                    <PasswordResetConfirm
+                      token={token}
+                      setToken={setToken}
+                      setUsername={setUsername}
+                    />
+                  </Route>
 
-                <Route exact path='/username/reset/confirm/:uid/:urlToken'>
-                  <UsernameResetConfirm
-                    token={token}
-                    setToken={setToken}
-                    setUsername={setUsername}
-                  />
-                </Route>
+                  <Route exact path='/username/reset/confirm/:uid/:urlToken'>
+                    <UsernameResetConfirm
+                      token={token}
+                      setToken={setToken}
+                      setUsername={setUsername}
+                    />
+                  </Route>
 
-                <Route path='/'>
-                  <Home changeNavAnimation={changeNavAnimation} />
-                </Route>
-              </Switch>
-            </main>
-          </div>
-        </Router>
+                  <Route path='/'>
+                    <Home changeNavAnimation={changeNavAnimation} />
+                  </Route>
+                </Switch>
+              </main>
+            </div>
+          </Router>
+        </AnnouncementsContext.Provider>
       </ModalContext.Provider>
     </SessionsContext.Provider>
   )

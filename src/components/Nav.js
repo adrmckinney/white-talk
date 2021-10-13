@@ -54,22 +54,6 @@ const Nav = ({
   // console.log('isLoading', isLoading)
   // console.log('username', username)
 
-  // scroll on click feature
-  // const MINIMUM_SCROLL = 0
-  // const TIMEOUT_DELAY = 0
-
-  // useDocumentScrollThrottled(callbackData => {
-  //   const { previousScrollTop, currentScrollTop } = callbackData
-  //   const isScrolledDown = previousScrollTop < currentScrollTop
-  //   const isMinimumScrolled = currentScrollTop > MINIMUM_SCROLL
-
-  //   setShowTransparentNav(currentScrollTop > 2)
-
-  //   setTimeout(() => {
-  //     setShowTransparentNav(isScrolledDown && isMinimumScrolled)
-  //   }, TIMEOUT_DELAY)
-  // })
-
   // close menu on window click feature
   useEffect(() => {
     const pageClickEvent = e => {
@@ -209,9 +193,6 @@ const Nav = ({
       <div className='max-w-7xl mx-auto px-2 sm:px-4 lg:px-8'>
         <div className='relative h-16 flex items-center justify-between'>
           <div className='px-2 flex items-center lg:px-0'>
-            {/* <div className='flex-shrink-0'>
-              <img className='block h-8 w-8' src='https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg' alt='Workflow' />
-            </div> */}
             <div className='hidden sm:block sm:ml-10'>
               <NavBtns isLoggedIn={isLoggedIn} navBtnClass={navBtnClass} />
               {/* <button
@@ -284,16 +265,18 @@ const Nav = ({
               {/* <!-- Profile dropdown --> */}
               <div className='ml-3 relative flex-shrink-0 font-nunito'>
                 <div>
-                  <button
-                    type='button'
-                    className={navBtnClass()}
-                    id='user-menu'
+                  <Button
+                    type={'button'}
+                    buttonLabel={isLoggedIn ? `Hello ${loggedInName}` : 'admin login'}
+                    buttonSize={'null'}
+                    buttonStatus={'null'}
+                    customButtonStyle={
+                      'text-white hover:bg-blueGray-100 hover:text-gray-800 px-3 py-2 text-xs lg:text-sm font-medium shadow-none'
+                    }
                     aria-expanded='false'
                     aria-haspopup='true'
                     onClick={() => setShowMenu(showMenu => !showMenu)}
-                  >
-                    {isLoggedIn ? `Hello ${loggedInName}` : 'admin login'}
-                  </button>
+                  />
                 </div>
 
                 {/* Dropdown menu, show/hide based on menu state. */}
