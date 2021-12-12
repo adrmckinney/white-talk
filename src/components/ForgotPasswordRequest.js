@@ -1,22 +1,21 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { RefreshIcon, ShieldCheckIcon } from '@heroicons/react/outline'
-import { requestChangePassword } from '../api'
+import { requestChangePassword } from '../api/api'
 
-export default function ForgotPasswordRequest ({ setIsForgotPassword }) {
+export default function ForgotPasswordRequest({ setIsForgotPassword }) {
   const [open, setOpen] = useState(true)
   const [email, setEmail] = useState('')
   const cancelButtonRef = useRef()
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleForgotPassword = (email) => {
+  const handleForgotPassword = email => {
     setIsLoading(true)
-    requestChangePassword(email)
-      .then(data => {
-        setIsForgotPassword(false)
-        setIsLoading(false)
-        setOpen(false)
-      })
+    requestChangePassword(email).then(data => {
+      setIsForgotPassword(false)
+      setIsLoading(false)
+      setOpen(false)
+    })
   }
 
   return (
@@ -66,7 +65,8 @@ export default function ForgotPasswordRequest ({ setIsForgotPassword }) {
                   </Dialog.Title>
                   <div className='mt-2'>
                     <p className='text-sm text-gray-500'>
-                      To reset your password, please enter your email associated with this account. You will receive an email with a link to change your password.
+                      To reset your password, please enter your email associated with this account.
+                      You will receive an email with a link to change your password.
                     </p>
                   </div>
                 </div>
@@ -78,7 +78,13 @@ export default function ForgotPasswordRequest ({ setIsForgotPassword }) {
                 </label>
                 <div className='mt-1 relative rounded-md shadow-sm'>
                   <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                    <svg className='h-5 w-5 text-gray-400' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' aria-hidden='true'>
+                    <svg
+                      className='h-5 w-5 text-gray-400'
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 20 20'
+                      fill='currentColor'
+                      aria-hidden='true'
+                    >
                       <path d='M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z' />
                       <path d='M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z' />
                     </svg>
@@ -90,32 +96,34 @@ export default function ForgotPasswordRequest ({ setIsForgotPassword }) {
                     className='focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md text-sm sm:text-lg border-gray-300 border pl-10'
                     placeholder='you@example.com'
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={e => setEmail(e.target.value)}
                   />
                 </div>
               </div>
               <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                {isLoading
-                  ? <button
-                      type='button'
-                      disabled
-                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                      onClick={() => {
-                        handleForgotPassword(email)
-                      }}
-                    >
+                {isLoading ? (
+                  <button
+                    type='button'
+                    disabled
+                    className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                    onClick={() => {
+                      handleForgotPassword(email)
+                    }}
+                  >
                     <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                     Processing
-                    </button>
-                  : <button
-                      type='button'
-                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                      onClick={() => {
-                        handleForgotPassword(email)
-                      }}
-                    >
+                  </button>
+                ) : (
+                  <button
+                    type='button'
+                    className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                    onClick={() => {
+                      handleForgotPassword(email)
+                    }}
+                  >
                     Send Email
-                    </button>}
+                  </button>
+                )}
 
                 <button
                   type='button'

@@ -1,7 +1,7 @@
 import { useReducer, useEffect, useContext } from 'react'
 import { Transition } from '@headlessui/react'
 import moment from 'moment'
-import { createSession, listSessions } from '../api'
+import { createSession, listSessions } from '../api/api'
 import SessionTitle from './createSessionForm.js/SessionTitle'
 import SessionDescription from './createSessionForm.js/SessionDescription'
 import SessionDates from './createSessionForm.js/SessionDates'

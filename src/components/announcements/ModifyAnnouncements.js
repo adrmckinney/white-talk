@@ -1,15 +1,19 @@
 import { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
-import { authListAnnouncement, listCreateAnnouncement, updateAnnouncement } from '../../api'
-import { AnnouncementsContext } from '../context/useContextAnnouncements'
+import { createAnnouncement } from '../../api/announcementsApi/create-announcement'
+import { authListAnnouncement, listCreateAnnouncement, updateAnnouncement } from '../../api/api'
 import Button from '../customComponents/Button'
+import { useHandleAnnouncementsState } from './useHandleAnnouncementsState'
+import { useAnnouncementsState, withAnnouncementsState } from './withAnnouncementsState'
 
-export default function ModifyAnnouncements({ token }) {
+export const ModifyAnnouncements = ({ token }) => {
   const history = useHistory()
   const [announcementParams, setAnnouncementParams] = useState({})
-  const { announcementToEdit, setAnnouncements, setAnnouncementToEdit } =
-    useContext(AnnouncementsContext)
+  // const { announcementToEdit, setAnnouncements, setAnnouncementToEdit } =
+  //   useContext(AnnouncementsContext)
 
+  const { announcementToEdit, setAnnouncementsState } = useAnnouncementsState()
+  console.log('announcementToEdit', announcementToEdit)
   const changeParams = (name, value) => {
     setAnnouncementParams(state => ({ ...state, [name]: value }))
   }
@@ -26,22 +30,27 @@ export default function ModifyAnnouncements({ token }) {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (announcementToEdit.pk) {
-      updateAnnouncement(token, announcementToEdit.pk, announcementParams).then(data => {
-        authListAnnouncement(token).then(data => {
-          setAnnouncementToEdit([])
-          history.push('/render-announcements')
-          setAnnouncements(data)
-        })
-      })
-    } else {
-      listCreateAnnouncement(token, announcementParams).then(newAnnouncement => {
-        authListAnnouncement(token).then(announcements => {
-          history.push('/render-announcements')
-          setAnnouncements(announcements)
-        })
-      })
-    }
+    createAnnouncement(token, announcementParams).then(data => {
+      setAnnouncementsState(data)
+      history.push('/render-announcements')
+    })
+
+    // if (announcementToEdit.pk) {
+    //   updateAnnouncement(token, announcementToEdit.pk, announcementParams).then(data => {
+    //     authListAnnouncement(token).then(data => {
+    //       setAnnouncementToEdit([])
+    //       history.push('/render-announcements')
+    //       setAnnouncements(data)
+    //     })
+    //   })
+    // } else {
+    // listCreateAnnouncement(token, announcementParams).then(newAnnouncement => {
+    //   authListAnnouncement(token).then(announcements => {
+    //     history.push('/render-announcements')
+    //     setAnnouncements(announcements)
+    //   })
+    // })
+    // }
   }
 
   return (
@@ -172,3 +181,5 @@ export default function ModifyAnnouncements({ token }) {
     </div>
   )
 }
+
+export default withAnnouncementsState(ModifyAnnouncements)

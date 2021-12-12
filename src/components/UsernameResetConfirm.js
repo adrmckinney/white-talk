@@ -1,10 +1,10 @@
 import { Fragment, useRef, useState } from 'react'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
-import { confirmChangeUsername } from '../api'
+import { confirmChangeUsername } from '../api/api'
 import { RefreshIcon } from '@heroicons/react/outline'
 
-export default function UsernameResetConfirm ({ token, setToken, setUsername }) {
+export default function UsernameResetConfirm({ token, setToken, setUsername }) {
   const [open, setOpen] = useState(true)
   const [newUsername, setNewUsername] = useState('')
   const [confirmUsername, setConfirmUsername] = useState('')
@@ -17,14 +17,13 @@ export default function UsernameResetConfirm ({ token, setToken, setUsername }) 
   console.log('urlToken', urlToken)
   const handleConfirmChangeUsername = () => {
     setIsLoading(true)
-    confirmChangeUsername(uid, urlToken, newUsername, confirmUsername)
-      .then(data => {
-        setOpen(false)
-        setIsLoading(false)
-        setToken(null)
-        setUsername('')
-        history.push('/')
-      })
+    confirmChangeUsername(uid, urlToken, newUsername, confirmUsername).then(data => {
+      setOpen(false)
+      setIsLoading(false)
+      setToken(null)
+      setUsername('')
+      history.push('/')
+    })
   }
 
   return (
@@ -66,61 +65,72 @@ export default function UsernameResetConfirm ({ token, setToken, setUsername }) 
             <div className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6'>
               <div>
                 <div className='mt-3 text-center sm:mt-3'>
-                  <Dialog.Title as='h3' className='mb-5 text-lg leading-6 font-medium text-gray-900'>
+                  <Dialog.Title
+                    as='h3'
+                    className='mb-5 text-lg leading-6 font-medium text-gray-900'
+                  >
                     Enter New Username
                   </Dialog.Title>
                   <div className='rounded-md shadow-sm -space-y-px'>
                     <div>
-                      <label htmlFor='username' className='sr-only'>Change Username</label>
+                      <label htmlFor='username' className='sr-only'>
+                        Change Username
+                      </label>
                       <input
                         id='username'
                         name='username'
                         type='username'
                         autoComplete='current-username'
-                        required className='appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                        required
+                        className='appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                         placeholder='username'
                         value={newUsername}
-                        onChange={(e) => setNewUsername(e.target.value)}
+                        onChange={e => setNewUsername(e.target.value)}
                       />
                     </div>
                   </div>
 
                   <div className='rounded-md shadow-sm -space-y-px'>
                     <div>
-                      <label htmlFor='confirmUsername' className='sr-only'>Confirm Username</label>
+                      <label htmlFor='confirmUsername' className='sr-only'>
+                        Confirm Username
+                      </label>
                       <input
                         id='confirmUsername'
                         name='confirmUsername'
                         type='confirmUsername'
                         autoComplete='current-username'
-                        required className='appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                        required
+                        className='appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
                         placeholder='re-enter username'
                         value={confirmUsername}
-                        onChange={(e) => setConfirmUsername(e.target.value)}
+                        onChange={e => setConfirmUsername(e.target.value)}
                       />
                     </div>
                   </div>
                 </div>
               </div>
               <div className='mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense'>
-                {isLoading
-                  ? <button
-                      type='button'
-                      required
-                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                    >
+                {isLoading ? (
+                  <button
+                    type='button'
+                    required
+                    className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                  >
                     <RefreshIcon className='h-4 w-4 mr-4 self-center animate-spin' />
                     Processing
                   </button>
-                  : <button
-                      type='button'
-                      className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
-                      onClick={() => {
-                        handleConfirmChangeUsername()
-                      }}
-                    >
+                ) : (
+                  <button
+                    type='button'
+                    className='w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 btn-color focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm'
+                    onClick={() => {
+                      handleConfirmChangeUsername()
+                    }}
+                  >
                     Submit
-                  </button>}
+                  </button>
+                )}
 
                 <Link
                   to='/'

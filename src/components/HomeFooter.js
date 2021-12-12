@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { sendEmail } from '../api'
+import { sendEmail } from '../api/api'
 import MessageSentAlert from './alerts/MessageSentAlert'
 import Button from './customComponents/Button'
 import { formatPhoneNumber } from './functions'

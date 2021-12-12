@@ -235,7 +235,7 @@ export const listCreateAnnouncement = (token, announcementData) => {
 }
 
 // This is a secure call to get all Announcements.
-// On auth user can do this b/c it is on the edit page.
+// Only auth user can do this b/c it is on the edit page.
 // The view on the other side of this endpoint is a
 // ListCreateView. It is poorly named here.
 export const authListAnnouncement = token => {

@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from 'react'
 import { Transition } from '@headlessui/react'
-import { register, updateAdmin } from '../api'
+import { register, updateAdmin } from '../api/api'
 import Errors from './Errors'
 import AdminName from './registerAdminForm/AdminName'
 import AdminEmail from './registerAdminForm/AdminEmail'

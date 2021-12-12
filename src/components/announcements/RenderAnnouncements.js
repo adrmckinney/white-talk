@@ -1,15 +1,20 @@
-import { useContext } from 'react'
-import { authListAnnouncement, deleteAnnouncement } from '../../api'
-import { AnnouncementsContext } from '../context/useContextAnnouncements'
+import { authListAnnouncement, deleteAnnouncement } from '../../api/api'
 import Button from '../customComponents/Button'
+import { useAnnouncementsState, withAnnouncementsState } from './withAnnouncementsState'
+import { useHandleAnnouncementsState } from './useHandleAnnouncementsState'
 
-export default function RenderAnnouncements({ token }) {
-  const { announcements, setAnnouncements, setAnnouncementToEdit } =
-    useContext(AnnouncementsContext)
+export const RenderAnnouncements = ({ token }) => {
+  // const { announcements, setAnnouncements, setAnnouncementToEdit } =
+  //   useContext(AnnouncementsContext)
+
+  const { announcementsState, setAnnouncementsState, setAnnouncementToEdit } =
+    useAnnouncementsState()
+
+  const { handleEditAnnouncements } = useHandleAnnouncementsState()
 
   const handleDelete = pk => {
     deleteAnnouncement(token, pk).then(data => {
-      authListAnnouncement(token).then(data => setAnnouncements(data))
+      authListAnnouncement(token).then(data => setAnnouncementsState(data))
     })
   }
 
@@ -36,7 +41,7 @@ export default function RenderAnnouncements({ token }) {
 
         <div className='mt-10'>
           <dl className='space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10'>
-            {announcements?.map(announcement => (
+            {announcementsState?.map(announcement => (
               <div key={announcement?.pk} className='relative'>
                 <dt>
                   <div className='absolute flex flex-col items-center justify-around h-full'>
@@ -47,8 +52,8 @@ export default function RenderAnnouncements({ token }) {
                       buttonSize={'extraSmall'}
                       buttonStatus={'primary'}
                       onClick={() => {
-                        setAnnouncementToEdit(announcement)
-                        // handleEditAnnouncements('edit-announcement', announcement)
+                        // setAnnouncementToEdit(announcement)
+                        handleEditAnnouncements(announcement)
                       }}
                       overrideButtonStyle={{ paddingRight: '0.375rem', paddingLeft: '0.375rem' }}
                     />
@@ -74,3 +79,5 @@ export default function RenderAnnouncements({ token }) {
     </div>
   )
 }
+
+export default withAnnouncementsState(RenderAnnouncements)

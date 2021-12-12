@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 import UpcomingSessions from './UpcomingSessions'
 import MobileUpcomingSessions from './MobileUpcomingSessions'
-import { listSessions, deleteSession, updateSession } from '../api'
+import { listSessions, deleteSession, updateSession } from '../api/api'
 import DeleteAlert from './alerts/DeleteAlert'
 import SessionRegister from './sessionForms/SessionRegister'
 import SessionRegisterOverlay from './sessionForms/SessionRegisterOverlay'

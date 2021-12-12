@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { sendEmail, sessionRegister, updateRegistrant } from '../../api'
+import { sendEmail, sessionRegister, updateRegistrant } from '../../api/api'
 import SuccessfulRegistrationModal from '../alerts/SuccessfulRegistrationModal'
 import SessionToRegister from './SessionToRegister'
 import ConfirmationStatus from './ConfirmationStatus'

@@ -1,6 +1,6 @@
 import { XIcon } from '@heroicons/react/outline'
 import { useEffect, useState } from 'react'
-import { sendEmail } from '../api'
+import { sendEmail } from '../api/api'
 import Button from './customComponents/Button'
 
 export default function AlumniRegContact({ emailFormData }) {

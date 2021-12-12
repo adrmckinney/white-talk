@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
-import { sendEmail, sessionRegister } from '../../api'
+import { sendEmail, sessionRegister } from '../../api/api'
 import Comments from './Comments'
 import Email from './Email'
 import Name from './Name'

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import Moment from 'react-moment'
-import { listSessions, updateSession } from '../api'
+import { listSessions, updateSession } from '../api/api'
 import CreateSession from './CreateSession'
 import Button from './customComponents/Button'
 import { sortSessions } from './functions'

@@ -8,7 +8,7 @@ import Email from './Email'
 import Pronouns from './Pronouns'
 import Name from './Name'
 import SessionToRegister from './SessionToRegister'
-import { sessionRegister } from '../../api'
+import { sessionRegister } from '../../api/api'
 
 export default function SessionRegisterOverlay({
   token,

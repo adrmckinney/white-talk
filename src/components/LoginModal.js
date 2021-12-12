@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import Errors from './Errors'
 import ForgotPasswordRequest from './ForgotPasswordRequest'
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
 import { handleFormFilter } from './functions'
-import { login } from '../api'
+import { login } from '../api/api'
 import Button from './customComponents/Button'
 
 const LoginModal = ({
@@ -12,8 +12,8 @@ const LoginModal = ({
   setShowModal,
   setAuth,
   setIsSigningIn,
-  filterLogin,
-  setFilterLogin,
+  // filterLogin,
+  // setFilterLogin,
   isLoading,
   setIsLoading,
   errors,
@@ -21,6 +21,11 @@ const LoginModal = ({
 }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+
+  const [filterLogin, setFilterLogin] = useReducer((name, value) => ({ ...name, ...value }), {
+    username: '',
+    password: '',
+  })
 
   if (isForgotPassword) {
     return <ForgotPasswordRequest setIsForgotPassword={setIsForgotPassword} />

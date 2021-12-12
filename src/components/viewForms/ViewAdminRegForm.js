@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { getUser } from '../../api'
+import { getUser } from '../../api/api'
 import Button from '../customComponents/Button'
 
 const ViewAdminRegForm = ({
