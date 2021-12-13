@@ -1,39 +1,36 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { getAnnouncementList } from '../../api/announcementsApi/get-announcement-list'
+import { getAnnouncement } from '../../api/announcementsApi/get-announcement'
 
-const AnnouncementsStateContext = createContext()
-const AnnouncementsDispatchContext = createContext()
-const AnnouncementToEditStateContext = createContext()
-const AnnouncementToEditDispatchContext = createContext()
+const AnnouncementStateContext = createContext()
+const AnnouncementDispatchContext = createContext()
 
 export const useAnnouncementsState = () => {
-  const announcementsState = useContext(AnnouncementsStateContext)
-  const setAnnouncementsState = useContext(AnnouncementsDispatchContext)
-  const announcementToEdit = useContext(AnnouncementToEditStateContext)
-  const setAnnouncementToEdit = useContext(AnnouncementToEditDispatchContext)
+  const announcementState = useContext(AnnouncementStateContext)
+  const setAnnouncementPk = useContext(AnnouncementDispatchContext)
 
-  return { announcementsState, setAnnouncementsState, announcementToEdit, setAnnouncementToEdit }
+  return {
+    announcementState,
+    setAnnouncementPk,
+  }
 }
 
 export const withAnnouncementsState =
   Component =>
   ({ ...rest }) => {
-    const [announcementsState, setAnnouncementsState] = useState(null)
-    const [announcementToEdit, setAnnouncementToEdit] = useState(null)
-    console.log('announcementToEdit', announcementToEdit)
+    const [announcementState, setAnnouncementState] = useState(null)
+    const [announcementPk, setAnnouncementPk] = useState(null)
+
     useEffect(() => {
-      getAnnouncementList().then(data => setAnnouncementsState(data))
-    }, [])
+      getAnnouncement('04c4a72c99c63c16b6e4f9026fb0a6187beafd30', announcementPk).then(data =>
+        setAnnouncementState(data)
+      )
+    }, [setAnnouncementPk, announcementPk])
 
     return (
-      <AnnouncementsStateContext.Provider value={announcementsState}>
-        <AnnouncementToEditStateContext.Provider value={announcementToEdit}>
-          <AnnouncementsDispatchContext.Provider value={setAnnouncementsState}>
-            <AnnouncementToEditDispatchContext.Provider value={setAnnouncementToEdit}>
-              <Component {...rest} />
-            </AnnouncementToEditDispatchContext.Provider>
-          </AnnouncementsDispatchContext.Provider>
-        </AnnouncementToEditStateContext.Provider>
-      </AnnouncementsStateContext.Provider>
+      <AnnouncementStateContext.Provider value={announcementState}>
+        <AnnouncementDispatchContext.Provider value={setAnnouncementPk}>
+          <Component {...rest} />
+        </AnnouncementDispatchContext.Provider>
+      </AnnouncementStateContext.Provider>
     )
   }

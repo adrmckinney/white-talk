@@ -1,20 +1,21 @@
-import { authListAnnouncement, deleteAnnouncement } from '../../api/api'
+import { deleteAnnouncement } from '../../api/api'
 import Button from '../customComponents/Button'
-import { useAnnouncementsState, withAnnouncementsState } from './withAnnouncementsState'
-import { useHandleAnnouncementsState } from './useHandleAnnouncementsState'
+import { useAnnouncementsState } from './withAnnouncementsState'
+import { getAnnouncementList } from '../../api/announcementsApi/get-announcement-list'
+import { useEffect, useState } from 'react'
 
 export const RenderAnnouncements = ({ token }) => {
-  // const { announcements, setAnnouncements, setAnnouncementToEdit } =
-  //   useContext(AnnouncementsContext)
+  const { setAnnouncementPk } = useAnnouncementsState()
+  const [announcements, setAnnouncements] = useState(null)
 
-  const { announcementsState, setAnnouncementsState, setAnnouncementToEdit } =
-    useAnnouncementsState()
-
-  const { handleEditAnnouncements } = useHandleAnnouncementsState()
+  useEffect(() => {
+    getAnnouncementList(token).then(data => setAnnouncements(data))
+    setAnnouncementPk(null)
+  }, [token, setAnnouncementPk])
 
   const handleDelete = pk => {
     deleteAnnouncement(token, pk).then(data => {
-      authListAnnouncement(token).then(data => setAnnouncementsState(data))
+      getAnnouncementList(token).then(data => setAnnouncements(data))
     })
   }
 
@@ -41,7 +42,7 @@ export const RenderAnnouncements = ({ token }) => {
 
         <div className='mt-10'>
           <dl className='space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10'>
-            {announcementsState?.map(announcement => (
+            {announcements?.map(announcement => (
               <div key={announcement?.pk} className='relative'>
                 <dt>
                   <div className='absolute flex flex-col items-center justify-around h-full'>
@@ -51,10 +52,7 @@ export const RenderAnnouncements = ({ token }) => {
                       buttonLabel={'Edit'}
                       buttonSize={'extraSmall'}
                       buttonStatus={'primary'}
-                      onClick={() => {
-                        // setAnnouncementToEdit(announcement)
-                        handleEditAnnouncements(announcement)
-                      }}
+                      onClick={() => setAnnouncementPk(announcement?.pk)}
                       overrideButtonStyle={{ paddingRight: '0.375rem', paddingLeft: '0.375rem' }}
                     />
                     <Button
@@ -80,4 +78,4 @@ export const RenderAnnouncements = ({ token }) => {
   )
 }
 
-export default withAnnouncementsState(RenderAnnouncements)
+export default RenderAnnouncements

@@ -1,56 +1,47 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { createAnnouncement } from '../../api/announcementsApi/create-announcement'
-import { authListAnnouncement, listCreateAnnouncement, updateAnnouncement } from '../../api/api'
+import { updateAnnouncement } from '../../api/announcementsApi/update-announcement'
 import Button from '../customComponents/Button'
-import { useHandleAnnouncementsState } from './useHandleAnnouncementsState'
-import { useAnnouncementsState, withAnnouncementsState } from './withAnnouncementsState'
+import { useAnnouncementsState } from './withAnnouncementsState'
 
 export const ModifyAnnouncements = ({ token }) => {
-  const history = useHistory()
+  const { announcementState, setAnnouncementPk } = useAnnouncementsState()
   const [announcementParams, setAnnouncementParams] = useState({})
-  // const { announcementToEdit, setAnnouncements, setAnnouncementToEdit } =
-  //   useContext(AnnouncementsContext)
+  const history = useHistory()
 
-  const { announcementToEdit, setAnnouncementsState } = useAnnouncementsState()
-  console.log('announcementToEdit', announcementToEdit)
   const changeParams = (name, value) => {
     setAnnouncementParams(state => ({ ...state, [name]: value }))
   }
 
   useEffect(() => {
-    if (announcementToEdit?.pk) {
+    if (announcementState.pk) {
       setAnnouncementParams(state => ({
         ...state,
-        title: announcementToEdit?.title,
-        body: announcementToEdit?.body,
+        title: announcementState?.title,
+        body: announcementState?.body,
       }))
     }
-  }, [announcementToEdit?.pk, announcementToEdit?.title, announcementToEdit?.body])
+  }, [announcementState.pk, announcementState?.title, announcementState?.body])
 
   const handleSubmit = e => {
     e.preventDefault()
-    createAnnouncement(token, announcementParams).then(data => {
-      setAnnouncementsState(data)
-      history.push('/render-announcements')
-    })
 
-    // if (announcementToEdit.pk) {
-    //   updateAnnouncement(token, announcementToEdit.pk, announcementParams).then(data => {
-    //     authListAnnouncement(token).then(data => {
-    //       setAnnouncementToEdit([])
-    //       history.push('/render-announcements')
-    //       setAnnouncements(data)
-    //     })
-    //   })
-    // } else {
-    // listCreateAnnouncement(token, announcementParams).then(newAnnouncement => {
-    //   authListAnnouncement(token).then(announcements => {
-    //     history.push('/render-announcements')
-    //     setAnnouncements(announcements)
-    //   })
-    // })
-    // }
+    if (announcementState.pk) {
+      updateAnnouncement(token, announcementState?.pk, announcementParams).then(data => {
+        setAnnouncementPk(null)
+        history.push('/render-announcements')
+      })
+    } else {
+      createAnnouncement(token, announcementParams).then(data => {
+        history.push('/render-announcements')
+      })
+    }
+  }
+
+  const handleCancel = () => {
+    setAnnouncementPk(null)
+    history.push('/render-announcements')
   }
 
   return (
@@ -116,7 +107,7 @@ export const ModifyAnnouncements = ({ token }) => {
         </svg>
         <div className='text-center'>
           <h2 className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl'>
-            {announcementToEdit?.pk ? 'Edit Announcement' : 'New Announcement'}
+            {announcementState.pk ? 'Edit Announcement' : 'New Announcement'}
           </h2>
         </div>
         <div className='mt-12'>
@@ -133,7 +124,7 @@ export const ModifyAnnouncements = ({ token }) => {
                   type='text'
                   name='title'
                   id='title'
-                  value={announcementParams?.title}
+                  value={announcementParams?.title ?? ''}
                   autoComplete='organization'
                   className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md'
                   onChange={e => changeParams(e.target.name, e.target.value)}
@@ -149,7 +140,7 @@ export const ModifyAnnouncements = ({ token }) => {
                 <textarea
                   id='body'
                   name='body'
-                  value={announcementParams?.body}
+                  value={announcementParams?.body ?? ''}
                   rows={4}
                   className='py-3 px-4 block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md'
                   defaultValue=''
@@ -161,7 +152,7 @@ export const ModifyAnnouncements = ({ token }) => {
             <div className='sm:col-span-2 space-y-4'>
               <Button
                 type={'submit'}
-                buttonLabel={announcementToEdit?.pk ? 'Update' : 'Create'}
+                buttonLabel={announcementState.pk ? 'Update' : 'Create'}
                 buttonSize={'large'}
                 buttonStatus={'primary'}
                 customButtonStyle={'w-full'}
@@ -172,7 +163,7 @@ export const ModifyAnnouncements = ({ token }) => {
                 buttonSize={'large'}
                 buttonStatus={'cancel'}
                 customButtonStyle={'w-full'}
-                onClick={() => history.push('/render-announcements')}
+                onClick={handleCancel}
               />
             </div>
           </form>
@@ -182,4 +173,4 @@ export const ModifyAnnouncements = ({ token }) => {
   )
 }
 
-export default withAnnouncementsState(ModifyAnnouncements)
+export default ModifyAnnouncements

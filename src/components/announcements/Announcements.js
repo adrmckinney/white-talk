@@ -1,8 +1,11 @@
-import { useAnnouncementsState } from './withAnnouncementsState'
+import { useEffect, useState } from 'react'
+import { getAnnouncementList } from '../../api/announcementsApi/get-announcement-list'
 
 export default function Announcements() {
-  const { announcementsState } = useAnnouncementsState()
-  console.log('announcementsState', announcementsState)
+  const [announcements, setAnnouncements] = useState(null)
+  useEffect(() => {
+    getAnnouncementList().then(data => setAnnouncements(data))
+  }, [])
 
   return (
     <div className='relative bg-darkBlueGray py-16 sm:py-24 lg:py-20 xl:pt-10 xl:pb-20 h-auto'>
@@ -12,7 +15,7 @@ export default function Announcements() {
         </p>
         <div className='mt-12 border-t-4 border-bronze'>
           <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2'>
-            {announcementsState?.map(announcement => (
+            {announcements?.map(announcement => (
               <div key={announcement?.pk} className='pt-6'>
                 <div className='flow-root bg-darkBlueGray rounded-lg px-6 pb-8'>
                   <div className='-mt-6'>

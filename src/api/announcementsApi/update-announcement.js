@@ -1,6 +1,6 @@
 import { url } from '../url'
 
-export const UpdateAnnouncement = (token, pk, announcementData) => {
+export const updateAnnouncement = (token, pk, announcementData) => {
   return url
     .put(`api/retrieve-update-delete-announcement/${pk}/`, announcementData, {
       headers: {
