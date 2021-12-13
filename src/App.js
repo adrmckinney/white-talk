@@ -3,7 +3,7 @@ import { SessionsContext } from './components/useContextSessions'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import createPersistedState from 'use-persisted-state'
 import './App.css'
-import { authListAnnouncement, getUser, listSessions } from './api/api'
+import { getUser, listSessions } from './api/api'
 import Nav from './components/Nav'
 import BookStudy from './components/BookStudy'
 import Sessions from './components/Sessions'
@@ -23,20 +23,18 @@ import { ModalContext } from './components/context/useModalContext'
 import Modal from './components/customComponents/Modal'
 import TestSessionCreate from './components/TestSessionCreate'
 import PageForm from './components/customComponents/customForms/formInputs/PageForm'
-import {
-  AnnouncementsContext,
-  useContextAnnouncements,
-} from './components/context/AnnouncementsContext'
 import { AuthProvider } from './components/context/AuthContext'
+import { withAnnouncementsState } from './components/announcements/withAnnouncementsState'
+import { withAuthState } from './components/auth/withAuthState'
 
-const useUsername = createPersistedState('username')
-const useToken = createPersistedState('token')
+// const useUsername = createPersistedState('username')
+// const useToken = createPersistedState('token')
 
 function App() {
-  const [username, setUsername] = useUsername(null)
+  // const [username, setUsername] = useUsername(null)
   const [loggedInName, setLoggedInName] = useState('')
-  const [token, setToken] = useToken(null)
-  const isLoggedIn = username && token
+  // const [token, setToken] = useToken(null)
+  // const isLoggedIn = username && token
   const [registered, setRegistered] = useState(false)
   const [sessionRegistrationData, setSessionRegistrationData] = useState({
     sessions: [], // the editor's dropdown menu needs all sessions (SessionToRegister.js)
@@ -53,7 +51,6 @@ function App() {
     facilitator_name: '',
     facilitator_email: '',
   })
-  // const { setAnnouncements } = useContext(AnnouncementsContext)
 
   const [sessions, setSessions] = useState([])
   const [sessionToEdit, setSessionToEdit] = useState([])
@@ -84,18 +81,18 @@ function App() {
     [modal, modalComponent, isLoading]
   )
 
-  function setAuth(username, token) {
-    setUsername(username)
-    setToken(token)
-  }
+  // function setAuth(username, token) {
+  //   setUsername(username)
+  //   setToken(token)
+  // }
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      getUser(token).then(data => setLoggedInName(data.first_name))
-    }
-    listSessions().then(data => setSessions(data))
-    // authListAnnouncement(token).then(data => setAnnouncements(data))
-  }, [token, isLoggedIn])
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     getUser(token).then(data => setLoggedInName(data.first_name))
+  //   }
+  //   listSessions().then(data => setSessions(data))
+  //   // authListAnnouncement(token).then(data => setAnnouncements(data))
+  // }, [token, isLoggedIn])
 
   const changeNavAnimation = value => {
     setShowTransparentNav(value)
@@ -157,12 +154,12 @@ function App() {
       <div className='min-h-screen bg-ghostWhite'>
         <div className='bg-mediumPurple pb-32'>
           <Nav
-            token={token}
-            setToken={setToken}
-            username={username}
-            setUsername={setUsername}
-            isLoggedIn={isLoggedIn}
-            setAuth={setAuth}
+            // token={token}
+            // setToken={setToken}
+            // username={username}
+            // setUsername={setUsername}
+            // isLoggedIn={isLoggedIn}
+            // setAuth={setAuth}
             showModal={showModal}
             setShowModal={setShowModal}
             loggedInName={loggedInName}
@@ -179,8 +176,8 @@ function App() {
 
             <Route path='/sessions'>
               <Sessions
-                token={token}
-                isLoggedIn={isLoggedIn}
+                // token={token}
+                // isLoggedIn={isLoggedIn}
                 showModal={showModal}
                 setShowModal={setShowModal}
                 setFormToView={setFormToView}
@@ -193,7 +190,7 @@ function App() {
 
             <Route path='/session-register'>
               <SessionRegisterEditor
-                token={token}
+                // token={token}
                 sessionRegistrationData={sessionRegistrationData}
               />
             </Route>
@@ -208,8 +205,8 @@ function App() {
 
             <Route path='/view-session-registrants'>
               <ViewSessionRegistrants
-                token={token}
-                isLoggedIn={isLoggedIn}
+                // token={token}
+                // isLoggedIn={isLoggedIn}
                 setShowModal={setShowModal}
                 prepEmailForm={prepEmailForm}
                 prepSessionRegistrationForm={prepSessionRegistrationForm}
@@ -218,15 +215,19 @@ function App() {
 
             <Route path='/past-sessions'>
               <PastSessions
-                token={token}
-                isLoggedIn={isLoggedIn}
+                // token={token}
+                // isLoggedIn={isLoggedIn}
                 showModal={showModal}
                 setShowModal={setShowModal}
               />
             </Route>
 
             <Route path='/alumni'>
-              <Alumni token={token} isLoggedIn={isLoggedIn} prepEmailForm={prepEmailForm} />
+              <Alumni
+                // token={token}
+                // isLoggedIn={isLoggedIn}
+                prepEmailForm={prepEmailForm}
+              />
             </Route>
 
             <Route path='/alumni-reg-contact'>
@@ -235,8 +236,8 @@ function App() {
 
             <Route path='/view-form'>
               <ViewForm
-                token={token}
-                isLoggedIn={isLoggedIn}
+                // token={token}
+                // isLoggedIn={isLoggedIn}
                 showModal={showModal}
                 setShowModal={setShowModal}
                 formToView={formToView}
@@ -247,25 +248,33 @@ function App() {
 
             <Route path='/render-announcements'>
               <RenderAnnouncements
-                token={token}
-                // handleEditAnnouncements={handleEditAnnouncements}
+              // token={token}
+              // handleEditAnnouncements={handleEditAnnouncements}
               />
             </Route>
 
             <Route path='/modify-announcements'>
               <ModifyAnnouncements
-                token={token}
-                // announcementToEdit={announcementToEdit}
-                // handleEditAnnouncements={handleEditAnnouncements}
+              // token={token}
+              // announcementToEdit={announcementToEdit}
+              // handleEditAnnouncements={handleEditAnnouncements}
               />
             </Route>
 
             <Route exact path='/password/reset/confirm/:uid/:urlToken'>
-              <PasswordResetConfirm token={token} setToken={setToken} setUsername={setUsername} />
+              <PasswordResetConfirm
+              // token={token}
+              // setToken={setToken}
+              //  setUsername={setUsername}
+              />
             </Route>
 
             <Route exact path='/username/reset/confirm/:uid/:urlToken'>
-              <UsernameResetConfirm token={token} setToken={setToken} setUsername={setUsername} />
+              <UsernameResetConfirm
+              // token={token}
+              // setToken={setToken}
+              // setUsername={setUsername}
+              />
             </Route>
 
             <Route path='/'>
@@ -281,4 +290,4 @@ function App() {
   )
 }
 
-export default App
+export default withAuthState(withAnnouncementsState(App))

@@ -6,11 +6,12 @@ import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
 import { handleFormFilter } from './functions'
 import { login } from '../api/api'
 import Button from './customComponents/Button'
+import { useHandleAuth } from './auth/useHandleAuth'
 
 const LoginModal = ({
   showModal,
   setShowModal,
-  setAuth,
+  // setAuth,
   setIsSigningIn,
   // filterLogin,
   // setFilterLogin,
@@ -21,6 +22,7 @@ const LoginModal = ({
 }) => {
   const [isForgotPassword, setIsForgotPassword] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const { setAuth } = useHandleAuth()
 
   const [filterLogin, setFilterLogin] = useReducer((name, value) => ({ ...name, ...value }), {
     username: '',
